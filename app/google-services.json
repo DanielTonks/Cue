@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "1025020087275",
+    "firebase_url": "https://cue-app-1.firebaseio.com",
+    "project_id": "cue-app-1",
+    "storage_bucket": "cue-app-1.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1025020087275:android:979b3ed3b864c225",
+        "android_client_info": {
+          "package_name": "uk.co.cue.app"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1025020087275-hbdv6gnhm4eq5r0gf5igh4edb9qpheko.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDMtI08Bu0Z4XP7XiKSo32goUbdlU5wIXI"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
