@@ -5,8 +5,11 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import com.google.firebase.iid.FirebaseInstanceId;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,12 +26,15 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
-                startActivityForResult(i, 0);
+                Intent i = new Intent(getApplicationContext(), ReserveTableActivity.class);
+                startActivity(i);
+                //Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
+                //startActivityForResult(i, 0);
             }
         });
 
@@ -38,24 +44,42 @@ public class MainActivity extends AppCompatActivity {
 
         this.queueDescription = findViewById(R.id.queueDescription);
 
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        // Check which request we're responding to
-        if (requestCode == 0) {
-            // Make sure the request was successful
-            if (resultCode == RESULT_OK) {
-                standard.setVisibility(View.GONE);
-                inQueue.setVisibility(View.VISIBLE);
-
-                String pub = data.getStringExtra("pubID");
-
-                queueDescription.setText("You're now in the queue at " + pub + ", at position");
+        ImageView help = findViewById(R.id.helpImage);
+        help.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent intent = new Intent(getApplicationContext(), HelpActivity.class);
+                startActivity(intent);
             }
+        });
+
+
+        Intent i = getIntent();
+        boolean confirmed = i.getBooleanExtra("confirmed", false);
+        System.out.println(confirmed);
+        if (confirmed) {
+            updateUI(i);
         }
+
+        String token = FirebaseInstanceId.getInstance().getToken();
+        System.out.println(token);
+
+
     }
+
+    private void updateUI(Intent data) {
+        standard.setVisibility(View.GONE);
+        inQueue.setVisibility(View.VISIBLE);
+
+        String pub = data.getStringExtra("pubID");
+        String name = data.getStringExtra("userName");
+
+
+        queueDescription.setText(name + "; you're now in the queue at " + pub + ", at position");
+    }
+
+
+
 
 
 }

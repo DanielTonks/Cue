@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.widget.TextView;
 
 public class NFCDetectedActivity extends AppCompatActivity {
 
@@ -19,6 +20,7 @@ public class NFCDetectedActivity extends AppCompatActivity {
     PendingIntent mPendingIntent;
     IntentFilter mFilters[];
     String mTechLists[][];
+    TextView processingText;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -30,6 +32,8 @@ public class NFCDetectedActivity extends AppCompatActivity {
     public void onStart() {
         super.onStart();
         setContentView(R.layout.activity_nfcdetected);
+
+        this.processingText = findViewById(R.id.processingText);
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         mPendingIntent = PendingIntent.getActivity(this, 0,
@@ -51,8 +55,8 @@ public class NFCDetectedActivity extends AppCompatActivity {
                         Ndef.class.getName()
                 }
         };
-        Intent intent = getIntent();
-        getNdefMessages(intent);
+        //Intent intent = getIntent();
+        //getNdefMessages(intent);
     }
 
     public void getNdefMessages(Intent intent) {
@@ -92,15 +96,16 @@ public class NFCDetectedActivity extends AppCompatActivity {
 
     @Override
     public void onNewIntent(Intent intent) {
+        processingText.setText("Processing");
         Log.i("Foreground dispatch", "Discovered tag with intent:" + intent);
         getNdefMessages(intent);
 
-        String pubID = "Soak"; //hardcoded for now
+        String pubID = "S'Oak"; //hardcoded for now
         Intent returnIntent = new Intent();
         returnIntent.putExtra("pubID", pubID);
         setResult(Activity.RESULT_OK, returnIntent);
+
+
         finish();
-        //mText = (TextView) findViewById(R.id.text);
-        //mText.setText(getNdefMessages(intent));
     }
 }
