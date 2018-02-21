@@ -1,4 +1,4 @@
-package uk.co.cue.app;
+package uk.co.cue.app.activity;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -13,6 +13,8 @@ import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+
+import uk.co.cue.app.R;
 
 public class NFCDetectedActivity extends AppCompatActivity {
 

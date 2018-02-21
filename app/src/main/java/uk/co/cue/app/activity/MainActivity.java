@@ -1,4 +1,4 @@
-package uk.co.cue.app;
+package uk.co.cue.app.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -9,7 +9,8 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import com.google.firebase.iid.FirebaseInstanceId;
+import uk.co.cue.app.R;
+import uk.co.cue.app.util.CueApp;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -23,9 +24,20 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        CueApp app = (CueApp) getApplication();
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
 
+        if (!app.isUserLoggedIn()) {
+            //Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
+            //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY); // Do not add this activity to the backstack, otherwise the user can go back from Login to logged in state.
+            //startActivity(i);
+        } else {
+            setUp();
+        }
+    }
+
+    private void setUp() {
+        setContentView(R.layout.activity_main);
 
         Button btn = findViewById(R.id.button);
         btn.setOnClickListener(new View.OnClickListener() {
@@ -61,10 +73,6 @@ public class MainActivity extends AppCompatActivity {
         if (confirmed) {
             updateUI(i);
         }
-
-        String token = FirebaseInstanceId.getInstance().getToken();
-        System.out.println(token);
-
 
     }
 

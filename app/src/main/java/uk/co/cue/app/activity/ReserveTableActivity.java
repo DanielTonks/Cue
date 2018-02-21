@@ -1,4 +1,4 @@
-package uk.co.cue.app;
+package uk.co.cue.app.activity;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
@@ -26,6 +26,8 @@ import com.android.volley.toolbox.Volley;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
+import uk.co.cue.app.R;
 
 public class ReserveTableActivity extends AppCompatActivity {
 
@@ -124,7 +126,7 @@ public class ReserveTableActivity extends AppCompatActivity {
                 System.out.println("About to make a request...");
 
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest postRequest = new StringRequest(Request.Method.POST, "https://idk-cue.club/user/add",
+                StringRequest postRequest = new StringRequest(Request.Method.POST, "https://idk-cue.club/queue/add",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -145,15 +147,22 @@ public class ReserveTableActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("username", "dantheman");
-                        params.put("password", "hello");
-                        params.put("name", "Daniel");
-                        params.put("device_id", "fyXUXueWMOE:APA91bEGNvd3tpabf3enYo4ooSnPM1l9s3RTLrKKNhLGlGspT0F2QjqqzCdbLcyfnMIHShQr8mhmP_Lrcdm_obNyT8b5MtiHQ2P7qAeSscO0hnQkje0oxQ7Or5zJ9pbfsPuepR0bGyiz");
+//                        params.put("user_id","1");
+//                        params.put("machine_id","1");
+//                        params.put("num_players","2");
+//                        params.put("matchmaking","0");
+//                        params.put("time_add",String.valueOf(timeUNIX));
+
+
+//                        params.put("username", "dantheman");
+//                        params.put("password", "hello");
+//                        params.put("name", "Daniel");
+//                        params.put("device_id", "fyXUXueWMOE:APA91bEGNvd3tpabf3enYo4ooSnPM1l9s3RTLrKKNhLGlGspT0F2QjqqzCdbLcyfnMIHShQr8mhmP_Lrcdm_obNyT8b5MtiHQ2P7qAeSscO0hnQkje0oxQ7Or5zJ9pbfsPuepR0bGyiz");
 
                         return params;
                     }
                 };
-                //requestQueue.add(postRequest);
+                requestQueue.add(postRequest);
 
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
