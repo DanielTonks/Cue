@@ -1,8 +1,9 @@
 <resources>
     <string name="app_name">Cue</string>
-    <string name="setup_pub">Pub name:</string>
+    <string name="setup_pub">Enter your pub name:</string>
     <string name="machine_type">Select your machine type:</string>
     <string name="setup_button">Setup</string>
+    <string name="machine_num">Enter the number of machines:</string>
     <string-array name="machine_type_array">
         <item>Pool</item>
         <item>Snooker</item>
