@@ -4,6 +4,7 @@
     <string name="machine_type">Select your machine type:</string>
     <string name="setup_button">Setup</string>
     <string name="machine_num">Enter the number of machines:</string>
+    <string name="price_per_game">Enter the price per game:</string>
     <string-array name="machine_type_array">
         <item>Pool</item>
         <item>Snooker</item>
