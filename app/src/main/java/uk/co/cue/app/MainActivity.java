@@ -32,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), ReserveTableActivity.class);
+                // i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
                 startActivity(i);
                 //Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
                 //startActivityForResult(i, 0);
