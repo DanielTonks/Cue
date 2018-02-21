@@ -78,6 +78,11 @@ public class MainActivity extends AppCompatActivity {
         queueDescription.setText(name + "; you're now in the queue at " + pub + ", at position");
     }
 
+    public void onClickSetup(View view) {
+        Intent intent = new Intent(this, SetupTagActivity.class);
+        startActivity(intent);
+    }
+
 
 
 

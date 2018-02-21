@@ -66,24 +66,20 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".MainActivity" />
         </activity>
-        <activity android:name=".ReserveTableActivity">
-
-        </activity>
+        <activity android:name=".ReserveTableActivity"></activity>
 
         <service android:name=".CueAlertService">
             <intent-filter>
                 <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
             </intent-filter>
         </service>
-
-
         <service android:name=".CueMessageHandler">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
 
+        <activity android:name=".SetupTagActivity"></activity>
     </application>
-
 
 </manifest>
