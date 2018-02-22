@@ -22,7 +22,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity"></activity>
+        <activity android:name=".activity.MainActivity" />
         <activity
             android:name=".activity.NFCDetectedActivity"
             android:launchMode="singleTask" />
@@ -51,7 +51,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name=".activity.HelpActivity"
+            android:name=".activity.HelpFragment"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppThemeActionBar">
 

@@ -1,7 +1,10 @@
 package uk.co.cue.app.util;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
+import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 
 import com.google.firebase.iid.FirebaseInstanceId;
 
@@ -14,6 +17,7 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class CueApp extends Application {
 
     private int loggedInUserId;
+    private String username;
     private String firebaseToken;
 
     public CueApp() {
@@ -33,11 +37,28 @@ public class CueApp extends Application {
         return loggedInUserId != -1;
     }
 
-    public void setLoggedInUserId(int id) {
+    public void setLoggedInUser(int id, String username) {
         this.loggedInUserId = id;
+        this.username = username;
     }
 
     public String getFirebaseToken() {
         return firebaseToken;
+    }
+
+    public void closeKeyboard(View view) {
+        // Check if no view has focus:
+        if (view != null) {
+            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
+        }
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

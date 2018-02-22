@@ -2,14 +2,12 @@ package uk.co.cue.app.activity;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -28,6 +26,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.util.CueApp;
 
 public class ReserveTableActivity extends AppCompatActivity {
 
@@ -37,10 +36,13 @@ public class ReserveTableActivity extends AppCompatActivity {
     private RelativeLayout timeLayout;
     private String playerName;
 
+    private CueApp app;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_table);
+        this.app = (CueApp) getApplication();
 
         nameLayout = (RelativeLayout) findViewById(R.id.info_card1);
         timeLayout = (RelativeLayout) findViewById(R.id.info_card2);
@@ -62,10 +64,8 @@ public class ReserveTableActivity extends AppCompatActivity {
                 timeLayout.setVisibility(View.VISIBLE);
 
                 // Check if no view has focus:
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
+                app.closeKeyboard(getCurrentFocus());
+
             }
         });
 

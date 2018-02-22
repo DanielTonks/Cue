@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <group android:checkableBehavior="single">
+
+        <item
+            android:id="@+id/home"
+            android:icon="@mipmap/home"
+            android:iconTint="@color/colorPrimary"
+            android:title="Home" />
+        <item
+            android:id="@+id/local_venues"
+            android:icon="@mipmap/location"
+            android:iconTint="@color/colorPrimary"
+            android:title="Local Venues" />
+        <item
+            android:id="@+id/favourite_venues"
+            android:icon="@mipmap/pin"
+            android:iconTint="@color/colorPrimary"
+            android:title="Favourite Venues" />
+        <item
+            android:id="@+id/past_games"
+            android:icon="@mipmap/settings"
+            android:iconTint="@color/colorPrimary"
+            android:title="Past Games" />
+        <item
+            android:id="@+id/help"
+            android:icon="@mipmap/settings"
+            android:iconTint="@color/colorPrimary"
+            android:title="Help" />
+
+        <item
+            android:id="@+id/settings"
+            android:icon="@mipmap/settings"
+            android:iconTint="@color/colorPrimary"
+            android:title="Settings" />
+    </group>
+</menu>

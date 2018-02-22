@@ -63,12 +63,18 @@ public class LoginActivity extends AppCompatActivity {
      * Using the username and password the user has entered, try to log in.
      */
     private void attemptLogin() {
+        final String username = usernameField.getText().toString();
+        final String password = passwordField.getText().toString();
+
+        if (password.trim().equals("") || username.trim().equals("")) {
+            Toast.makeText(getApplicationContext(), "Incomplete fields", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        app.closeKeyboard(getCurrentFocus());
 
         fields.setVisibility(View.GONE);
         pending.setVisibility(View.VISIBLE);
-
-        final String username = usernameField.getText().toString();
-        final String password = passwordField.getText().toString();
 
         //Make a network request to log in.
 
@@ -79,8 +85,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(String response) {
                         try {
                             if (response.equals("OK")) {
-                                app.setLoggedInUserId(10); // dummy value for now
-
+                                app.setLoggedInUser(10, username); // dummy value for now
                                 Intent i = new Intent(getApplicationContext(), MainActivity.class);
                                 i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                                 startActivity(i); // user logged in.

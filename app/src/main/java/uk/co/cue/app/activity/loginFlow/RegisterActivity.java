@@ -66,6 +66,8 @@ public class RegisterActivity extends AppCompatActivity {
     }
 
     private void attemptRegister() {
+        app.closeKeyboard(getCurrentFocus());
+
         final String username = usernameField.getText().toString().trim();
         final String p1 = passwordField.getText().toString().trim();
         final String p2 = passwordConfirmationField.getText().toString().trim();
@@ -92,8 +94,7 @@ public class RegisterActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(String response) {
                         try {
-                            app.setLoggedInUserId(10); // dummy value for now
-
+                            app.setLoggedInUser(10, username); // dummy value for now
                             Intent i = new Intent(getApplicationContext(), MainActivity.class);
                             i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(i); // user logged in.
