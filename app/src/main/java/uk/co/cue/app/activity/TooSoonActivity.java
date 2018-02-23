@@ -1,4 +1,4 @@
-package uk.co.cue.app;
+package uk.co.cue.app.activity;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -10,6 +10,8 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.analytics.FirebaseAnalytics;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
+
+import uk.co.cue.app.R;
 
 public class TooSoonActivity extends AppCompatActivity {
 

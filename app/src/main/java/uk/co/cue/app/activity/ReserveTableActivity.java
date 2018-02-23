@@ -1,15 +1,13 @@
-package uk.co.cue.app;
+package uk.co.cue.app.activity;
 
 import android.app.Dialog;
 import android.app.TimePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -27,6 +25,9 @@ import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
 
+import uk.co.cue.app.R;
+import uk.co.cue.app.util.CueApp;
+
 public class ReserveTableActivity extends AppCompatActivity {
 
     private static long timeUNIX; // holds the unix time of the time the user selected
@@ -35,10 +36,13 @@ public class ReserveTableActivity extends AppCompatActivity {
     private RelativeLayout timeLayout;
     private String playerName;
 
+    private CueApp app;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_table);
+        this.app = (CueApp) getApplication();
 
         nameLayout = (RelativeLayout) findViewById(R.id.info_card1);
         timeLayout = (RelativeLayout) findViewById(R.id.info_card2);
@@ -60,10 +64,8 @@ public class ReserveTableActivity extends AppCompatActivity {
                 timeLayout.setVisibility(View.VISIBLE);
 
                 // Check if no view has focus:
-                if (view != null) {
-                    InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                    imm.hideSoftInputFromWindow(view.getWindowToken(), 0);
-                }
+                app.closeKeyboard(getCurrentFocus());
+
             }
         });
 
@@ -124,7 +126,7 @@ public class ReserveTableActivity extends AppCompatActivity {
                 System.out.println("About to make a request...");
 
                 RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest postRequest = new StringRequest(Request.Method.POST, "https://idk-cue.club/user/add",
+                StringRequest postRequest = new StringRequest(Request.Method.POST, "https://idk-cue.club/queue/add",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -145,15 +147,22 @@ public class ReserveTableActivity extends AppCompatActivity {
                     @Override
                     protected Map<String, String> getParams() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("username", "dantheman");
-                        params.put("password", "hello");
-                        params.put("name", "Daniel");
-                        params.put("device_id", "fyXUXueWMOE:APA91bEGNvd3tpabf3enYo4ooSnPM1l9s3RTLrKKNhLGlGspT0F2QjqqzCdbLcyfnMIHShQr8mhmP_Lrcdm_obNyT8b5MtiHQ2P7qAeSscO0hnQkje0oxQ7Or5zJ9pbfsPuepR0bGyiz");
+//                        params.put("user_id","1");
+//                        params.put("machine_id","1");
+//                        params.put("num_players","2");
+//                        params.put("matchmaking","0");
+//                        params.put("time_add",String.valueOf(timeUNIX));
+
+
+//                        params.put("username", "dantheman");
+//                        params.put("password", "hello");
+//                        params.put("name", "Daniel");
+//                        params.put("device_id", "fyXUXueWMOE:APA91bEGNvd3tpabf3enYo4ooSnPM1l9s3RTLrKKNhLGlGspT0F2QjqqzCdbLcyfnMIHShQr8mhmP_Lrcdm_obNyT8b5MtiHQ2P7qAeSscO0hnQkje0oxQ7Or5zJ9pbfsPuepR0bGyiz");
 
                         return params;
                     }
                 };
-                //requestQueue.add(postRequest);
+                requestQueue.add(postRequest);
 
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

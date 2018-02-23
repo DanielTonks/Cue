@@ -1,4 +1,4 @@
-package uk.co.cue.app;
+package uk.co.cue.app.activity;
 
 import android.app.ProgressDialog;
 import android.net.Uri;
@@ -25,6 +25,8 @@ import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
 import java.util.HashMap;
 import java.util.Map;
+
+import uk.co.cue.app.R;
 
 public class SetupTagActivity extends AppCompatActivity {
 

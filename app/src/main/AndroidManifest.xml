@@ -5,32 +5,29 @@
     <uses-permission android:name="android.permission.NFC" />
     <uses-permission android:name="android.permission.INTERNET" />
 
-
     <uses-feature
         android:name="android.hardware.nfc"
         android:required="true" />
 
+    <!-- To auto-complete the email text field in the login form with the user's emails -->
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+
     <application
+        android:name=".util.CueApp"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.MainActivity" />
         <activity
-            android:name=".MainActivity"
-            android:launchMode="singleTop">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-        </activity>
-        <activity
-            android:name=".NFCDetectedActivity"
+            android:name=".activity.NFCDetectedActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".TooSoonActivity"
+            android:name=".activity.TooSoonActivity"
             android:launchMode="singleTask">
             <intent-filter>
                 <action android:name="android.nfc.action.NDEF_DISCOVERED" />
@@ -53,35 +50,63 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".activity.HelpFragment"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppThemeActionBar">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+        <activity android:name=".activity.ReserveTableActivity" />
+        <activity android:name=".activity.loginFlow.LoginChooserActivity">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.loginFlow.LoginActivity"
+            android:parentActivityName=".activity.loginFlow.LoginChooserActivity"
+            android:theme="@style/AppThemeActionBar"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.loginFlow.LoginChooserActivity" />
+        </activity>
+
+        <service android:name=".services.CueAlertService">
+            <intent-filter>
+                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
+            </intent-filter>
+        </service>
+        <service android:name=".util.CueMessageHandler">
+            <intent-filter>
+                <action android:name="com.google.firebase.MESSAGING_EVENT" />
+            </intent-filter>
+        </service>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
 
         <activity
-            android:name=".HelpActivity"
-            android:parentActivityName=".MainActivity"
-            android:theme="@style/AppThemeActionBar">
+            android:name=".activity.loginFlow.RegisterActivity"
+            android:parentActivityName=".activity.loginFlow.LoginChooserActivity"
+            android:theme="@style/AppThemeActionBar"
+            android:windowSoftInputMode="adjustResize">
 
             <!-- Parent activity meta-data to support 4.0 and lower -->
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value=".MainActivity" />
+                android:value=".activity.loginFlow.LoginChooserActivity" />
         </activity>
-        <activity android:name=".ReserveTableActivity"></activity>
-
-        <service android:name=".CueAlertService">
-            <intent-filter>
-                <action android:name="com.google.firebase.INSTANCE_ID_EVENT" />
-            </intent-filter>
-        </service>
-        <service android:name=".CueMessageHandler">
-            <intent-filter>
-                <action android:name="com.google.firebase.MESSAGING_EVENT" />
-            </intent-filter>
-        </service>
-
-        <activity android:name=".SetupTagActivity"></activity>
     </application>
+
 
 </manifest>

@@ -1,4 +1,4 @@
-package uk.co.cue.app;
+package uk.co.cue.app.util;
 
 /**
  * Created by danieltonks on 19/02/2018.
@@ -17,6 +17,9 @@ import android.util.Log;
 
 import com.google.firebase.messaging.FirebaseMessagingService;
 import com.google.firebase.messaging.RemoteMessage;
+
+import uk.co.cue.app.R;
+import uk.co.cue.app.activity.MainActivity;
 
 public class CueMessageHandler extends FirebaseMessagingService {
 
