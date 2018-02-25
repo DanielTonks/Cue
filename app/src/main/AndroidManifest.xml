@@ -50,16 +50,7 @@
                     android:scheme="http" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".activity.HelpFragment"
-            android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppThemeActionBar">
 
-            <!-- Parent activity meta-data to support 4.0 and lower -->
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".activity.MainActivity" />
-        </activity>
         <activity android:name=".activity.ReserveTableActivity" />
         <activity android:name=".activity.loginFlow.LoginChooserActivity">
             <intent-filter>
