@@ -28,7 +28,7 @@ This list is a mix of features that will be implemented in the app, and some des
   
 ### Venues
 - Users should be able to see a map of local venues, plotted using coordinates stored in the web server for all venues.
-  - The web server should allow requests to be made to see all venues within a specific radius of the users current location_
+  - _The web server should allow requests to be made to see all venues within a specific radius of the users current location_
 - Clicking on a map pin will open a detailed page for each venue, informing the user about what types of machine they have available, for example.
 - Users should be able to favourite a venue. _Ideally this would be stored in the web server_
 - There should be a section in the app where users can see all of their favourited venues, with information in card format for each one. 
