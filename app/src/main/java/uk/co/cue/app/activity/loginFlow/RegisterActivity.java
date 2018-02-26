@@ -1,5 +1,6 @@
 package uk.co.cue.app.activity.loginFlow;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -16,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
-import uk.co.cue.app.activity.MainActivity;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -102,11 +102,11 @@ public class RegisterActivity extends AppCompatActivity implements VolleyRequest
     @Override
     public void requestFinished(String response, String url) {
         try {
-            app.setLoggedInUser(10, username); // dummy value for now
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(i); // user logged in.
-            finish(); // prevent the user from returning here
+            Intent returnIntent = new Intent();
+            returnIntent.putExtra("username", username);
+            returnIntent.putExtra("id", 0);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
         } catch (Exception err) {
         }
     }

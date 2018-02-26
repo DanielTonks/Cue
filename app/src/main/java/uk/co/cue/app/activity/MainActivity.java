@@ -1,7 +1,9 @@
 package uk.co.cue.app.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
@@ -16,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
 import uk.co.cue.app.util.CueApp;
 
 
@@ -112,6 +115,11 @@ public class MainActivity extends AppCompatActivity {
                             case "Home":
                                 showHomeFragment(new HomeFragment());
                                 break;
+
+
+                            case "Log out":
+                                logout();
+                                break;
                         }
 
 
@@ -119,6 +127,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void logout() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("logged_in", false);
+        editor.putString("username", null);
+        editor.apply();
+        Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void showHelpFragment(HelpFragment f) {
