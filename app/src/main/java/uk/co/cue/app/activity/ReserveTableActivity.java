@@ -8,22 +8,11 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.Map;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.util.CueApp;
@@ -43,41 +32,11 @@ public class ReserveTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_table);
         this.app = (CueApp) getApplication();
+        setTitle("Reserve a game");
+        currentTimeSelected = findViewById(R.id.currentTimeSelected);
 
-        nameLayout = (RelativeLayout) findViewById(R.id.info_card1);
-        timeLayout = (RelativeLayout) findViewById(R.id.info_card2);
 
-        currentTimeSelected = timeLayout.findViewById(R.id.currentTimeSelected);
-
-        nameLayout.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText name = nameLayout.findViewById(R.id.edit_name);
-
-                playerName = name.getText().toString();
-
-                if (playerName.trim().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Name cannot be empty!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                nameLayout.setVisibility(View.GONE);
-                timeLayout.setVisibility(View.VISIBLE);
-
-                // Check if no view has focus:
-                app.closeKeyboard(getCurrentFocus());
-
-            }
-        });
-
-        nameLayout.findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        timeLayout.findViewById(R.id.btn_now).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_now).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 currentTimeSelected.setText("Now");
@@ -86,7 +45,7 @@ public class ReserveTableActivity extends AppCompatActivity {
             }
         });
 
-        timeLayout.findViewById(R.id.btn_time).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_time).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = new TimePickerFragment();
@@ -94,20 +53,11 @@ public class ReserveTableActivity extends AppCompatActivity {
             }
         });
 
-        timeLayout.findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timeLayout.setVisibility(View.GONE);
-                nameLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        timeLayout.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println(timeUNIX);
                 Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
-
                 startActivityForResult(i, 0);
             }
         });
@@ -122,47 +72,6 @@ public class ReserveTableActivity extends AppCompatActivity {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
                 System.out.println("Got back, here is value of timeUNIX: " + timeUNIX);
-
-                System.out.println("About to make a request...");
-
-                RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-                StringRequest postRequest = new StringRequest(Request.Method.POST, "https://idk-cue.club/queue/add",
-                        new Response.Listener<String>() {
-                            @Override
-                            public void onResponse(String response) {
-                                try {
-                                    System.out.println("Response: " + response);
-                                } catch (Exception err) {
-                                }
-                            }
-                        },
-                        new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                System.out.println(error.getMessage());
-                            }
-                        }
-
-                ) {
-                    @Override
-                    protected Map<String, String> getParams() {
-                        Map<String, String> params = new HashMap<String, String>();
-//                        params.put("user_id","1");
-//                        params.put("machine_id","1");
-//                        params.put("num_players","2");
-//                        params.put("matchmaking","0");
-//                        params.put("time_add",String.valueOf(timeUNIX));
-
-
-//                        params.put("username", "dantheman");
-//                        params.put("password", "hello");
-//                        params.put("name", "Daniel");
-//                        params.put("device_id", "fyXUXueWMOE:APA91bEGNvd3tpabf3enYo4ooSnPM1l9s3RTLrKKNhLGlGspT0F2QjqqzCdbLcyfnMIHShQr8mhmP_Lrcdm_obNyT8b5MtiHQ2P7qAeSscO0hnQkje0oxQ7Or5zJ9pbfsPuepR0bGyiz");
-
-                        return params;
-                    }
-                };
-                requestQueue.add(postRequest);
 
 
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);

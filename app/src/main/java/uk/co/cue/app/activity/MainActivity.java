@@ -1,18 +1,24 @@
 package uk.co.cue.app.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
+import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
 import uk.co.cue.app.util.CueApp;
 
 
@@ -49,6 +55,12 @@ public class MainActivity extends AppCompatActivity {
         this.app = (CueApp) getApplication();
 
         showHomeFragment(new HomeFragment());
+
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+        ActionBar actionbar = getSupportActionBar();
+        actionbar.setDisplayHomeAsUpEnabled(true);
+        actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
 //        Button btn = findViewById(R.id.button);
 //        btn.setOnClickListener(new View.OnClickListener() {
@@ -103,6 +115,11 @@ public class MainActivity extends AppCompatActivity {
                             case "Home":
                                 showHomeFragment(new HomeFragment());
                                 break;
+
+
+                            case "Log out":
+                                logout();
+                                break;
                         }
 
 
@@ -110,6 +127,17 @@ public class MainActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void logout() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("logged_in", false);
+        editor.putString("username", null);
+        editor.apply();
+        Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
+        startActivity(i);
+        finish();
     }
 
     private void showHelpFragment(HelpFragment f) {
@@ -127,14 +155,23 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(Intent data) {
-        standard.setVisibility(View.GONE);
-        inQueue.setVisibility(View.VISIBLE);
+        showHomeFragment(new HomeFragment());
+//        standard.setVisibility(View.GONE);
+//        inQueue.setVisibility(View.VISIBLE);
 
         String pub = data.getStringExtra("pubID");
         String name = data.getStringExtra("userName");
+        System.out.println(name + "; you're now in the queue at " + pub + ", at position");
+    }
 
-
-        queueDescription.setText(name + "; you're now in the queue at " + pub + ", at position");
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                drawerLayout.openDrawer(GravityCompat.START);
+                return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 
 

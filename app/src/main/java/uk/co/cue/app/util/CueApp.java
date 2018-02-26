@@ -16,9 +16,13 @@ import com.google.firebase.iid.FirebaseInstanceId;
 
 public class CueApp extends Application {
 
+    //ENDPOINTS
+    public final static String POST_login = "https://idk-cue.club/user/login";
+    public final static String POST_register = "https://idk-cue.club/user/register";
     private int loggedInUserId;
     private String username;
     private String firebaseToken;
+
 
     public CueApp() {
     }

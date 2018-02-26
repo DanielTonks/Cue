@@ -1,142 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
     tools:context="uk.co.cue.app.activity.ReserveTableActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_above="@+id/txt_info"
-        android:layout_centerHorizontal="true"
-        android:fontFamily="@font/raleway_bold"
-        android:text="Welcome to Cue"
-        android:textColor="@color/white"
-        android:textSize="28sp" />
-
-    <RelativeLayout
-        android:id="@+id/info_card1"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="visible">
-
-        <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/nameCard"
-            android:fontFamily="@font/raleway_light"
-            android:padding="16dp"
-            android:text="Let's start with your name"
-            android:textAlignment="center"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/nameCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_marginTop="8dp"
-            app:cardCornerRadius="6dp"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true">
-
-            <EditText
-                android:id="@+id/edit_name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:background="@null"
-                android:hint="Enter"
-                android:inputType="textCapWords"
-                android:maxLines="1"
-                android:paddingBottom="12dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="12dp" />
-
-
-        </android.support.v7.widget.CardView>
-
-        <LinearLayout
-            android:id="@+id/btn_exit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="8dp"
-            android:gravity="left"
-            android:paddingLeft="4dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:rotation="0"
-                android:src="@mipmap/cancel" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_bold"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:paddingLeft="4dp"
-                android:text="Cancel"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btn_submit"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
-            android:layout_marginBottom="8dp"
-            android:gravity="right"
-            android:paddingRight="4dp">
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_bold"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:paddingRight="4dp"
-                android:text="Continue"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:rotation="90"
-                android:src="@mipmap/expand_white" />
-
-
-        </LinearLayout>
-
-
-    </RelativeLayout>
-
-    <RelativeLayout
+    <LinearLayout
         android:id="@+id/info_card2"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:visibility="gone">
+        android:orientation="vertical"
+        android:visibility="visible">
 
         <TextView
             android:id="@+id/textView4"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_above="@+id/currentTimeSelected"
-            android:layout_alignParentStart="true"
+
             android:fontFamily="@font/raleway_light"
             android:padding="12dp"
             android:text="What time do you want to start your game?"
@@ -148,9 +29,6 @@
             android:id="@+id/currentTimeSelected"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_centerHorizontal="true"
-            android:layout_centerVertical="true"
             android:fontFamily="@font/raleway_bold"
             android:padding="24dp"
             android:text="Now"
@@ -162,63 +40,32 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/currentTimeSelected"
             android:gravity="center_horizontal">
 
             <Button
                 android:id="@+id/btn_now"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="Now" />
+                android:layout_marginRight="16dp"
+                android:background="@color/white"
+                android:text="Now"
+                android:textColor="@color/colorPrimary" />
 
             <Button
                 android:id="@+id/btn_time"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btn_now"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:text="Pick time" />
-
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:id="@+id/btn_back"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentStart="true"
-            android:layout_marginBottom="8dp"
-            android:gravity="left"
-            android:paddingLeft="4dp">
-
-            <ImageView
-                android:layout_width="40dp"
-                android:layout_height="40dp"
-                android:rotation="-90"
-                android:src="@mipmap/expand_white" />
-
-            <TextView
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_bold"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:paddingLeft="4dp"
-                android:text="Back"
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+                android:background="@color/white"
+                android:text="Pick time"
+                android:textColor="@color/colorPrimary" />
 
 
         </LinearLayout>
 
         <LinearLayout
             android:id="@+id/btn_next"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            android:layout_alignParentEnd="true"
             android:layout_marginBottom="8dp"
             android:gravity="right"
             android:paddingRight="4dp">
@@ -243,6 +90,6 @@
         </LinearLayout>
 
 
-    </RelativeLayout>
+    </LinearLayout>
 
 </FrameLayout>
