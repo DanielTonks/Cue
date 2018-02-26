@@ -1,8 +1,10 @@
 package uk.co.cue.app.activity;
 
 import android.app.ProgressDialog;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.annotation.NonNull;
+import android.support.annotation.RequiresPermission;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -120,7 +122,9 @@ public class SetupTagActivity extends AppCompatActivity {
                             Uri shortLink = t.getResult().getShortLink();
 
                             String link = t.toString();
-                            //Call the WriteTagActivity with t as extra in intent
+                            Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
+                            NFCIntent.putExtra("url", link);
+                            startActivity(NFCIntent);
                         }
                     }
                 });
