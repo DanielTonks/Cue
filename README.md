@@ -49,4 +49,5 @@ Features in essentials are... essential. This will get us good marks but it isn'
 - Users should be able to favourite a venue. _Ideally this would be stored in the web server_
 - There should be a section in the app where users can see all of their favourited venues, with information in card format for each one. 
   - Selecting one of these venues will launch the detailed venue page.
+- Using Google's Places API, we can link venues to their google maps pages, allowing us to show opening hours and more.
 
