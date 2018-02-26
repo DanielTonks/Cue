@@ -10,11 +10,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -22,8 +18,9 @@ import java.util.Map;
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.MainActivity;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.VolleyRequestFactory;
 
-public class RegisterActivity extends AppCompatActivity {
+public class RegisterActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
 
     private EditText usernameField;
     private EditText passwordField;
@@ -36,7 +33,10 @@ public class RegisterActivity extends AppCompatActivity {
     private LinearLayout fields;
     private RelativeLayout pending;
 
+    private VolleyRequestFactory vrf;
+
     private CueApp app;
+    private String username;
 
 
     @Override
@@ -63,12 +63,14 @@ public class RegisterActivity extends AppCompatActivity {
                 attemptRegister();
             }
         });
+
+        vrf = new VolleyRequestFactory(this, getApplicationContext());
     }
 
     private void attemptRegister() {
         app.closeKeyboard(getCurrentFocus());
 
-        final String username = usernameField.getText().toString().trim();
+        username = usernameField.getText().toString().trim();
         final String p1 = passwordField.getText().toString().trim();
         final String p2 = passwordConfirmationField.getText().toString().trim();
         final String fName = firstName.getText().toString().trim();
@@ -88,50 +90,37 @@ public class RegisterActivity extends AppCompatActivity {
         pending.setVisibility(View.VISIBLE);
 
         // Create a request to sign up the user
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "https://idk-cue.club/user/add",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            app.setLoggedInUser(10, username); // dummy value for now
-                            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(i); // user logged in.
-                            finish(); // prevent the user from returning here
-                        } catch (Exception err) {
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (error.networkResponse.statusCode == 500) {
-                            pending.setVisibility(View.GONE);
-                            fields.setVisibility(View.VISIBLE);
-                            usernameField.setText("");
-                            passwordConfirmationField.setText("");
-                            passwordField.setText("");
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username", username);
+        params.put("password", p1);
+        params.put("name", fName + " " + sName);
+        params.put("device_id", app.getFirebaseToken());
 
-                            Toast.makeText(getApplicationContext(), "Username already exists", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
+        vrf.doRequest(app.POST_register, params, Request.Method.POST);
+    }
 
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
+    @Override
+    public void requestFinished(String response, String url) {
+        try {
+            app.setLoggedInUser(10, username); // dummy value for now
+            Intent i = new Intent(getApplicationContext(), MainActivity.class);
+            i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(i); // user logged in.
+            finish(); // prevent the user from returning here
+        } catch (Exception err) {
+        }
+    }
 
-                params.put("username", username);
-                params.put("password", p1);
-                params.put("name", fName + " " + sName);
-                params.put("device_id", app.getFirebaseToken());
+    @Override
+    public void requestFailed(VolleyError error) {
+        if (error.networkResponse.statusCode == 500) {
+            pending.setVisibility(View.GONE);
+            fields.setVisibility(View.VISIBLE);
+            usernameField.setText("");
+            passwordConfirmationField.setText("");
+            passwordField.setText("");
 
-                return params;
-            }
-        };
-        requestQueue.add(postRequest);
-
+            Toast.makeText(getApplicationContext(), "Username already exists", Toast.LENGTH_SHORT).show();
+        }
     }
 }

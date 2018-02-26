@@ -14,11 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +22,9 @@ import java.util.Map;
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.MainActivity;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.VolleyRequestFactory;
 
-public class LoginActivity extends AppCompatActivity {
+public class LoginActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
 
     private EditText usernameField;
     private EditText passwordField;
@@ -35,7 +32,11 @@ public class LoginActivity extends AppCompatActivity {
     private LinearLayout fields;
     private RelativeLayout pending;
 
+    private VolleyRequestFactory vrf;
+
+
     private CueApp app;
+    private String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,13 +58,15 @@ public class LoginActivity extends AppCompatActivity {
             }
         });
 
+        this.vrf = new VolleyRequestFactory(this, getApplicationContext());
+
     }
 
     /**
      * Using the username and password the user has entered, try to log in.
      */
     private void attemptLogin() {
-        final String username = usernameField.getText().toString();
+        this.username = usernameField.getText().toString();
         final String password = passwordField.getText().toString();
 
         if (password.trim().equals("") || username.trim().equals("")) {
@@ -77,50 +80,39 @@ public class LoginActivity extends AppCompatActivity {
         pending.setVisibility(View.VISIBLE);
 
         //Make a network request to log in.
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("username", username);
+        params.put("password", password);
+        params.put("device_id", app.getFirebaseToken());
 
-        RequestQueue requestQueue = Volley.newRequestQueue(getApplicationContext());
-        StringRequest postRequest = new StringRequest(Request.Method.POST, "https://idk-cue.club/user/login",
-                new Response.Listener<String>() {
-                    @Override
-                    public void onResponse(String response) {
-                        try {
-                            if (response.equals("OK")) {
-                                app.setLoggedInUser(10, username); // dummy value for now
-                                Intent i = new Intent(getApplicationContext(), MainActivity.class);
-                                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                                startActivity(i); // user logged in.
-                                finish(); // prevent the user from returning here
-                            }
-                        } catch (Exception err) {
-                        }
-                    }
-                },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        if (error.networkResponse.statusCode == 401) {
-                            pending.setVisibility(View.GONE);
-                            fields.setVisibility(View.VISIBLE);
-                            passwordField.setText("");
+        vrf.doRequest(app.POST_login, params, Request.Method.POST);
 
-                            Toast.makeText(getApplicationContext(), "Incorrect login details", Toast.LENGTH_SHORT).show();
-                        }
-                    }
-                }
 
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("username", username);
-                params.put("password", password);
-                params.put("device_id", app.getFirebaseToken());
+    }
 
-                return params;
+    @Override
+    public void requestFinished(String response, String url) {
+        try {
+            if (response.equals("OK")) {
+                app.setLoggedInUser(10, username); // dummy value for now
+                Intent i = new Intent(getApplicationContext(), MainActivity.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                startActivity(i); // user logged in.
+                finish(); // prevent the user from returning here
             }
-        };
-        requestQueue.add(postRequest);
+        } catch (Exception err) {
+        }
 
+    }
 
+    @Override
+    public void requestFailed(VolleyError error) {
+        if (error.networkResponse.statusCode == 401) {
+            pending.setVisibility(View.GONE);
+            fields.setVisibility(View.VISIBLE);
+            passwordField.setText("");
+
+            Toast.makeText(getApplicationContext(), "Incorrect login details", Toast.LENGTH_SHORT).show();
+        }
     }
 }

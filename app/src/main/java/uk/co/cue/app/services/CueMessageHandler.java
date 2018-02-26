@@ -1,4 +1,4 @@
-package uk.co.cue.app.util;
+package uk.co.cue.app.services;
 
 /**
  * Created by danieltonks on 19/02/2018.
