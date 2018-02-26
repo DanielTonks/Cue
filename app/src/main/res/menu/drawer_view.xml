@@ -19,12 +19,12 @@
             android:title="Favourite Venues" />
         <item
             android:id="@+id/past_games"
-            android:icon="@mipmap/settings"
+            android:icon="@mipmap/history"
             android:iconTint="@color/colorPrimary"
             android:title="Past Games" />
         <item
             android:id="@+id/help"
-            android:icon="@mipmap/settings"
+            android:icon="@mipmap/help"
             android:iconTint="@color/colorPrimary"
             android:title="Help" />
 
