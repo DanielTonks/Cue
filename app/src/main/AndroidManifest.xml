@@ -22,7 +22,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".activity.MainActivity" />
+        <activity
+            android:name=".activity.MainActivity"
+            android:launchMode="singleTask" />
         <activity
             android:name=".activity.NFCDetectedActivity"
             android:launchMode="singleTask" />
@@ -51,7 +53,18 @@
             </intent-filter>
         </activity>
 
-        <activity android:name=".activity.ReserveTableActivity" />
+        <activity
+            android:name=".activity.ReserveTableActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppThemeActionBar"
+            android:windowSoftInputMode="adjustResize">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+
         <activity android:name=".activity.loginFlow.LoginChooserActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

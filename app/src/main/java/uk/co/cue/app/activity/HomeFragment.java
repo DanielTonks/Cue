@@ -1,10 +1,12 @@
 package uk.co.cue.app.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 
 import uk.co.cue.app.R;
 
@@ -15,6 +17,17 @@ public class HomeFragment extends Fragment {
                              Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
+
+
+        Button requestTable = fragment.findViewById(R.id.btn_request);
+        requestTable.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getActivity().getApplicationContext(), ReserveTableActivity.class);
+                startActivity(i);
+            }
+        });
+
         return fragment;
     }
 }

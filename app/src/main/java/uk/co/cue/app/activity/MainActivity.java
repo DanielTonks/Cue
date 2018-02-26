@@ -155,12 +155,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void updateUI(Intent data) {
-        standard.setVisibility(View.GONE);
-        inQueue.setVisibility(View.VISIBLE);
+        showHomeFragment(new HomeFragment());
+//        standard.setVisibility(View.GONE);
+//        inQueue.setVisibility(View.VISIBLE);
 
         String pub = data.getStringExtra("pubID");
         String name = data.getStringExtra("userName");
-        queueDescription.setText(name + "; you're now in the queue at " + pub + ", at position");
+        System.out.println(name + "; you're now in the queue at " + pub + ", at position");
     }
 
     @Override

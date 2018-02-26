@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.Toast;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.MainActivity;
@@ -23,11 +24,18 @@ public class LoginChooserActivity extends AppCompatActivity {
     private SharedPreferences sharedPref;
     private CueApp app;
 
+    //BUG: Sometimes the user can click 'Up' and it will return to this activity. For now this can be caught here
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        app = (CueApp) getApplication();
+    protected void onResume() {
+        Toast.makeText(this, "the login bug happened again", Toast.LENGTH_SHORT).show();
+        checkForLogin();
+        super.onResume();
+    }
 
+    /**
+     * Method that checks if the user is logged in, and if so skips this UI.
+     */
+    private void checkForLogin() {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
         String username = null;
         final boolean loggedIn = sharedPref.getBoolean("logged_in", false);
@@ -36,10 +44,20 @@ public class LoginChooserActivity extends AppCompatActivity {
             username = sharedPref.getString("username", null);
             System.out.println(username + " just logged in");
             app.setLoggedInUser(0, username);
-            Intent i = new Intent(getApplicationContext(), MainActivity.class);
-            i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY); // don't remember that we visited this activity first
+            Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
             startActivity(i);
+            finish();
         }
+    }
+
+    @Override
+    protected void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        app = (CueApp) getApplication();
+
+        System.out.println("and we're back here again");
+
+        checkForLogin();
 
         //Otherwise we show the login chooser, so the user can login or register.
         setContentView(R.layout.activity_login_chooser);
@@ -49,7 +67,6 @@ public class LoginChooserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), LoginActivity.class);
                 startActivityForResult(intent, LOGIN);
-                //finish();
             }
         });
 
@@ -58,7 +75,6 @@ public class LoginChooserActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(getApplicationContext(), RegisterActivity.class);
                 startActivityForResult(intent, REGISTER);
-                //finish();
             }
         });
     }
@@ -84,7 +100,7 @@ public class LoginChooserActivity extends AppCompatActivity {
 
         // Commit the edits!
         editor.apply();
-        Intent i = new Intent(getApplicationContext(), MainActivity.class);
+        Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
         startActivity(i);
         finish(); // make sure you cannot return to this activity
 

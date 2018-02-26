@@ -8,11 +8,9 @@ import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -34,41 +32,11 @@ public class ReserveTableActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_reserve_table);
         this.app = (CueApp) getApplication();
+        setTitle("Reserve a game");
+        currentTimeSelected = findViewById(R.id.currentTimeSelected);
 
-        nameLayout = (RelativeLayout) findViewById(R.id.info_card1);
-        timeLayout = (RelativeLayout) findViewById(R.id.info_card2);
 
-        currentTimeSelected = timeLayout.findViewById(R.id.currentTimeSelected);
-
-        nameLayout.findViewById(R.id.btn_submit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                EditText name = nameLayout.findViewById(R.id.edit_name);
-
-                playerName = name.getText().toString();
-
-                if (playerName.trim().equals("")) {
-                    Toast.makeText(getApplicationContext(), "Name cannot be empty!", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-                nameLayout.setVisibility(View.GONE);
-                timeLayout.setVisibility(View.VISIBLE);
-
-                // Check if no view has focus:
-                app.closeKeyboard(getCurrentFocus());
-
-            }
-        });
-
-        nameLayout.findViewById(R.id.btn_exit).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(intent);
-            }
-        });
-
-        timeLayout.findViewById(R.id.btn_now).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_now).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 currentTimeSelected.setText("Now");
@@ -77,7 +45,7 @@ public class ReserveTableActivity extends AppCompatActivity {
             }
         });
 
-        timeLayout.findViewById(R.id.btn_time).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_time).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 DialogFragment newFragment = new TimePickerFragment();
@@ -85,20 +53,11 @@ public class ReserveTableActivity extends AppCompatActivity {
             }
         });
 
-        timeLayout.findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                timeLayout.setVisibility(View.GONE);
-                nameLayout.setVisibility(View.VISIBLE);
-            }
-        });
-
-        timeLayout.findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println(timeUNIX);
                 Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
-
                 startActivityForResult(i, 0);
             }
         });

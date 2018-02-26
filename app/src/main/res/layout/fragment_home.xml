@@ -14,23 +14,16 @@
         android:visibility="visible">
 
 
-        <TextView
-            android:id="@+id/textView2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_above="@id/button"
-            android:layout_centerHorizontal="true"
-            android:fontFamily="@font/raleway_light"
-            android:text="Tap a Cue enabled NFC tag to join a queue"
-            android:textColor="@color/white" />
-
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btn_request"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="Button" />
+            android:background="@color/white"
+            android:padding="8dp"
+            android:text="Reserve a Table"
+            android:textColor="@color/colorPrimary" />
 
     </RelativeLayout>
 
