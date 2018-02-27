@@ -23,6 +23,18 @@
             android:iconTint="@color/colorPrimary"
             android:title="Past Games" />
         <item
+            android:id="@+id/add_machine"
+            android:iconTint="@color/colorPrimary"
+            android:title="Add a new machine"
+            android:icon="@mipmap/history"
+            android:visible="false"/>
+        <item
+            android:id="@+id/edit_machine"
+            android:iconTint="@color/colorPrimary"
+            android:title="Edit a machine"
+            android:icon="@mipmap/history"
+            android:visible="false"/>
+        <item
             android:id="@+id/help"
             android:icon="@mipmap/help"
             android:iconTint="@color/colorPrimary"
