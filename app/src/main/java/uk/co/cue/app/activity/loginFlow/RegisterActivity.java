@@ -12,6 +12,8 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -99,11 +101,12 @@ public class RegisterActivity extends AppCompatActivity implements VolleyRequest
     }
 
     @Override
-    public void requestFinished(String response, String url) {
+    public void requestFinished(JSONObject response, String url) {
         try {
+            int userID = response.getInt("user_id");
             Intent returnIntent = new Intent();
             returnIntent.putExtra("username", username);
-            returnIntent.putExtra("id", 0);
+            returnIntent.putExtra("user_id", userID);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         } catch (Exception err) {

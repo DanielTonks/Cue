@@ -6,11 +6,14 @@ package uk.co.cue.app.util;
 
 import android.content.Context;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.Volley;
+
+import org.json.JSONObject;
 
 import java.util.Map;
 
@@ -39,10 +42,16 @@ public class VolleyRequestFactory {
         final Map<String, String> reqParams = params;
         final String given_url = url;
 
-        StringRequest req = new StringRequest(method, url,
-                new Response.Listener<String>() {
+
+        JSONObject jsonObj = null;
+        if (method == Request.Method.POST) {
+            jsonObj = new JSONObject(params);
+        }
+
+        JsonObjectRequest req = new JsonObjectRequest(method, url, jsonObj,
+                new Response.Listener<JSONObject>() {
                     @Override
-                    public void onResponse(String response) {
+                    public void onResponse(JSONObject response) {
                         callback.requestFinished(response, given_url);
                     }
                 },
@@ -57,18 +66,13 @@ public class VolleyRequestFactory {
                     }
                 }
 
-        ) {
-            @Override
-            protected Map<String, String> getParams() {
-                return reqParams;
-            }
-        };
+        );
         requestQueue.add(req);
     }
 
     public interface VolleyRequest {
 
-        void requestFinished(String response, String url);
+        void requestFinished(JSONObject response, String url);
 
         void requestFailed(int statusCode);
     }

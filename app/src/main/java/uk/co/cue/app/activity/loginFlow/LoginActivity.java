@@ -16,6 +16,9 @@ import android.widget.Toast;
 
 import com.android.volley.Request;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -35,6 +38,7 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
 
     private CueApp app;
     private String username;
+    private int userID;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -87,15 +91,35 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
     }
 
     @Override
-    public void requestFinished(String response, String url) {
+    public void requestFinished(JSONObject response, String url) {
         try {
-            if (response.equals("OK")) {
+            if (url.equals(app.POST_login)) {
+                System.out.println(response.toString());
+                Map<String, String> params = new HashMap<String, String>();
+                this.userID = response.getInt("user_id");
+                params.put("user_id", String.valueOf(userID));
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("username", username);
-                returnIntent.putExtra("id", 0);
+                returnIntent.putExtra("user_id", userID);
+                returnIntent.putExtra("isBusiness", false);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
+                // vrf.doRequest(app.POST_isBusiness,params,Request.Method.POST);
+            } else if (url.equals(app.POST_isBusiness)) {
+                JSONArray arrayOfVenues = response.getJSONArray("venues");
+                boolean isBusiness = false;
+                if (arrayOfVenues.length() != 0) {
+                    isBusiness = true;
+                }
+//                Intent returnIntent = new Intent();
+//                returnIntent.putExtra("username", username);
+//                returnIntent.putExtra("user_id", userID);
+//                returnIntent.putExtra("isBusiness",isBusiness);
+//                setResult(Activity.RESULT_OK, returnIntent);
+//                finish();
             }
+
+
         } catch (Exception err) {
         }
 

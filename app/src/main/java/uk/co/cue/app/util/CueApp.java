@@ -19,10 +19,12 @@ public class CueApp extends Application {
     //ENDPOINTS
     public final static String POST_login = "https://idk-cue.club/user/login";
     public final static String POST_register = "https://idk-cue.club/user/register";
+    public final static String POST_isBusiness = "https://idk-cue.club/user/admin";
 
     private int loggedInUserId;
     private String username;
     private String firebaseToken;
+    private boolean isBusiness;
 
 
     public CueApp() {
@@ -42,9 +44,15 @@ public class CueApp extends Application {
         return loggedInUserId != -1;
     }
 
-    public void setLoggedInUser(int id, String username) {
+    public void setLoggedInUser(int id, String username, boolean isBusiness) {
         this.loggedInUserId = id;
         this.username = username;
+        this.isBusiness = isBusiness;
+
+    }
+
+    public boolean isBusiness() {
+        return isBusiness;
     }
 
     public String getFirebaseToken() {

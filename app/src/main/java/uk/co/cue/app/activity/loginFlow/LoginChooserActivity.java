@@ -41,7 +41,7 @@ public class LoginChooserActivity extends AppCompatActivity {
         if (loggedIn) { //If the user is logged in then skip this and go to the main page
             username = sharedPref.getString("username", null);
             System.out.println(username + " just logged in");
-            app.setLoggedInUser(0, username);
+            app.setLoggedInUser(0, username, false);
             Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
             startActivity(i);
             finish();
@@ -85,9 +85,9 @@ public class LoginChooserActivity extends AppCompatActivity {
         }
 
         if (requestCode == LOGIN) {
-            app.setLoggedInUser(0, data.getStringExtra("username"));
+            app.setLoggedInUser(data.getIntExtra("user_id", 0), data.getStringExtra("username"), data.getBooleanExtra("isBusiness", false));
         } else if (requestCode == REGISTER) {
-            app.setLoggedInUser(0, data.getStringExtra("username"));
+            app.setLoggedInUser(0, data.getStringExtra("username"), data.getBooleanExtra("isBusiness", false));
         }
 
         SharedPreferences.Editor editor = sharedPref.edit();
