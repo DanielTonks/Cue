@@ -107,8 +107,8 @@ public class SetupTagActivity extends AppCompatActivity {
         dialog.show();
 
         Task<ShortDynamicLink> task = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse(""))//implement
-                .setDynamicLinkDomain("")  //implement
+                .setLink(Uri.parse("idk-cue.club/"))//implement
+                .setDynamicLinkDomain("cjzd4.app.goo.gl")  //implement
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
                     .setMinimumVersion(21)
                     .build())
