@@ -90,7 +90,6 @@ public class MainActivity extends AppCompatActivity {
             updateUI(i);
         }
 
-
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
         Menu m = navigationView.getMenu();
@@ -106,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         m.findItem(R.id.add_machine).setVisible(visible);
         m.findItem(R.id.edit_machine).setVisible(visible);
 
-
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
                     @Override
@@ -114,8 +112,6 @@ public class MainActivity extends AppCompatActivity {
                         // close drawer when item is tapped
                         drawerLayout.closeDrawers();
                         menuItem.setChecked(false);
-
-                        System.out.println(menuItem.getTitle());
 
                         switch (menuItem.getTitle().toString()) {
                             case "Help":
@@ -126,10 +122,16 @@ public class MainActivity extends AppCompatActivity {
                                 showHomeFragment(new HomeFragment());
                                 break;
 
+                            case "Add machine":
+                                Intent i = new Intent(MainActivity.this, SetupTagActivity.class);
+                                startActivity(i);
+                                break;
 
                             case "Log out":
                                 logout();
                                 break;
+
+
                         }
 
 

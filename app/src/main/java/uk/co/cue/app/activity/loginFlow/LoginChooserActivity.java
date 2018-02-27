@@ -40,8 +40,9 @@ public class LoginChooserActivity extends AppCompatActivity {
 
         if (loggedIn) { //If the user is logged in then skip this and go to the main page
             username = sharedPref.getString("username", null);
+            boolean isBusiness = sharedPref.getBoolean("isBusiness", false);
             System.out.println(username + " just logged in");
-            app.setLoggedInUser(0, username, false);
+            app.setLoggedInUser(0, username, isBusiness);
             Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
             startActivity(i);
             finish();
@@ -93,6 +94,7 @@ public class LoginChooserActivity extends AppCompatActivity {
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("logged_in", true);
         editor.putString("username", data.getStringExtra("username"));
+        editor.putBoolean("isBusiness", data.getBooleanExtra("isBusiness", false));
 
 
         // Commit the edits!

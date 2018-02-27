@@ -95,14 +95,18 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
         try {
             if (url.equals(app.POST_login)) {
                 System.out.println(response.toString());
+
+                JSONObject user = (JSONObject) response.getJSONArray("user").get(0);
+                this.userID = user.getInt("user_id");
+
                 Map<String, String> params = new HashMap<String, String>();
-                this.userID = response.getInt("user_id");
                 params.put("user_id", String.valueOf(userID));
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("username", username);
                 returnIntent.putExtra("user_id", userID);
                 returnIntent.putExtra("isBusiness", true);
                 setResult(Activity.RESULT_OK, returnIntent);
+                System.out.println("Here");
                 finish();
                 // vrf.doRequest(app.POST_isBusiness,params,Request.Method.POST);
             } else if (url.equals(app.POST_isBusiness)) {
@@ -118,9 +122,8 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
 //                setResult(Activity.RESULT_OK, returnIntent);
 //                finish();
             }
-
-
         } catch (Exception err) {
+            System.out.println(err.getMessage());
         }
 
     }

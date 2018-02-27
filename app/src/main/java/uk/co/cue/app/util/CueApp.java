@@ -2,7 +2,6 @@ package uk.co.cue.app.util;
 
 import android.app.Application;
 import android.content.Context;
-import android.util.Log;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 
@@ -26,8 +25,8 @@ public class CueApp extends Application {
     private String firebaseToken;
     private boolean isBusiness;
 
-
     public CueApp() {
+
     }
 
     @Override
@@ -37,7 +36,7 @@ public class CueApp extends Application {
         loggedInUserId = -1;
 
         firebaseToken = FirebaseInstanceId.getInstance().getToken();
-        Log.i("CueApp.java", firebaseToken);
+        //Log.i("CueApp.java", firebaseToken);
     }
 
     public boolean isUserLoggedIn() {

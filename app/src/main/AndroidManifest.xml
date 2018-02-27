@@ -112,6 +112,17 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.loginFlow.LoginChooserActivity" />
         </activity>
+        <activity
+            android:name=".activity.SetupTagActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppThemeActionBar">
+
+            <!-- Parent activity meta-data to support 4.0 and lower -->
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".activity.MainActivity" />
+        </activity>
+
         <activity android:name=".activity.WriteTagActivity"></activity>
     </application>
 
