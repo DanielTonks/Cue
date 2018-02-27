@@ -15,7 +15,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.VolleyError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -103,13 +102,16 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
     }
 
     @Override
-    public void requestFailed(VolleyError error) {
-        if (error.networkResponse.statusCode == 401) {
+    public void requestFailed(int statusCode) {
+        if (statusCode == 401) {
             pending.setVisibility(View.GONE);
             fields.setVisibility(View.VISIBLE);
             passwordField.setText("");
-
             Toast.makeText(getApplicationContext(), "Incorrect login details", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Cannot connect to the server", Toast.LENGTH_SHORT).show();
+            pending.setVisibility(View.GONE);
+            fields.setVisibility(View.VISIBLE);
         }
     }
 }

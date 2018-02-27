@@ -49,7 +49,11 @@ public class VolleyRequestFactory {
                 new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
-                        callback.requestFailed(error);
+                        if (error.networkResponse == null) {
+                            callback.requestFailed(503);
+                        } else {
+                            callback.requestFailed(error.networkResponse.statusCode);
+                        }
                     }
                 }
 
@@ -66,7 +70,7 @@ public class VolleyRequestFactory {
 
         void requestFinished(String response, String url);
 
-        void requestFailed(VolleyError error);
+        void requestFailed(int statusCode);
     }
 
 

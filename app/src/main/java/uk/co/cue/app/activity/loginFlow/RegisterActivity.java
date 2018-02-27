@@ -11,7 +11,6 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.VolleyError;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -112,8 +111,8 @@ public class RegisterActivity extends AppCompatActivity implements VolleyRequest
     }
 
     @Override
-    public void requestFailed(VolleyError error) {
-        if (error.networkResponse.statusCode == 500) {
+    public void requestFailed(int statusCode) {
+        if (statusCode == 401) {
             pending.setVisibility(View.GONE);
             fields.setVisibility(View.VISIBLE);
             usernameField.setText("");
@@ -121,6 +120,10 @@ public class RegisterActivity extends AppCompatActivity implements VolleyRequest
             passwordField.setText("");
 
             Toast.makeText(getApplicationContext(), "Username already exists", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(getApplicationContext(), "Cannot connect to the server", Toast.LENGTH_SHORT).show();
+            pending.setVisibility(View.GONE);
+            fields.setVisibility(View.VISIBLE);
         }
     }
 }

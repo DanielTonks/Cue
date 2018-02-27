@@ -7,7 +7,6 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Toast;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.MainActivity;
@@ -27,7 +26,6 @@ public class LoginChooserActivity extends AppCompatActivity {
     //BUG: Sometimes the user can click 'Up' and it will return to this activity. For now this can be caught here
     @Override
     protected void onResume() {
-        Toast.makeText(this, "the login bug happened again", Toast.LENGTH_SHORT).show();
         checkForLogin();
         super.onResume();
     }
@@ -82,16 +80,14 @@ public class LoginChooserActivity extends AppCompatActivity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_CANCELED) {
+            return;
+        }
+
         if (requestCode == LOGIN) {
-            if (resultCode == RESULT_OK) {
-                System.out.println("login");
-                app.setLoggedInUser(0, data.getStringExtra("username"));
-            }
+            app.setLoggedInUser(0, data.getStringExtra("username"));
         } else if (requestCode == REGISTER) {
-            if (resultCode == RESULT_OK) {
-                System.out.println("register");
-                app.setLoggedInUser(0, data.getStringExtra("username"));
-            }
+            app.setLoggedInUser(0, data.getStringExtra("username"));
         }
 
         SharedPreferences.Editor editor = sharedPref.edit();
