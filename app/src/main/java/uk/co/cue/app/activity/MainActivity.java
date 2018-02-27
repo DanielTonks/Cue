@@ -12,6 +12,7 @@ import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -92,10 +93,19 @@ public class MainActivity extends AppCompatActivity {
 
         drawerLayout = findViewById(R.id.drawer_layout);
         navigationView = findViewById(R.id.nav_view);
+        Menu m = navigationView.getMenu();
 
         //TextView username = navigationView.findViewById(R.id.drawer_username);
         TextView username = navigationView.getHeaderView(0).findViewById(R.id.drawer_username);
         username.setText(app.getUsername());
+
+        boolean visible = app.isBusiness();
+        m.findItem(R.id.local_venues).setVisible(!visible);
+        m.findItem(R.id.favourite_venues).setVisible(!visible);
+        m.findItem(R.id.past_games).setVisible(!visible);
+        m.findItem(R.id.add_machine).setVisible(visible);
+        m.findItem(R.id.edit_machine).setVisible(visible);
+
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {

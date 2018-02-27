@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
                 Intent returnIntent = new Intent();
                 returnIntent.putExtra("username", username);
                 returnIntent.putExtra("user_id", userID);
-                returnIntent.putExtra("isBusiness", false);
+                returnIntent.putExtra("isBusiness", true);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
                 // vrf.doRequest(app.POST_isBusiness,params,Request.Method.POST);

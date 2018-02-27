@@ -24,15 +24,15 @@
             android:title="Past Games" />
         <item
             android:id="@+id/add_machine"
+            android:icon="@mipmap/add"
             android:iconTint="@color/colorPrimary"
-            android:title="Add a new machine"
-            android:icon="@mipmap/history"
+            android:title="Add new machine"
             android:visible="false"/>
         <item
             android:id="@+id/edit_machine"
+            android:icon="@mipmap/edit"
             android:iconTint="@color/colorPrimary"
-            android:title="Edit a machine"
-            android:icon="@mipmap/history"
+            android:title="Edit machine"
             android:visible="false"/>
         <item
             android:id="@+id/help"
