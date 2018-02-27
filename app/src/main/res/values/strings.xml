@@ -11,9 +11,25 @@
     <string name="error_invalid_password">This password is too short</string>
     <string name="error_incorrect_password">This password is incorrect</string>
     <string name="error_field_required">This field is required</string>
+    <string name="write_nfc">Tap your phone to an NFC tag</string>
     <string name="permission_rationale">"Contacts permissions are needed for providing email
         completions."
     </string>
 
 
+    <string name="action_settings">Settings</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="setup_pub">Enter your pub name:</string>
+    <string name="machine_type">Select your machine type:</string>
+    <string name="setup_button">Setup</string>
+    <string name="machine_num">Enter the number of machines:</string>
+    <string name="price_per_game">Enter the price per game:</string>
+    <string-array name="machine_type_array">
+        <item>Pool</item>
+        <item>Snooker</item>
+        <item>Foosball</item>
+        <item>Arcade</item>
+    </string-array>
 </resources>

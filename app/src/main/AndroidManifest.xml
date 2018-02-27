@@ -112,6 +112,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.loginFlow.LoginChooserActivity" />
         </activity>
+        <activity android:name=".activity.WriteTagActivity"></activity>
     </application>
 
 </manifest>
