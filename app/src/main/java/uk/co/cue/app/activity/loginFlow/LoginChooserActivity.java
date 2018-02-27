@@ -54,6 +54,7 @@ public class LoginChooserActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         app = (CueApp) getApplication();
+        this.setTheme(R.style.AppTheme);
 
         System.out.println("and we're back here again");
 
