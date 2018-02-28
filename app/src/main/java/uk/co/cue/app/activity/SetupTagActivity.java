@@ -1,5 +1,6 @@
 package uk.co.cue.app.activity;
 
+import android.app.Activity;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -9,6 +10,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -22,6 +24,8 @@ import com.google.firebase.dynamiclinks.DynamicLink;
 import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
 import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Map;
 
@@ -30,6 +34,7 @@ import uk.co.cue.app.R;
 public class SetupTagActivity extends AppCompatActivity {
 
     private String venue_id = "1"; //dummy value, will need to be changed
+    private ProgressDialog dialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +45,7 @@ public class SetupTagActivity extends AppCompatActivity {
 
 
     public void onClickSubmitSetup(View view) {
-        final ProgressDialog dialog = new ProgressDialog(this);
+        dialog = new ProgressDialog(this);
         dialog.setMessage("Creating your link...");
         dialog.setTitle("Machine creation");
         dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
@@ -48,6 +53,10 @@ public class SetupTagActivity extends AppCompatActivity {
         dialog.setCancelable(false);
 
         sendPostRequest();
+    }
+
+    public Activity getActivity() {
+        return this;
     }
 
     public void sendPostRequest() {
@@ -88,7 +97,6 @@ public class SetupTagActivity extends AppCompatActivity {
                 Map<String, String> parameters = new HashMap<String, String>();
                 parameters.put("venue_id", venue_id); //dummy value; will need to be changed later
                 parameters.put("category", spinner_value);
-                parameters.put("total", num_machines);
                 parameters.put("base_price", "0.50");
 
 
@@ -99,15 +107,9 @@ public class SetupTagActivity extends AppCompatActivity {
     }
 
     public void generateLink(String server_response) {
-        final ProgressDialog dialog = new ProgressDialog(this);
-        dialog.setMessage("Creating NFC Content...");
-        dialog.setTitle("NFC content");
-        dialog.setProgressStyle(ProgressDialog.STYLE_SPINNER);
-        dialog.setCancelable(false);
-        dialog.show();
 
         Task<ShortDynamicLink> task = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("idk-cue.club/"))//implement
+                .setLink(Uri.parse("https://idk-cue.club/"))//implement
                 .setDynamicLinkDomain("cjzd4.app.goo.gl")  //implement
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
                     .setMinimumVersion(21)
@@ -119,10 +121,15 @@ public class SetupTagActivity extends AppCompatActivity {
                         if(t.isSuccessful()) {
                             Uri shortLink = t.getResult().getShortLink();
 
+                            Toast.makeText(getActivity(), "Link generated!",
+                                    Toast.LENGTH_LONG).show();
+
                             String link = t.toString();
+                            dialog.cancel();
                             Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
                             NFCIntent.putExtra("url", link);
                             startActivity(NFCIntent);
+
                         }
                     }
                 });

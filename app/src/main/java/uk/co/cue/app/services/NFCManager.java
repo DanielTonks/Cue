@@ -1,6 +1,7 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.services;
 
 import android.app.Activity;
+import android.net.Uri;
 import android.nfc.NfcAdapter;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -55,8 +56,8 @@ public class NFCManager {
         }
     }
 
-    public NdefMessage createUriMessage(String content, String type) {
-        NdefRecord record = NdefRecord.createUri(type + content);
+    public NdefMessage createUriMessage(String content) {
+        NdefRecord record = NdefRecord.createUri(content);
         NdefMessage msg = new NdefMessage(new NdefRecord[]{record});
         return msg;
     }

@@ -5,18 +5,17 @@ import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.nfc.NdefMessage;
-import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.services.NFCManager;
 
 public class WriteTagActivity extends AppCompatActivity {
 
@@ -46,13 +45,13 @@ public class WriteTagActivity extends AppCompatActivity {
 
         nfcManager = new NFCManager(this);
 
-        message = nfcManager.createUriMessage(url, "https://");
+        message = nfcManager.createUriMessage(url);
 
-        if(message != null) {
-            dialog = new ProgressDialog(this);
-            dialog.setMessage("Tap an NFC sticker!");
-            dialog.show();
-        }
+//        if(message != null) {
+//            dialog = new ProgressDialog(this);
+//            dialog.setMessage("Tap an NFC sticker!");
+//            dialog.show();
+//        }
     }
 
     @Override
@@ -89,7 +88,7 @@ public class WriteTagActivity extends AppCompatActivity {
         currentTag = intent.getParcelableExtra(NfcAdapter.EXTRA_TAG);
         if(message !=null) {
             nfcManager.writeTag(currentTag, message);
-            dialog.dismiss();
+            //dialog.dismiss();
             txt.setText("Tag written to!");
             spinner.setVisibility(View.GONE);
         }

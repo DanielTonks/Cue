@@ -17,7 +17,7 @@ public class CueApp extends Application {
 
     //ENDPOINTS
     public final static String POST_login = "https://idk-cue.club/user/login";
-    public final static String POST_register = "https://idk-cue.club/user/register";
+    public final static String POST_register = "https://idk-cue.club/user/add";
     public final static String POST_isBusiness = "https://idk-cue.club/user/admin";
 
     private int loggedInUserId;
