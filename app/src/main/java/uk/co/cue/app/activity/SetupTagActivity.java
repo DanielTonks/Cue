@@ -125,15 +125,16 @@ public class SetupTagActivity extends AppCompatActivity {
                                     Toast.LENGTH_LONG).show();
 
                             String link = t.toString();
-                            dialog.cancel();
+
                             Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
                             NFCIntent.putExtra("url", link);
                             startActivity(NFCIntent);
 
+                        } else {
+                            System.out.println(t.getException().getMessage());
                         }
                     }
                 });
-
 
 
     }

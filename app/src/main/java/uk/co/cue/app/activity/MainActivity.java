@@ -18,12 +18,20 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.VolleyRequestFactory;
 
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
 
     private RelativeLayout standard;
     private RelativeLayout inQueue;
@@ -37,18 +45,17 @@ public class MainActivity extends AppCompatActivity {
     private NavigationView navigationView;
     private View topLevelView;
 
+    private VolleyRequestFactory vrf;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         CueApp app = (CueApp) getApplication();
         super.onCreate(savedInstanceState);
 
-        if (!app.isUserLoggedIn()) {
-            //Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
-            //i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY); // Do not add this activity to the backstack, otherwise the user can go back from Login to logged in state.
-            //startActivity(i);
-        } else {
+        if (app.getUser().getSession() != null) {
             setUp();
         }
+        this.vrf = new VolleyRequestFactory(this, getApplicationContext());
     }
 
     private void setUp() {
@@ -96,9 +103,9 @@ public class MainActivity extends AppCompatActivity {
 
         //TextView username = navigationView.findViewById(R.id.drawer_username);
         TextView username = navigationView.getHeaderView(0).findViewById(R.id.drawer_username);
-        username.setText(app.getUsername());
+        username.setText(app.getUser().getUsername());
 
-        boolean visible = app.isBusiness();
+        boolean visible = app.getUser().isBusiness();
         m.findItem(R.id.local_venues).setVisible(!visible);
         m.findItem(R.id.favourite_venues).setVisible(!visible);
         m.findItem(R.id.past_games).setVisible(!visible);
@@ -122,7 +129,7 @@ public class MainActivity extends AppCompatActivity {
                                 showHomeFragment(new HomeFragment());
                                 break;
 
-                            case "Add machine":
+                            case "Add new machine":
                                 Intent i = new Intent(MainActivity.this, SetupTagActivity.class);
                                 startActivity(i);
                                 break;
@@ -130,8 +137,6 @@ public class MainActivity extends AppCompatActivity {
                             case "Log out":
                                 logout();
                                 break;
-
-
                         }
 
 
@@ -142,14 +147,10 @@ public class MainActivity extends AppCompatActivity {
     }
 
     private void logout() {
-        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        SharedPreferences.Editor editor = sharedPref.edit();
-        editor.putBoolean("logged_in", false);
-        editor.putString("username", null);
-        editor.apply();
-        Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
-        startActivity(i);
-        finish();
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("user_id", String.valueOf(app.getUser().getUserid()));
+        params.put("session_cookie", app.getUser().getSession());
+        vrf.doRequest(app.POST_logout, params, Request.Method.POST);
     }
 
     private void showHelpFragment(HelpFragment f) {
@@ -187,7 +188,27 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    @Override
+    public void requestFinished(JSONObject response, String url) {
+        if (url.equals(app.POST_logout)) {
+            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+            SharedPreferences.Editor editor = sharedPref.edit();
+            editor.putBoolean("logged_in", false);
+            editor.putInt("user_id", -1);
+            editor.putString("username", null);
+            editor.putString("session_cookie", null);
+            editor.putBoolean("isBusiness", false);
+            editor.apply();
 
 
+            Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
+            startActivity(i);
+            finish();
+        }
+    }
 
+    @Override
+    public void requestFailed(int statusCode) {
+        System.out.println(statusCode);
+    }
 }
