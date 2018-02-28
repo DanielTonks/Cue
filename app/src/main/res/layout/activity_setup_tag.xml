@@ -136,7 +136,7 @@
                 android:layout_below="@+id/pub_name"
                 android:background="@null"
                 android:hint="Enter"
-                android:inputType="number"
+                android:inputType="numberDecimal"
                 android:maxLines="1"
                 android:paddingBottom="12dp"
                 android:paddingLeft="16dp"
