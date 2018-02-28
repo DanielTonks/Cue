@@ -14,19 +14,36 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
-import uk.co.cue.app.R;
+import org.json.JSONObject;
 
-public class NFCDetectedActivity extends AppCompatActivity {
+import uk.co.cue.app.R;
+import uk.co.cue.app.util.VolleyRequestFactory;
+
+public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
 
     NfcAdapter mAdapter;
     PendingIntent mPendingIntent;
     IntentFilter mFilters[];
     String mTechLists[][];
     TextView processingText;
+    private VolleyRequestFactory vrf;
+
+    @Override
+    public void requestFinished(JSONObject response, String url) {
+
+    }
+
+    @Override
+    public void requestFailed(int statusCode) {
+
+    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        this.vrf = new VolleyRequestFactory(this, getApplicationContext());
+
 
     }
 
@@ -62,9 +79,6 @@ public class NFCDetectedActivity extends AppCompatActivity {
     }
 
     public void getNdefMessages(Intent intent) {
-        System.out.println("Getting messages");
-
-
         Parcelable[] rawMessages =
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         if (rawMessages != null) {

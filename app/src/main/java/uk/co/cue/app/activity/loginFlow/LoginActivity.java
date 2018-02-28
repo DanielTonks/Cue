@@ -24,6 +24,7 @@ import java.util.Map;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.User;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
 public class LoginActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
@@ -85,7 +86,7 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
         Map<String, String> params = new HashMap<String, String>();
         params.put("username", username);
         params.put("password", password);
-        params.put("device_id", app.getFirebaseToken());
+        params.put("device_id", app.getUser().getFirebaseToken());
 
         vrf.doRequest(app.POST_login, params, Request.Method.POST);
     }
@@ -94,33 +95,25 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
     public void requestFinished(JSONObject response, String url) {
         try {
             if (url.equals(app.POST_login)) {
-                System.out.println(response.toString());
 
-                JSONObject user = (JSONObject) response.getJSONArray("user").get(0);
-                this.userID = user.getInt("user_id");
+                System.out.println(response.toString());
+                int userID = response.getJSONArray("User").getJSONObject(0).getInt("user_id");
+                String session = response.getJSONArray("User").getJSONObject(0).getString("session_cookie");
 
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("user_id", String.valueOf(userID));
-                Intent returnIntent = new Intent();
-                returnIntent.putExtra("username", username);
-                returnIntent.putExtra("user_id", userID);
-                returnIntent.putExtra("isBusiness", true);
-                setResult(Activity.RESULT_OK, returnIntent);
-                System.out.println("Here");
-                finish();
-                // vrf.doRequest(app.POST_isBusiness,params,Request.Method.POST);
-            } else if (url.equals(app.POST_isBusiness)) {
-                JSONArray arrayOfVenues = response.getJSONArray("venues");
+                JSONArray arrayOfVenues = response.getJSONArray("Admin");
                 boolean isBusiness = false;
                 if (arrayOfVenues.length() != 0) {
                     isBusiness = true;
                 }
-//                Intent returnIntent = new Intent();
-//                returnIntent.putExtra("username", username);
-//                returnIntent.putExtra("user_id", userID);
-//                returnIntent.putExtra("isBusiness",isBusiness);
-//                setResult(Activity.RESULT_OK, returnIntent);
-//                finish();
+
+                User usr = new User(userID, username, session, isBusiness, null);
+                app.setUser(usr);
+
+                Intent returnIntent = new Intent();
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
             }
         } catch (Exception err) {
             System.out.println(err.getMessage());

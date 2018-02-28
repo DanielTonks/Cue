@@ -19,6 +19,7 @@ import java.util.Map;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.User;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
 public class RegisterActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
@@ -95,7 +96,7 @@ public class RegisterActivity extends AppCompatActivity implements VolleyRequest
         params.put("username", username);
         params.put("password", p1);
         params.put("name", fName + " " + sName);
-        params.put("device_id", app.getFirebaseToken());
+        params.put("device_id", app.getUser().getFirebaseToken());
 
         vrf.doRequest(app.POST_register, params, Request.Method.POST);
     }
@@ -103,13 +104,17 @@ public class RegisterActivity extends AppCompatActivity implements VolleyRequest
     @Override
     public void requestFinished(JSONObject response, String url) {
         try {
-            int userID = response.getInt("user_id");
+            int userID = response.getJSONArray("User").getJSONObject(0).getInt("user_id");
+            String sessionID = response.getJSONArray("User").getJSONObject(0).getString("session_cookie");
+
+            User newUsr = new User(userID, username, sessionID, false, null);
+            app.setUser(newUsr);
+
             Intent returnIntent = new Intent();
-            returnIntent.putExtra("username", username);
-            returnIntent.putExtra("user_id", userID);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         } catch (Exception err) {
+
         }
     }
 

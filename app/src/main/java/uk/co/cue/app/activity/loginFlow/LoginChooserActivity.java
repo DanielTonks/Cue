@@ -11,6 +11,7 @@ import android.view.View;
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.MainActivity;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.User;
 
 /**
  * This is the first activity in the app.
@@ -35,14 +36,16 @@ public class LoginChooserActivity extends AppCompatActivity {
      */
     private void checkForLogin() {
         sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-        String username = null;
         final boolean loggedIn = sharedPref.getBoolean("logged_in", false);
 
         if (loggedIn) { //If the user is logged in then skip this and go to the main page
-            username = sharedPref.getString("username", null);
+            int userId = sharedPref.getInt("user_id", 0);
+            String username = sharedPref.getString("username", null);
             boolean isBusiness = sharedPref.getBoolean("isBusiness", false);
-            System.out.println(username + " just logged in");
-            app.setLoggedInUser(0, username, isBusiness);
+            String session = sharedPref.getString("session_cookie", null);
+
+            User newUsr = new User(userId, username, session, isBusiness, null);
+            app.setUser(newUsr);
             Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
             startActivity(i);
             finish();
@@ -85,22 +88,20 @@ public class LoginChooserActivity extends AppCompatActivity {
             return;
         }
 
-        if (requestCode == LOGIN) {
-            app.setLoggedInUser(data.getIntExtra("user_id", 0), data.getStringExtra("username"), data.getBooleanExtra("isBusiness", false));
-        } else if (requestCode == REGISTER) {
-            app.setLoggedInUser(0, data.getStringExtra("username"), data.getBooleanExtra("isBusiness", false));
-        }
+        User u = app.getUser();
 
         SharedPreferences.Editor editor = sharedPref.edit();
         editor.putBoolean("logged_in", true);
-        editor.putString("username", data.getStringExtra("username"));
-        editor.putBoolean("isBusiness", data.getBooleanExtra("isBusiness", false));
-
+        editor.putInt("user_id", u.getUserid());
+        editor.putString("username", u.getUsername());
+        editor.putString("session_cookie", u.getSession());
+        editor.putBoolean("isBusiness", u.isBusiness());
 
         // Commit the edits!
         editor.apply();
         Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
         startActivity(i);
+
         finish(); // make sure you cannot return to this activity
 
     }

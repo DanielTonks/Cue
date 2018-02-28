@@ -17,13 +17,13 @@ public class CueApp extends Application {
 
     //ENDPOINTS
     public final static String POST_login = "https://idk-cue.club/user/login";
-    public final static String POST_register = "https://idk-cue.club/user/register";
-    public final static String POST_isBusiness = "https://idk-cue.club/user/admin";
+    public final static String POST_logout = "https://idk-cue.club/user/logout";
+    public final static String POST_register = "https://idk-cue.club/user/add";
+    public final static String GET_MACHINES = "https://idk-cue.club/machines/all";
+    public final static String POST_add_queue = "https://idk-cue.club/queue/add";
+    public final static String POST_edit_queue = "https://idk-cue.club/queue/edit";
 
-    private int loggedInUserId;
-    private String username;
-    private String firebaseToken;
-    private boolean isBusiness;
+    private User user;
 
     public CueApp() {
 
@@ -32,30 +32,18 @@ public class CueApp extends Application {
     @Override
     public void onCreate() {
         super.onCreate();
+        String firebaseToken = FirebaseInstanceId.getInstance().getToken();
 
-        loggedInUserId = -1;
-
-        firebaseToken = FirebaseInstanceId.getInstance().getToken();
-        //Log.i("CueApp.java", firebaseToken);
+        user = new User(firebaseToken); // if this is null then we can update it with its actual value later
     }
 
-    public boolean isUserLoggedIn() {
-        return loggedInUserId != -1;
+    public User getUser() {
+        return user;
     }
 
-    public void setLoggedInUser(int id, String username, boolean isBusiness) {
-        this.loggedInUserId = id;
-        this.username = username;
-        this.isBusiness = isBusiness;
-
-    }
-
-    public boolean isBusiness() {
-        return isBusiness;
-    }
-
-    public String getFirebaseToken() {
-        return firebaseToken;
+    public void setUser(User newUser) {
+        System.out.println("Setting new user: " + newUser.toString());
+        this.user.updateUser(newUser); // update the user so we don't overwrite their firebase token.
     }
 
     public void closeKeyboard(View view) {
@@ -66,11 +54,4 @@ public class CueApp extends Application {
         }
     }
 
-    public String getUsername() {
-        return username;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
 }

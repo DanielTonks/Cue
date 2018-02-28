@@ -107,7 +107,7 @@ public class SetupTagActivity extends AppCompatActivity {
         dialog.show();
 
         Task<ShortDynamicLink> task = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse("idk-cue.club/"))//implement
+                .setLink(Uri.parse("http://idk-cue.club"))//implement
                 .setDynamicLinkDomain("cjzd4.app.goo.gl")  //implement
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
                     .setMinimumVersion(21)
@@ -117,16 +117,18 @@ public class SetupTagActivity extends AppCompatActivity {
                     @Override
                     public void onComplete(@NonNull Task<ShortDynamicLink> t) {
                         if(t.isSuccessful()) {
+                            dialog.cancel();
                             Uri shortLink = t.getResult().getShortLink();
 
                             String link = t.toString();
                             Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
                             NFCIntent.putExtra("url", link);
                             startActivity(NFCIntent);
+                        } else {
+                            System.out.println(t.getException().getMessage());
                         }
                     }
                 });
-
 
 
     }
