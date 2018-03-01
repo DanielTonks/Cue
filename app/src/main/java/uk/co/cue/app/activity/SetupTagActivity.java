@@ -92,7 +92,7 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
                 .setLink(Uri.parse(url_with_params))//implement
                 .setDynamicLinkDomain("cjzd4.app.goo.gl")  //implement
                 .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
-                    .setMinimumVersion(21)
+                    .setMinimumVersion(1)
                     .build())
                 .buildShortDynamicLink()
                 .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
@@ -104,7 +104,7 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
                             Toast.makeText(getApplicationContext(), "Link generated!",
                                     Toast.LENGTH_LONG).show();
 
-                            String link = t.toString();
+                            String link = shortLink.toString();
 
                             Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
                             NFCIntent.putExtra("url", link);

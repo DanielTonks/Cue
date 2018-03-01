@@ -45,10 +45,10 @@
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data
-                    android:host="cue.co.uk"
+                    android:host="idk-cue.club"
                     android:scheme="https" />
                 <data
-                    android:host="cue.co.uk"
+                    android:host="idk-cue.club"
                     android:scheme="http" />
             </intent-filter>
         </activity>
