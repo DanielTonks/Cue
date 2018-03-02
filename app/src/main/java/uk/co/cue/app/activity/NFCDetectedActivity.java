@@ -3,7 +3,6 @@ package uk.co.cue.app.activity;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
@@ -11,16 +10,9 @@ import android.nfc.NfcAdapter;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.os.Parcelable;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.analytics.FirebaseAnalytics;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import org.json.JSONObject;
 
@@ -29,8 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
 
 import uk.co.cue.app.R;
@@ -45,6 +35,20 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     private VolleyRequestFactory vrf;
     private String venueID;
     private String machineID;
+
+    public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
+
+        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+        String query = url.getQuery();
+        query = query.replace("link=https://idk-cue.club/queue/add?", "");
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+            System.out.println(pair);
+            int idx = pair.indexOf("=");
+            query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+        }
+        return query_pairs;
+    }
 
     @Override
     public void requestFinished(JSONObject response, String url) {
@@ -96,7 +100,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
                 NdefRecord[] records = messages[i].getRecords();
                         for(NdefRecord r : records) {
                             payload = r.toUri();
-                            System.out.println(payload);
+                            //System.out.println(payload);
                         }
             }
 
@@ -129,11 +133,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
         try {
             URL url = new URL(link.toString());
+            System.out.println("NOW: " + url.getQuery());
             Map<String, String> queries = splitQuery(url);
-            URL longURL = new URL(queries.get("link"));
-            Map<String, String> long_link_queries = splitQuery(longURL);
-            machineID = long_link_queries.get("machine_id");
-            venueID = long_link_queries.get("venue_id");
+            machineID = queries.get("machine_id");
+            venueID = queries.get("venue_id");
         } catch(MalformedURLException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
@@ -148,17 +151,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
 
         finish();
-    }
-
-    public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
-        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
-        String query = url.getQuery();
-        String[] pairs = query.split("&");
-        for (String pair : pairs) {
-            int idx = pair.indexOf("=");
-            query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
-        }
-        return query_pairs;
     }
 
 }
