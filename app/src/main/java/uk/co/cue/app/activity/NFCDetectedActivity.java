@@ -4,15 +4,23 @@ import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.net.Uri;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
 import android.nfc.tech.Ndef;
 import android.os.Bundle;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
+
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.analytics.FirebaseAnalytics;
+import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
+import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import org.json.JSONObject;
 
@@ -23,7 +31,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
     NfcAdapter mAdapter;
     PendingIntent mPendingIntent;
-    IntentFilter mFilters[];
     String mTechLists[][];
     TextView processingText;
     private VolleyRequestFactory vrf;
@@ -58,17 +65,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         mPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        try {
-            ndef.addDataType("application/uk.co.danieltonks.nfc");
-        } catch (IntentFilter.MalformedMimeTypeException e) {
-            throw new RuntimeException("fail", e);
-        }
-
-        mFilters = new IntentFilter[]{
-                ndef
-        };
-
         mTechLists = new String[][]{
                 new String[]{
                         Ndef.class.getName()
@@ -78,20 +74,18 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         //getNdefMessages(intent);
     }
 
-    public void getNdefMessages(Intent intent) {
+    public String getNdefMessages(Intent intent) {
+        String payload = "";
         Parcelable[] rawMessages =
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         if (rawMessages != null) {
             NdefMessage[] messages = new NdefMessage[rawMessages.length];
-            for (int i = 0; i < rawMessages.length; i++) {
-                messages[i] = (NdefMessage) rawMessages[i];
-                NdefRecord[] records = messages[i].getRecords();
-                for (NdefRecord r : records) {
-                    String payload = new String(r.getPayload());
+                NdefRecord[] records = messages[0].getRecords();
+            payload = new String(records[0].getPayload());
                     System.out.println(payload);
-                }
-            }
         }
+
+        return payload;
     }
 
     @Override
@@ -99,7 +93,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         super.onResume();
         if (mAdapter != null) {
         }
-        mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
+        mAdapter.enableForegroundDispatch(this, mPendingIntent, null, mTechLists);
 
     }
 
@@ -124,4 +118,5 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
         finish();
     }
+
 }

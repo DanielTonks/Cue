@@ -87,35 +87,12 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         String machineIDString = String.valueOf(machineID);
         String venueIDString = String.valueOf(venueID);
         String url_with_params = "https://idk-cue.club/queue/add?machine_id="+machineIDString+"&venue_id="+venueIDString;
+        String firebase_link = "https://cjzd4.app.goog.gl/?link="+url_with_params+"&apn=uk.co.cue.app";
 
-        Task<ShortDynamicLink> task = FirebaseDynamicLinks.getInstance().createDynamicLink()
-                .setLink(Uri.parse(url_with_params))//implement
-                .setDynamicLinkDomain("cjzd4.app.goo.gl")  //implement
-                .setAndroidParameters(new DynamicLink.AndroidParameters.Builder()
-                    .setMinimumVersion(1)
-                    .build())
-                .buildShortDynamicLink()
-                .addOnCompleteListener(this, new OnCompleteListener<ShortDynamicLink>() {
-                    @Override
-                    public void onComplete(@NonNull Task<ShortDynamicLink> t) {
-                        if(t.isSuccessful()) {
-                            Uri shortLink = t.getResult().getShortLink();
 
-                            Toast.makeText(getApplicationContext(), "Link generated!",
-                                    Toast.LENGTH_LONG).show();
-
-                            String link = shortLink.toString();
-
-                            Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
-                            NFCIntent.putExtra("url", link);
-                            startActivity(NFCIntent);
-
-                        } else {
-                            System.out.println(t.getException().getMessage());
-                        }
-                    }
-                });
-
+        Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
+        NFCIntent.putExtra("url", firebase_link);
+        startActivity(NFCIntent);
 
     }
 
