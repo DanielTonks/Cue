@@ -18,13 +18,21 @@ public class HomeFragment extends Fragment {
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
 
-
         Button requestTable = fragment.findViewById(R.id.btn_request);
         requestTable.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity().getApplicationContext(), ReserveTableActivity.class);
                 startActivity(i);
+            }
+        });
+
+        Button pub_details = fragment.findViewById(R.id.btn_pub);
+        pub_details.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent a = new Intent(getActivity().getApplicationContext(), VenueDetails.class);
+                startActivity(a);
             }
         });
 

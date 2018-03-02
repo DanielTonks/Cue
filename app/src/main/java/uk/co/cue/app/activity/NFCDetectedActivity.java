@@ -3,7 +3,6 @@ package uk.co.cue.app.activity;
 import android.app.Activity;
 import android.app.PendingIntent;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.nfc.NdefMessage;
 import android.nfc.NdefRecord;
 import android.nfc.NfcAdapter;
@@ -23,7 +22,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
     NfcAdapter mAdapter;
     PendingIntent mPendingIntent;
-    IntentFilter mFilters[];
     String mTechLists[][];
     TextView processingText;
     private VolleyRequestFactory vrf;
@@ -43,8 +41,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         super.onCreate(savedInstanceState);
 
         this.vrf = new VolleyRequestFactory(this, getApplicationContext());
-
-
     }
 
     @Override
@@ -58,16 +54,8 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         mPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
 
-        IntentFilter ndef = new IntentFilter(NfcAdapter.ACTION_NDEF_DISCOVERED);
-        try {
-            ndef.addDataType("application/uk.co.danieltonks.nfc");
-        } catch (IntentFilter.MalformedMimeTypeException e) {
-            throw new RuntimeException("fail", e);
-        }
 
-        mFilters = new IntentFilter[]{
-                ndef
-        };
+
 
         mTechLists = new String[][]{
                 new String[]{
@@ -99,7 +87,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         super.onResume();
         if (mAdapter != null) {
         }
-        mAdapter.enableForegroundDispatch(this, mPendingIntent, mFilters, mTechLists);
+        mAdapter.enableForegroundDispatch(this, mPendingIntent, null, mTechLists);
 
     }
 
@@ -115,6 +103,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         processingText.setText("Processing");
         Log.i("Foreground dispatch", "Discovered tag with intent:" + intent);
         getNdefMessages(intent);
+
+        System.out.println("INTENT DATA: " + intent.getDataString());
+
+
 
         String pubID = "S'Oak"; //hardcoded for now
         Intent returnIntent = new Intent();
