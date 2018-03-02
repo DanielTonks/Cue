@@ -85,8 +85,8 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         //getNdefMessages(intent);
     }
 
-    public String getNdefMessages(Intent intent) {
-        String payload = "";
+    public Uri getNdefMessages(Intent intent) {
+        Uri payload = null;
         Parcelable[] rawMessages =
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         if (rawMessages != null) {
@@ -95,7 +95,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
                 messages[i] = (NdefMessage) rawMessages[i];
                 NdefRecord[] records = messages[i].getRecords();
                         for(NdefRecord r : records) {
-                            payload = new String(r.getPayload());
+                            payload = r.toUri();
                             System.out.println(payload);
                         }
             }
@@ -125,10 +125,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     public void onNewIntent(Intent intent) {
         processingText.setText("Processing");
         Log.i("Foreground dispatch", "Discovered tag with intent:" + intent);
-        String link = getNdefMessages(intent);
+        Uri link = getNdefMessages(intent);
 
         try {
-            URL url = new URL(link);
+            URL url = new URL(link.toString());
             Map<String, String> queries = splitQuery(url);
             URL longURL = new URL(queries.get("link"));
             Map<String, String> long_link_queries = splitQuery(longURL);
