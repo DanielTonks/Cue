@@ -24,6 +24,15 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.util.LinkedHashMap;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import uk.co.cue.app.R;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -34,6 +43,8 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     String mTechLists[][];
     TextView processingText;
     private VolleyRequestFactory vrf;
+    private String venueID;
+    private String machineID;
 
     @Override
     public void requestFinished(JSONObject response, String url) {
@@ -80,9 +91,15 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
                 intent.getParcelableArrayExtra(NfcAdapter.EXTRA_NDEF_MESSAGES);
         if (rawMessages != null) {
             NdefMessage[] messages = new NdefMessage[rawMessages.length];
-                NdefRecord[] records = messages[0].getRecords();
-            payload = new String(records[0].getPayload());
-                    System.out.println(payload);
+            for(int i=0; i < rawMessages.length; i++) {
+                messages[i] = (NdefMessage) rawMessages[i];
+                NdefRecord[] records = messages[i].getRecords();
+                        for(NdefRecord r : records) {
+                            payload = new String(r.getPayload());
+                            System.out.println(payload);
+                        }
+            }
+
         }
 
         return payload;
@@ -108,15 +125,40 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     public void onNewIntent(Intent intent) {
         processingText.setText("Processing");
         Log.i("Foreground dispatch", "Discovered tag with intent:" + intent);
-        getNdefMessages(intent);
+        String link = getNdefMessages(intent);
+
+        try {
+            URL url = new URL(link);
+            Map<String, String> queries = splitQuery(url);
+            URL longURL = new URL(queries.get("link"));
+            Map<String, String> long_link_queries = splitQuery(longURL);
+            machineID = long_link_queries.get("machine_id");
+            venueID = long_link_queries.get("venue_id");
+        } catch(MalformedURLException | UnsupportedEncodingException e) {
+            e.printStackTrace();
+        }
+
 
         String pubID = "S'Oak"; //hardcoded for now
         Intent returnIntent = new Intent();
-        returnIntent.putExtra("pubID", pubID);
+        System.out.println("machineID: "+ machineID);
+        System.out.println("venueID: "+ venueID);
+        returnIntent.putExtra("pubID", venueID);
         setResult(Activity.RESULT_OK, returnIntent);
 
 
         finish();
+    }
+
+    public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
+        Map<String, String> query_pairs = new LinkedHashMap<String, String>();
+        String query = url.getQuery();
+        String[] pairs = query.split("&");
+        for (String pair : pairs) {
+            int idx = pair.indexOf("=");
+            query_pairs.put(URLDecoder.decode(pair.substring(0, idx), "UTF-8"), URLDecoder.decode(pair.substring(idx + 1), "UTF-8"));
+        }
+        return query_pairs;
     }
 
 }
