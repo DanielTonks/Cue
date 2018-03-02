@@ -1,30 +1,15 @@
 package uk.co.cue.app.activity;
 
 import android.app.Activity;
-import android.app.ProgressDialog;
 import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.android.volley.toolbox.Volley;
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.dynamiclinks.DynamicLink;
-import com.google.firebase.dynamiclinks.FirebaseDynamicLinks;
-import com.google.firebase.dynamiclinks.ShortDynamicLink;
 
-import org.json.JSONArray;
 import org.json.JSONObject;
 
 import java.util.HashMap;
@@ -32,7 +17,6 @@ import java.util.Map;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.util.CueApp;
-import uk.co.cue.app.util.User;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
 /** Class that sets up a new machine in a venue
@@ -87,7 +71,7 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         String machineIDString = String.valueOf(machineID);
         String venueIDString = String.valueOf(venueID);
         String url_with_params = "https://idk-cue.club/queue/add?machine_id="+machineIDString+"&venue_id="+venueIDString;
-        String firebase_link = "https://cjzd4.app.goog.gl/?link="+url_with_params+"&apn=uk.co.cue.app";
+        String firebase_link = "https://cjzd4.app.goo.gl/?link=" + url_with_params + "&apn=uk.co.cue.app";
 
 
         Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
