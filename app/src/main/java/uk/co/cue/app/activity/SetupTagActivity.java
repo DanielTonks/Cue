@@ -62,7 +62,9 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("venue_id", venue_id); //dummy value; will need to be changed later
         parameters.put("category", spinner_value);
-        parameters.put("base_price", "0.50");
+        parameters.put("base_price", price_per_game);
+        parameters.put("user_id", String.valueOf(app.getUser().getUserid()));
+        parameters.put("session_cookie", app.getUser().getSession());
 
         volleyRequest.doRequest(app.POST_add_machine, parameters, Request.Method.POST);
     }
