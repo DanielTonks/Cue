@@ -35,7 +35,6 @@ public class VolleyRequestFactory {
         this.callback = callback;
         this.requestQueue = Volley.newRequestQueue(c);
         this.c = c;
-
     }
 
     public void doRequest(String url, Map<String, String> params, int method) {

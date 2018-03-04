@@ -65,8 +65,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         super.onCreate(savedInstanceState);
 
         this.vrf = new VolleyRequestFactory(this, getApplicationContext());
-
-
     }
 
     @Override
@@ -79,6 +77,9 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         mPendingIntent = PendingIntent.getActivity(this, 0,
                 new Intent(this, getClass()).addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP), 0);
+
+
+
 
         mTechLists = new String[][]{
                 new String[]{
@@ -140,6 +141,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         } catch(MalformedURLException | UnsupportedEncodingException e) {
             e.printStackTrace();
         }
+
+
+        System.out.println("INTENT DATA: " + intent.getDataString());
+
 
 
         String pubID = "S'Oak"; //hardcoded for now
