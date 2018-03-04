@@ -134,6 +134,11 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                                 startActivity(i);
                                 break;
 
+                            case "Local Venues":
+                                Intent intent = new Intent(MainActivity.this, LocalVenuesActivity.class);
+                                startActivity(intent);
+                                break;
+
                             case "Log out":
                                 logout();
                                 break;
