@@ -5,8 +5,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
@@ -16,7 +21,6 @@ import android.os.Bundle;
 import com.android.volley.Request;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
-import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
@@ -35,13 +39,12 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
 
     private double latitude;
     private double longitude;
-    private LocationManager locManager;
-    private LocationListener locListener;
+    private FusedLocationProviderClient locManager;
     private final int FINE_LOCATION_PERMISSION = 1;
     private CueApp app;
     private VolleyRequestFactory volleyRequest;
     private GoogleMap map = null;
-    LatLng current_pos;
+    private Location current_pos;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,35 +63,7 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
             }
         });
 
-        locManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-
-        locListener = new LocationListener() {
-            @Override
-            public void onLocationChanged(Location location) {
-                latitude = location.getLatitude();
-                longitude = location.getLongitude();
-                System.out.println("Current latitude:" + latitude);
-                System.out.println("Current longitude:" + longitude);
-                locManager.removeUpdates(this);
-                current_pos = new LatLng(latitude, longitude);
-                getLocalVenues();
-            }
-
-            @Override
-            public void onStatusChanged(String s, int i, Bundle bundle) {
-
-            }
-
-            @Override
-            public void onProviderEnabled(String s) {
-
-            }
-
-            @Override
-            public void onProviderDisabled(String s) {
-
-            }
-        };
+        locManager =  LocationServices.getFusedLocationProviderClient(this);
 
         if(ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_DENIED) {
             if(ActivityCompat.shouldShowRequestPermissionRationale(this, Manifest.permission.ACCESS_FINE_LOCATION)) {
@@ -106,16 +81,10 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
                 requestLocPerms();
             }
         } else {
-            attachLocManager();
+            getLocation();
         }
-    }
 
-    public void attachLocManager() {
-        try {
-            locManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 10, locListener);
-        } catch(SecurityException err) {
-
-        }
+        getLocalVenues();
     }
 
     public void getLocalVenues() {
@@ -137,7 +106,7 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
         switch(requestCode) {
             case FINE_LOCATION_PERMISSION: {
                 if(grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    attachLocManager();
+                    getLocation();
                 } else {
 
                 }
@@ -146,12 +115,35 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
         }
     }
 
+    public void getLocation() {
+        try {
+            locManager.getLastLocation()
+                    .addOnFailureListener(new OnFailureListener() {
+                        @Override
+                        public void onFailure(@NonNull Exception e) {
+                            System.out.println("Failed to get last known location!");
+                        }
+                    })
+                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
+                        @Override
+                        public void onSuccess(Location location) {
+                            if(location != null) {
+                                current_pos = location;
+                                System.out.println("Current latitude: "+ current_pos.getLatitude());
+                                System.out.println("Current longitude: "+ current_pos.getLongitude());
+                            }
+                        }
+                    });
+        } catch (SecurityException e) {
+            System.out.println("Problem with getting permissions");
+        }
+    }
+
     @Override
     public void requestFinished(JSONObject response, String url) {
         try {
             if (url.equals(app.GET_local_venues)) {
-
-                System.out.println(response.toString());
+                System.out.println("JSon response: "+ response);
                 int size = response.getJSONArray("Nearby").length();
                 for(int i = 0; i < size; i++) {
                     MarkerOptions markerOptions = new MarkerOptions();
@@ -162,11 +154,15 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
                     markerOptions.position(pos);
                     markerOptions.title(place_name);
                     map.addMarker(markerOptions);
-
-
                 }
-                map.moveCamera(CameraUpdateFactory.newLatLng(current_pos));
-                map.animateCamera(CameraUpdateFactory.zoomTo(11));
+                LatLng currentPos = new LatLng(current_pos.getLatitude(), current_pos.getLongitude());
+                CameraPosition cameraPosition = new CameraPosition.Builder()
+                        .target(currentPos)
+                        .zoom(16)
+                        .bearing(0)
+                        .tilt(0).build();
+
+                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         } catch (Exception err) {
             System.out.println(err.getMessage());
@@ -175,6 +171,6 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
 
     @Override
     public void requestFailed(int statusCode) {
-
+        System.out.println("Error with server: " + statusCode);
     }
 }
