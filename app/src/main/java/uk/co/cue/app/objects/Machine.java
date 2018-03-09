@@ -1,10 +1,12 @@
 package uk.co.cue.app.objects;
 
+import java.io.Serializable;
+
 /**
  * Created by danieltonks on 26/02/2018.
  */
 
-public class Machine {
+public class Machine implements Serializable {
 
     private int machine_id;
     private int venue_id;

@@ -2,6 +2,7 @@ package uk.co.cue.app.activity;
 
 import android.Manifest;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.os.Bundle;
@@ -21,16 +22,20 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Machine;
+import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -149,20 +154,30 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
                 for(int i = 0; i < size; i++) {
                     MarkerOptions markerOptions = new MarkerOptions();
                     JSONObject obj = response.getJSONArray("Nearby").getJSONObject(i);
-
-
+                    ArrayList<Machine> machines = new ArrayList<>();
                     double lat = obj.getDouble("latitude");
                     double lon = obj.getDouble("longitude");
-                    LatLng pos = new LatLng(lat, lon);
+                    LatLng loc = new LatLng(lat, lon);
+                    Venue venue = new Venue(
+                        obj.getInt("venue_id"),
+                        obj.getString("venue_name"),
+                        machines,
+                        lat,
+                        lon,
+                        obj.getString("google_token")
+                    );
                     String place_name = obj.getString("venue_name");
-                    markerOptions.position(pos);
+                    markerOptions.position(loc);
                     markerOptions.title(place_name);
 
                     builder.include(markerOptions.getPosition());
 
-                    map.addMarker(markerOptions);
+                    Marker marker = map.addMarker(markerOptions);
+                    marker.setTag(venue);
                 }
                 LatLngBounds bounds = builder.build();
+
+
                 //LatLng currentPos = new LatLng(current_pos.getLatitude(), current_pos.getLongitude());
 //                CameraPosition cameraPosition = new CameraPosition.Builder()
 //                        .target(currentPos)
@@ -172,6 +187,16 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
 
                 CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
                 map.animateCamera(cu);
+
+                map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
+                    @Override
+                    public void onInfoWindowClick(Marker marker) {
+                        Venue ven = (Venue) marker.getTag();
+                        Intent intent = new Intent(getApplicationContext(), VenueDetails.class);
+                        intent.putExtra("venue", ven);
+                        startActivity(intent);
+                    }
+                });
                 //map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         } catch (Exception err) {
