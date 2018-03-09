@@ -196,24 +196,30 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
     @Override
     public void requestFinished(JSONObject response, String url) {
         if (url.equals(app.POST_logout)) {
-            SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
-            SharedPreferences.Editor editor = sharedPref.edit();
-            editor.putBoolean("logged_in", false);
-            editor.putInt("user_id", -1);
-            editor.putString("username", null);
-            editor.putString("session_cookie", null);
-            editor.putBoolean("isBusiness", false);
-            editor.apply();
-
-
-            Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
-            startActivity(i);
-            finish();
+            logoutOfApp();
         }
     }
 
     @Override
     public void requestFailed(int statusCode) {
+
         System.out.println(statusCode);
+        logoutOfApp();
+    }
+
+    public void logoutOfApp() {
+        SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getApplicationContext());
+        SharedPreferences.Editor editor = sharedPref.edit();
+        editor.putBoolean("logged_in", false);
+        editor.putInt("user_id", -1);
+        editor.putString("username", null);
+        editor.putString("session_cookie", null);
+        editor.putBoolean("isBusiness", false);
+        editor.apply();
+
+
+        Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
+        startActivity(i);
+        finish();
     }
 }

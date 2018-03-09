@@ -18,17 +18,21 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Venue;
 
 public class VenueDetails extends AppCompatActivity {
 
     protected GeoDataClient mGeoDataClient;
-    private String sampleID = "ChIJgRHwFsy9cEgRYK8n7iWOni0";
-    private String sampleID2 = "ChIJh41WX1y6cEgRm0MOlde4moc";
+    private String googleToken;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venue_details);
+
+        Intent i = getIntent();
+        Venue venue = (Venue) i.getExtras().getParcelable("venue");
+        googleToken = venue.getGoogleToken();
 
         final TextView address = findViewById(R.id.address);
         final TextView rating = findViewById(R.id.rating);
@@ -47,7 +51,7 @@ public class VenueDetails extends AppCompatActivity {
         // Construct a GeoDataClient.
         mGeoDataClient = Places.getGeoDataClient(this, null);
 
-        mGeoDataClient.getPlaceById(sampleID2).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
+        mGeoDataClient.getPlaceById(googleToken).addOnCompleteListener(new OnCompleteListener<PlaceBufferResponse>() {
             @Override
             public void onComplete(@NonNull Task<PlaceBufferResponse> task) {
                 if (task.isSuccessful()) {
