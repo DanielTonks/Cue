@@ -27,10 +27,30 @@
     <string name="machine_num">Enter the number of machines:</string>
     <string name="price_per_game">Enter the price per game:</string>
 
+
     <string-array name="machine_type_array">
         <item>Pool</item>
         <item>Snooker</item>
         <item>Foosball</item>
         <item>Arcade</item>
     </string-array>
+
+    <!-- Strings related to help screen -->
+    <string name="help_title">How Cue works in 5 simple steps:</string>
+    <string name="help_step1">Head to your local Cue-connected pub.</string>
+    <string name="help_step2">Open the app and select a pool table to join the queue.</string>
+    <string name="help_step3">Tap a tag on a pool table to confirm your presence.</string>
+    <string name="help_step4">When a table becomes available, Cue will notify you.</string>
+    <string name="help_step5">Tap the table again to confirm you\'re ready to start the game.</string>
+
+    <!-- Number-related strings (just to shut Studio up) -->
+    <string name="num_1">1</string>
+    <string name="num_2">2</string>
+    <string name="num_3">3</string>
+    <string name="num_4">4</string>
+    <string name="num_5">5</string>
+    <string name="num_6">6</string>
+    <string name="num_7">7</string>
+    <string name="num_8">8</string>
+    <string name="num_9">9</string>
 </resources>

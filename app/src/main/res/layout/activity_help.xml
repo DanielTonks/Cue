@@ -1,191 +1,180 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary">
 
-    <LinearLayout
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-
-        android:orientation="vertical">
+        android:layout_height="wrap_content">
 
         <TextView
-            android:id="@+id/textView3"
-            android:layout_width="match_parent"
+            android:id="@+id/helpTitle"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
             android:fontFamily="@font/raleway_bold"
-            android:padding="16dp"
-            android:text="How Cue works in 5 simple steps"
+            android:text="@string/help_title"
             android:textColor="@color/white"
-            android:textSize="24sp" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/step1Title"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:fontFamily="@font/raleway_bold"
-
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:text="1"
-                android:textColor="@color/white"
-                android:textSize="60sp" />
+            android:textSize="30sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
 
-            <TextView
-                android:id="@+id/step1"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_light"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:text="Head down to your local pub which has a Cue connected pool table."
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/step1Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_bold"
+            android:text="@string/num_1"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/helpTitle" />
 
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/step2Title"
-                android:layout_width="40dp"
-
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:fontFamily="@font/raleway_bold"
-                android:gravity="center_horizontal"
-                android:includeFontPadding="false"
-                android:text="2"
-                android:textColor="@color/white"
-                android:textSize="60sp" />
+        <TextView
+            android:id="@+id/step1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_light"
+            android:text="@string/help_step1"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/step1Title"
+            app:layout_constraintTop_toBottomOf="@+id/helpTitle" />
 
 
-            <TextView
-                android:id="@+id/step2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_light"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:text="Open the app and register for a pool table."
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/step2Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_bold"
+            android:text="@string/num_2"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step1" />
 
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/step3Title"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:fontFamily="@font/raleway_bold"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="3"
-                android:textColor="@color/white"
-                android:textSize="60sp" />
+        <TextView
+            android:id="@+id/step2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_light"
+            android:text="@string/help_step2"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@+id/step2Title"
+            app:layout_constraintTop_toBottomOf="@+id/step1" />
 
 
-            <TextView
-                android:id="@+id/step3"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_light"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:text="When prompted, tap a tag on any pool table to confirm your presence."
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/step3Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_bold"
+            android:text="@string/num_3"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step2" />
 
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/step4Title"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-
-                android:fontFamily="@font/raleway_bold"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="4"
-                android:textColor="@color/white"
-                android:textSize="60sp" />
+        <TextView
+            android:id="@+id/step3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_light"
+            android:text="@string/help_step3"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/step3Title"
+            app:layout_constraintTop_toBottomOf="@+id/step2" />
 
 
-            <TextView
-                android:id="@+id/step4"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_light"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:text="When a table becomes available, you'll be notified."
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/step4Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_bold"
+            android:text="@string/num_4"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step3" />
 
 
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:id="@+id/step5Title"
-                android:layout_width="40dp"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="16dp"
-                android:layout_marginRight="16dp"
-                android:fontFamily="@font/raleway_bold"
-                android:gravity="center_vertical"
-                android:includeFontPadding="false"
-                android:text="5"
-                android:textColor="@color/white"
-                android:textSize="60sp" />
+        <TextView
+            android:id="@+id/step4"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_light"
+            android:text="@string/help_step4"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/step4Title"
+            app:layout_constraintTop_toBottomOf="@+id/step3" />
 
 
-            <TextView
-                android:id="@+id/step5"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:fontFamily="@font/raleway_light"
-                android:gravity="center_vertical"
-                android:padding="8dp"
-                android:text="Tap the table tag again when prompted to confirm you're ready to start the game."
-                android:textColor="@color/white"
-                android:textSize="18sp" />
+        <TextView
+            android:id="@+id/step5Title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="8dp"
+            android:fontFamily="@font/raleway_bold"
+            android:text="@string/num_5"
+            android:textColor="@color/white"
+            android:textSize="60sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/step4" />
 
 
-        </LinearLayout>
+        <TextView
+            android:id="@+id/step5"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="24dp"
+            android:fontFamily="@font/raleway_light"
+            android:text="@string/help_step5"
+            android:textColor="@color/white"
+            android:textSize="18sp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/step5Title"
+            app:layout_constraintTop_toBottomOf="@+id/step4" />
 
-
-    </LinearLayout>
-
-
+    </android.support.constraint.ConstraintLayout>
 </ScrollView>
