@@ -131,7 +131,10 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAycxcUFA26psu02q-UVWfJYRcyKv_SHhY" />
 
-        <activity android:name=".activity.LocalVenuesActivity"></activity>
+        <activity
+            android:name=".activity.LocalVenuesActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppThemeActionBar"></activity>
     </application>
 
 </manifest>

@@ -1,30 +1,29 @@
 package uk.co.cue.app.activity;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.pm.PackageManager;
 import android.location.Location;
-import com.google.android.gms.location.FusedLocationProviderClient;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.CameraPosition;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 
 import com.android.volley.Request;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONObject;
 
@@ -37,10 +36,8 @@ import uk.co.cue.app.util.VolleyRequestFactory;
 
 public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest{
 
-    private double latitude;
-    private double longitude;
-    private FusedLocationProviderClient locManager;
     private final int FINE_LOCATION_PERMISSION = 1;
+    private FusedLocationProviderClient locManager;
     private CueApp app;
     private VolleyRequestFactory volleyRequest;
     private GoogleMap map = null;
@@ -51,6 +48,7 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_local_venues);
 
+        setTitle("Local Venues");
         app = (CueApp) getApplication();
         this.volleyRequest = new VolleyRequestFactory(this, getApplicationContext());
 
@@ -84,16 +82,15 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
             getLocation();
         }
 
-        getLocalVenues();
+
     }
 
     public void getLocalVenues() {
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("latitude", String.valueOf(latitude));
-        parameters.put("longitude", String.valueOf(longitude));
-        System.out.println("Latitude at time of GET: " + latitude);
-        System.out.println("Longitude at time of GET: " + longitude);
-
+        parameters.put("latitude", String.valueOf(current_pos.getLatitude()));
+        parameters.put("longitude", String.valueOf(current_pos.getLongitude()));
+        System.out.println("Latitude at time of GET: " + current_pos.getLatitude());
+        System.out.println("Longitude at time of GET: " + current_pos.getLongitude());
         volleyRequest.doRequest(app.GET_local_venues, parameters, Request.Method.GET);
     }
 
@@ -132,6 +129,7 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
                                 System.out.println("Current latitude: "+ current_pos.getLatitude());
                                 System.out.println("Current longitude: "+ current_pos.getLongitude());
                             }
+                            getLocalVenues();
                         }
                     });
         } catch (SecurityException e) {
@@ -142,27 +140,39 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
     @Override
     public void requestFinished(JSONObject response, String url) {
         try {
-            if (url.equals(app.GET_local_venues)) {
+            if (url.contains(app.GET_local_venues)) {
                 System.out.println("JSon response: "+ response);
                 int size = response.getJSONArray("Nearby").length();
+
+                LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
                 for(int i = 0; i < size; i++) {
                     MarkerOptions markerOptions = new MarkerOptions();
-                    double lat = response.getJSONArray("Nearby").getJSONObject(i).getDouble("latitude");
-                    double lon= response.getJSONArray("Nearby").getJSONObject(i).getDouble("longitude");
+                    JSONObject obj = response.getJSONArray("Nearby").getJSONObject(i);
+
+
+                    double lat = obj.getDouble("latitude");
+                    double lon = obj.getDouble("longitude");
                     LatLng pos = new LatLng(lat, lon);
-                    String place_name = response.getJSONArray("Nearby").getJSONObject(i).getString("venue_name");
+                    String place_name = obj.getString("venue_name");
                     markerOptions.position(pos);
                     markerOptions.title(place_name);
+
+                    builder.include(markerOptions.getPosition());
+
                     map.addMarker(markerOptions);
                 }
-                LatLng currentPos = new LatLng(current_pos.getLatitude(), current_pos.getLongitude());
-                CameraPosition cameraPosition = new CameraPosition.Builder()
-                        .target(currentPos)
-                        .zoom(16)
-                        .bearing(0)
-                        .tilt(0).build();
+                LatLngBounds bounds = builder.build();
+                //LatLng currentPos = new LatLng(current_pos.getLatitude(), current_pos.getLongitude());
+//                CameraPosition cameraPosition = new CameraPosition.Builder()
+//                        .target(currentPos)
+//                        .zoom(16)
+//                        .bearing(0)
+//                        .tilt(0).build();
 
-                map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
+                map.animateCamera(cu);
+                //map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
             }
         } catch (Exception err) {
             System.out.println(err.getMessage());

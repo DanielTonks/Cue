@@ -39,13 +39,25 @@ public class VolleyRequestFactory {
 
     public void doRequest(String url, Map<String, String> params, int method) {
         final Map<String, String> reqParams = params;
-        final String given_url = url;
 
 
         JSONObject jsonObj = null;
         if (method == Request.Method.POST) {
             jsonObj = new JSONObject(params);
+        } else {
+            url += "?";
+            int counter = 0;
+            for (Map.Entry<String, String> me : params.entrySet()) {
+                counter++;
+                url += me.getKey() + "=" + me.getValue();
+                if (params.size() != counter) {
+                    url += "&";
+                }
+            }
         }
+
+        final String given_url = url;
+        System.out.println(given_url);
 
         JsonObjectRequest req = new JsonObjectRequest(method, url, jsonObj,
                 new Response.Listener<JSONObject>() {
