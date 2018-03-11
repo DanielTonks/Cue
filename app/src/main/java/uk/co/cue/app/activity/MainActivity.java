@@ -107,7 +107,6 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 
         boolean visible = app.getUser().isBusiness();
         m.findItem(R.id.local_venues).setVisible(!visible);
-        m.findItem(R.id.favourite_venues).setVisible(!visible);
         m.findItem(R.id.past_games).setVisible(!visible);
         m.findItem(R.id.add_machine).setVisible(visible);
         m.findItem(R.id.edit_machine).setVisible(visible);
