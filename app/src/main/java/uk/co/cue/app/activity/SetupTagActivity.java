@@ -89,8 +89,8 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
 
                 System.out.println(response.toString());
                 int machineID = response.getJSONArray("Machine").getJSONObject(0).getInt("machine_id");
-                int venueID = response.getJSONArray("Machine").getJSONObject(0).getInt("venue_id");
-                generateLink(machineID, venueID);
+                //int venueID = response.getJSONArray("Machine").getJSONObject(0).getInt("venue_id");
+                generateLink(machineID, 1); // HARDCODED AS THE S'OAK
             }
         } catch (Exception err) {
             System.out.println(err.getMessage());

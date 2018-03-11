@@ -1,17 +1,10 @@
 package uk.co.cue.app.activity;
 
-import android.Manifest;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
-import android.location.Location;
-import android.os.Build;
 import android.os.Bundle;
-import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.content.PermissionChecker;
 import android.support.v7.app.AppCompatActivity;
 import android.text.format.DateFormat;
 import android.view.View;
@@ -19,16 +12,10 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
-import com.android.volley.Request;
-import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
-import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.location.places.PlaceDetectionClient;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.location.places.ui.PlacePicker;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -64,14 +51,6 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
 
 
-        findViewById(R.id.btn_now2).setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                getPlaces();
-            }
-        });
-
-
         findViewById(R.id.btn_now).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -89,7 +68,7 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
             }
         });
 
-        findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println(timeUNIX);
@@ -105,68 +84,6 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
 
     }
 
-    private void openMap() {
-        int PLACE_PICKER_REQUEST = 1;
-        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-        try {
-            startActivityForResult(builder.build(this), PLACE_PICKER_REQUEST);
-        } catch (GooglePlayServicesRepairableException e) {
-            e.printStackTrace();
-        } catch (GooglePlayServicesNotAvailableException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    private void getPlaces() {
-
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.ACCESS_FINE_LOCATION) == PermissionChecker.PERMISSION_GRANTED) {
-            locationManager.getLastLocation()
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            System.out.println("FAILED");
-                        }
-                    })
-                    .addOnSuccessListener(this, new OnSuccessListener<Location>() {
-                        @Override
-                        public void onSuccess(Location location) {
-                            // Got last known location. In some rare situations this can be null.
-                            if (location != null) {
-                                double lat = location.getLatitude();
-                                double lon = location.getLongitude();
-
-                                System.out.println("USER AT " + lat + "," + lon);
-
-                                // Form a request
-                                String url = "https://maps.googleapis.com/maps/api/place/nearbysearch/json?rankby=distance&location=" +
-                                        lat + "," + lon +
-                                        "&type=bar&key=AIzaSyAycxcUFA26psu02q-UVWfJYRcyKv_SHhY";
-
-
-                                vrf.doRequest(url, null, Request.Method.GET);
-
-                            }
-                        }
-                    });
-        } else {
-            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                requestPermissions(new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 0);
-            }
-        }
-    }
-
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                                           int[] grantResults) {
-
-        if (requestCode == 0) {
-            if (grantResults.length == 1 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                System.out.println("Access granted");
-            }
-        }
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -174,17 +91,9 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
         if (requestCode == 0) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                System.out.println("Got back, here is value of timeUNIX: " + timeUNIX);
-
-
                 Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("confirmed", true);
-                intent.putExtra("pubID", "S'oak");
-                intent.putExtra("userName", playerName);
-
+                intent.putExtra("game", data.getSerializableExtra("game"));
                 startActivity(intent);
-
             }
         } else if (requestCode == 1) {
             System.out.println("Got back from map");

@@ -14,16 +14,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.widget.TextView;
 
+import com.android.volley.Request;
+
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Game;
+import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
 public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
@@ -35,6 +42,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     private VolleyRequestFactory vrf;
     private String venueID;
     private String machineID;
+    private CueApp app;
 
     public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
 
@@ -52,6 +60,21 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
     @Override
     public void requestFinished(JSONObject response, String url) {
+        System.out.println(response);
+
+        try {
+            JSONArray arr = response.getJSONArray("Queue");
+            JSONObject obj = arr.getJSONObject(0);
+
+
+            Intent returnIntent = new Intent();
+            Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"));
+            returnIntent.putExtra("game", g);
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
 
     }
 
@@ -63,10 +86,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
         this.vrf = new VolleyRequestFactory(this, getApplicationContext());
-
-
     }
 
     @Override
@@ -85,8 +105,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
                         Ndef.class.getName()
                 }
         };
-        //Intent intent = getIntent();
-        //getNdefMessages(intent);
     }
 
     public Uri getNdefMessages(Intent intent) {
@@ -141,16 +159,20 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             e.printStackTrace();
         }
 
+        app = (CueApp) getApplication();
+        //Make a network request to log in.
+        Map<String, String> params = new HashMap<String, String>();
+        params.put("user_id", String.valueOf(app.getUser().getUserid()));
+        params.put("machine_id", machineID);
+        params.put("session_cookie", app.getUser().getSession());
 
-        String pubID = "S'Oak"; //hardcoded for now
-        Intent returnIntent = new Intent();
-        System.out.println("machineID: "+ machineID);
-        System.out.println("venueID: "+ venueID);
-        returnIntent.putExtra("pubID", venueID);
-        setResult(Activity.RESULT_OK, returnIntent);
+//        System.out.println(app.getUser().getUserid());
+//        System.out.println(app.getUser().getSession());
+//        System.out.println(machineID);
+
+        vrf.doRequest(app.POST_add_queue, params, Request.Method.POST);
 
 
-        finish();
     }
 
 }

@@ -27,6 +27,7 @@ import java.util.Map;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
+import uk.co.cue.app.objects.Game;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -55,6 +56,8 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         if (app.getUser().getSession() != null) {
             setUp();
         }
+
+
         this.vrf = new VolleyRequestFactory(this, getApplicationContext());
     }
 
@@ -70,24 +73,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-//        Button btn = findViewById(R.id.button);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getApplicationContext(), ReserveTableActivity.class);
-//                // i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                startActivity(i);
-//                //Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
-//                //startActivityForResult(i, 0);
-//            }
-//        });
-
         this.standard = findViewById(R.id.standard);
-//        this.inQueue = findViewById(R.id.inQueue);
-//        this.queuePos = findViewById(R.id.queuePosition);
-//
-//        this.queueDescription = findViewById(R.id.queueDescription);
-
         this.topLevelView = findViewById(R.id.main_layout);
 
         Intent i = getIntent();
@@ -220,5 +206,14 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
         startActivity(i);
         finish();
+    }
+
+    @Override
+    protected void onNewIntent(Intent intent) {
+
+        Game g = (Game) intent.getSerializableExtra("game");
+        app.getUser().setGame(g);
+
+        super.onNewIntent(intent);
     }
 }

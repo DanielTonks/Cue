@@ -40,7 +40,6 @@ public class VolleyRequestFactory {
     public void doRequest(String url, Map<String, String> params, int method) {
         final Map<String, String> reqParams = params;
 
-
         JSONObject jsonObj = null;
         if (method == Request.Method.POST) {
             jsonObj = new JSONObject(params);
