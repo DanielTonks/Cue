@@ -8,8 +8,10 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.android.volley.Request;
 import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
@@ -17,18 +19,33 @@ import com.google.android.gms.location.places.Places;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+import org.w3c.dom.Text;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import uk.co.cue.app.R;
 import uk.co.cue.app.objects.Venue;
+import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.VolleyRequestFactory;
 
-public class VenueDetails extends AppCompatActivity {
+public class VenueDetails extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest{
 
     protected GeoDataClient mGeoDataClient;
     private String googleToken;
+    private VolleyRequestFactory volleyRequest;
+    private CueApp app;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venue_details);
+
+        app = (CueApp) getApplication();
+        this.volleyRequest = new VolleyRequestFactory(this, getApplicationContext());
 
         Intent i = getIntent();
         Venue venue = (Venue) i.getExtras().getParcelable("venue");
@@ -46,6 +63,10 @@ public class VenueDetails extends AppCompatActivity {
                 startActivity(intent);
             }
         });
+
+        Map<String, String> parameters = new HashMap<String, String>();
+        parameters.put("venue_id", String.valueOf(venue.getVenue_id()));
+        volleyRequest.doRequest(app.GET_venue_machines, parameters, Request.Method.GET);
 
 
         // Construct a GeoDataClient.
@@ -73,5 +94,65 @@ public class VenueDetails extends AppCompatActivity {
             }
         });
 
+    }
+
+    @Override
+    public void requestFinished(JSONObject response, String url) {
+        try {
+            //System.out.println("Response for machines: "+response);
+            JSONArray array = response.getJSONArray("Machines");
+            TextView pool_num = findViewById(R.id.pool_num);
+            TextView snooker_num = findViewById(R.id.snooker_num);
+            TextView foosball_num = findViewById(R.id.foosball_num);
+            TextView arcade_num = findViewById(R.id.arcade_num);
+            ImageView pool_img = findViewById(R.id.pool_img);
+            ImageView snooker_img = findViewById(R.id.snooker_img);
+            ImageView foosball_img = findViewById(R.id.foosball_img);
+            ImageView arcade_img = findViewById(R.id.arcade_img);
+            int pool =0;
+            int snooker=0;
+            int foosball=0;
+            int arcade=0;
+
+            if(array.length()== 0) {
+                TextView cue = findViewById(R.id.cue_features);
+                cue.setText("No Cue features available!");
+            } else {
+                for(int i=0; i<array.length(); i++) {
+                    String category = array.getJSONObject(i).getString("category");
+                    switch(category) {
+                        case "pool":
+                            pool++;
+                            break;
+                        case "snooker":
+                            snooker++;
+                            break;
+                        case "foosball":
+                            foosball++;
+                            break;
+                        case "arcade":
+                            arcade++;
+                            break;
+                    }
+                }
+
+
+                pool_num.setText("Pool tables: "+ pool);
+                snooker_num.setText("Snooker tables: "+ snooker);
+                foosball_num.setText("Foosball tables: "+ foosball);
+                arcade_num.setText("Arcade machines: "+arcade);
+            }
+
+
+
+        } catch(JSONException e) {
+            System.out.println("problem with JSON: "+e);
+        }
+
+    }
+
+    @Override
+    public void requestFailed(int statusCode) {
+        System.out.println("Error getting venue machines: "+ statusCode);
     }
 }

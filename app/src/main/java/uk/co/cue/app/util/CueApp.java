@@ -20,7 +20,7 @@ public class CueApp extends Application {
     public final static String POST_logout = "https://idk-cue.club/user/logout";
     public final static String POST_register = "https://idk-cue.club/user/add";
     public final static String POST_add_machine = "https://idk-cue.club/machine/add";
-    public final static String GET_MACHINES = "https://idk-cue.club/machines/all";
+    public final static String GET_venue_machines = "https://idk-cue.club/venue/machines";
     public final static String GET_local_venues = "https://idk-cue.club/venues/nearby";
     public final static String POST_add_queue = "https://idk-cue.club/queue/add";
     public final static String POST_edit_queue = "https://idk-cue.club/queue/edit";
