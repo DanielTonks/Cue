@@ -53,4 +53,12 @@
     <string name="num_7">7</string>
     <string name="num_8">8</string>
     <string name="num_9">9</string>
+    <string name="welcome_title">Welcome to Cue</string>
+    <string name="welcome_text">With Cue, we\'ve made it easier to know whos next to play games in your local pub. </string>
+    <string name="welcome_text2">Simply head to your favourite Cue enabled Pub, find a pool table or perhaps an arcade machine, then tap the tag to join the Cue.</string>
+    <string name="local_venues_title">Local Venues</string>
+    <string name="local_venues_text">The menu has a page for you to see local venues in your area. From here you can see if they have Cue enabled machines and more information.</string>
+    <string name="join_queue">Join Queue</string>
+    <string name="join_queue_text">Ready to play a game? Join a queue now.</string>
+    <string name="join">join</string>
 </resources>

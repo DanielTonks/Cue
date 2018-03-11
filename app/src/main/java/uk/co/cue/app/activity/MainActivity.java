@@ -83,10 +83,10 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 //        });
 
         this.standard = findViewById(R.id.standard);
-        this.inQueue = findViewById(R.id.inQueue);
-        this.queuePos = findViewById(R.id.queuePosition);
-
-        this.queueDescription = findViewById(R.id.queueDescription);
+//        this.inQueue = findViewById(R.id.inQueue);
+//        this.queuePos = findViewById(R.id.queuePosition);
+//
+//        this.queueDescription = findViewById(R.id.queueDescription);
 
         this.topLevelView = findViewById(R.id.main_layout);
 

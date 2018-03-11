@@ -13,11 +13,6 @@
             android:iconTint="@color/colorPrimary"
             android:title="Local Venues" />
         <item
-            android:id="@+id/favourite_venues"
-            android:icon="@mipmap/pin"
-            android:iconTint="@color/colorPrimary"
-            android:title="Favourite Venues" />
-        <item
             android:id="@+id/past_games"
             android:icon="@mipmap/history"
             android:iconTint="@color/colorPrimary"
