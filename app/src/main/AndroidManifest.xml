@@ -125,7 +125,7 @@
         <activity android:name=".activity.WriteTagActivity" />
         <activity
             android:name=".activity.VenueDetails"
-            android:parentActivityName=".activity.MainActivity"
+            android:parentActivityName=".activity.LocalVenuesActivity"
             android:theme="@style/AppThemeActionBar"></activity>
 
         <meta-data

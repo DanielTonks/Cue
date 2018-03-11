@@ -89,7 +89,7 @@ public class HomeFragment extends Fragment {
                 editor.putBoolean("show_welcome", false);
                 welcome.setVisibility(View.GONE);
                 break;
-            case "Venues":
+            case "Venue":
                 editor.putBoolean("show_venues", false);
                 venues.setVisibility(View.GONE);
                 break;
