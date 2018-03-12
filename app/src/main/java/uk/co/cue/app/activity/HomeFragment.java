@@ -9,20 +9,38 @@ import android.support.v7.widget.CardView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Game;
+import uk.co.cue.app.util.CueApp;
+
+import static android.app.Activity.RESULT_OK;
 
 public class HomeFragment extends Fragment {
 
     private View welcome;
     private View venues;
     private View queue;
+    private CueApp app;
+    private View card_inQueue;
+    private TextView est_time;
+    private TextView queue_pos;
+    private TextView queue_description;
+    private TextView pub_name;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
+
+        app = (CueApp) getActivity().getApplication();
+
+        if (app.getUser().getGame() != null) {
+            //User has a game
+            updateGameCard(app.getUser().getGame());
+        }
 
         welcome = fragment.findViewById(R.id.card_intro);
         venues = fragment.findViewById(R.id.card_venues);
@@ -64,20 +82,29 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 Intent i = new Intent(getActivity().getApplicationContext(), ReserveTableActivity.class);
-                startActivity(i);
+                startActivityForResult(i, 0);
             }
         });
 
-//        Button pub_details = fragment.findViewById(R.id.btn_pub);
-//        pub_details.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent a = new Intent(getActivity().getApplicationContext(), VenueDetails.class);
-//                startActivity(a);
-//            }
-//        });
+        card_inQueue = fragment.findViewById(R.id.card_in_queue);
+        queue_description = fragment.findViewById(R.id.queue_description);
+        queue_pos = fragment.findViewById(R.id.queue_position);
+        est_time = fragment.findViewById(R.id.estimated_time);
+        pub_name = fragment.findViewById(R.id.pub_name);
+
+
 
         return fragment;
+    }
+
+    private void updateGameCard(Game g) {
+        pub_name.setText(g.getVenueName());
+        queue_description.setText("You are queueing for " + g.getCategory() + " at " + g.getVenueName());
+        //queue_pos.setText(g.getPosition());
+        est_time.setText("The estimated time before your game is 0 minutes");
+
+        queue.setVisibility(View.GONE);
+        card_inQueue.setVisibility(View.VISIBLE);
     }
 
     private void closeCard(String card) {
@@ -96,5 +123,22 @@ public class HomeFragment extends Fragment {
         }
 
         editor.apply();
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        // Check which request we're responding to
+        if (requestCode == 0) {
+            // Make sure the request was successful
+            if (resultCode == RESULT_OK) {
+                System.out.println("HELLO");
+                Game g = (Game) data.getSerializableExtra("game");
+                app.getUser().setGame(g);
+
+
+                updateGameCard(g);
+
+            }
+        }
     }
 }

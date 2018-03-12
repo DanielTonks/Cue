@@ -12,12 +12,14 @@ public class Game implements Serializable {
     private int queue_id;
     private String venue_name;
     private String category;
+    private int position;
 
-    public Game(int venue_id, int queue_id, String venue_name, String category) {
+    public Game(int venue_id, int queue_id, String venue_name, String category, int position) {
         this.venue_id = venue_id;
         this.queue_id = queue_id;
         this.venue_name = venue_name;
         this.category = category;
+        this.position = 42;
     }
 
     public int getVenueID() {
@@ -44,5 +46,9 @@ public class Game implements Serializable {
                 ", venue_name='" + venue_name + '\'' +
                 ", category='" + category + '\'' +
                 '}';
+    }
+
+    public int getPosition() {
+        return position;
     }
 }

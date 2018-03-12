@@ -68,7 +68,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
 
             Intent returnIntent = new Intent();
-            Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"));
+            Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42);
             returnIntent.putExtra("game", g);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();

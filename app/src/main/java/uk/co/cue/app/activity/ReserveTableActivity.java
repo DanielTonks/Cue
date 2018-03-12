@@ -1,5 +1,6 @@
 package uk.co.cue.app.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -91,9 +92,10 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
         if (requestCode == 0) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                intent.putExtra("game", data.getSerializableExtra("game"));
-                startActivity(intent);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("game", data.getSerializableExtra("game"));
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
             }
         } else if (requestCode == 1) {
             System.out.println("Got back from map");

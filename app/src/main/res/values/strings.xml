@@ -62,4 +62,5 @@
     <string name="join_queue_text">Ready to play a game? Join a queue now.</string>
     <string name="join">join</string>
     <string name="book">Confirm Time</string>
+    <string name="quit">Quit Queue</string>
 </resources>

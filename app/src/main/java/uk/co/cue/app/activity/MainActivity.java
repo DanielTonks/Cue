@@ -27,7 +27,6 @@ import java.util.Map;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
-import uk.co.cue.app.objects.Game;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -200,20 +199,12 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         editor.putString("username", null);
         editor.putString("session_cookie", null);
         editor.putBoolean("isBusiness", false);
+        editor.putBoolean("isGame", app.getUser().getGame() != null);
         editor.apply();
 
 
         Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
         startActivity(i);
         finish();
-    }
-
-    @Override
-    protected void onNewIntent(Intent intent) {
-
-        Game g = (Game) intent.getSerializableExtra("game");
-        app.getUser().setGame(g);
-
-        super.onNewIntent(intent);
     }
 }
