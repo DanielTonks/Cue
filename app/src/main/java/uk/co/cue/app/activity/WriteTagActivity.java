@@ -1,5 +1,6 @@
 package uk.co.cue.app.activity;
 
+import android.app.Activity;
 import android.app.PendingIntent;
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -7,9 +8,9 @@ import android.content.IntentFilter;
 import android.nfc.NdefMessage;
 import android.nfc.NfcAdapter;
 import android.nfc.Tag;
+import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.widget.ProgressBar;
 import android.widget.TextView;
@@ -20,12 +21,12 @@ import uk.co.cue.app.services.NFCManager;
 public class WriteTagActivity extends AppCompatActivity {
 
     NFCManager nfcManager;
+    Tag currentTag;
     private View view;
     private NdefMessage message = null;
     private ProgressDialog dialog;
     private ProgressBar spinner;
     private TextView txt;
-    Tag currentTag;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -89,8 +90,11 @@ public class WriteTagActivity extends AppCompatActivity {
         if(message !=null) {
             nfcManager.writeTag(currentTag, message);
             //dialog.dismiss();
-            txt.setText("Tag written to!");
             spinner.setVisibility(View.GONE);
+
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
         }
     }
 }

@@ -200,6 +200,9 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         editor.putString("session_cookie", null);
         editor.putBoolean("isBusiness", false);
         editor.putBoolean("isGame", app.getUser().getGame() != null);
+        editor.putBoolean("show_welcome", true);
+        editor.putBoolean("show_venues", true);
+
         editor.apply();
 
 
