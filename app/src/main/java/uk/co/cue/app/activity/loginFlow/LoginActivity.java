@@ -106,11 +106,11 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
                 boolean isBusiness = false;
                 if (arrayOfVenues.length() != 0) {
                     isBusiness = true;
+                    //we'll get the venues from here
                 }
 
                 User usr = new User(userID, username, session, isBusiness, null);
                 app.setUser(usr);
-
                 Intent returnIntent = new Intent();
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();

@@ -53,14 +53,14 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         Spinner machine_name = (Spinner) findViewById(R.id.machine_type_spinner);
         final String spinner_value = machine_name.getSelectedItem().toString();
 
-        EditText pub = (EditText) findViewById(R.id.edit_pub_name);
-        final String pub_name = pub.getText().toString();
+        Spinner pub = (Spinner) findViewById(R.id.edit_pub_name);
+        //sort stuff out here as well
 
         EditText price = (EditText) findViewById(R.id.value);
         final String price_per_game = price.getText().toString();
 
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("venue_id", venue_id); //dummy value; will need to be changed later
+        parameters.put("venue_id", venue_id);
         parameters.put("category", spinner_value);
         parameters.put("base_price", price_per_game);
         parameters.put("user_id", String.valueOf(app.getUser().getUserid()));
