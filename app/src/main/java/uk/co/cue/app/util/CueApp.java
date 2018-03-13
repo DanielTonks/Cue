@@ -22,8 +22,9 @@ public class CueApp extends Application {
     public final static String POST_add_machine = "https://idk-cue.club/machine/add";
     public final static String GET_MACHINES = "https://idk-cue.club/machines/all";
     public final static String GET_local_venues = "https://idk-cue.club/venues/nearby";
-    public final static String POST_add_queue = "https://idk-cue.club/queue/add";
-    public final static String POST_edit_queue = "https://idk-cue.club/queue/edit";
+    public final static String GET_user_queue = "https://idk-cue.club/user/queue";
+    public final static String POST_add_queue = "https://idk-cue.club/queue/join";
+    public final static String POST_leave_queue = "https://idk-cue.club/queue/leave";
 
     private User user;
 
@@ -46,6 +47,7 @@ public class CueApp extends Application {
     public void setUser(User newUser) {
         System.out.println("Setting new user: " + newUser.toString());
         this.user.updateUser(newUser); // update the user so we don't overwrite their firebase token.
+        System.out.println("FIREBASE: " + user.getFirebaseToken());
     }
 
     public void closeKeyboard(View view) {

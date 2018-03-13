@@ -55,6 +55,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         if (app.getUser().getSession() != null) {
             setUp();
         }
+
         this.vrf = new VolleyRequestFactory(this, getApplicationContext());
     }
 
@@ -70,29 +71,12 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         actionbar.setDisplayHomeAsUpEnabled(true);
         actionbar.setHomeAsUpIndicator(R.drawable.ic_menu);
 
-//        Button btn = findViewById(R.id.button);
-//        btn.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                Intent i = new Intent(getApplicationContext(), ReserveTableActivity.class);
-//                // i.setFlags(Intent.FLAG_ACTIVITY_NO_HISTORY);
-//                startActivity(i);
-//                //Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
-//                //startActivityForResult(i, 0);
-//            }
-//        });
-
         this.standard = findViewById(R.id.standard);
-//        this.inQueue = findViewById(R.id.inQueue);
-//        this.queuePos = findViewById(R.id.queuePosition);
-//
-//        this.queueDescription = findViewById(R.id.queueDescription);
-
         this.topLevelView = findViewById(R.id.main_layout);
 
         Intent i = getIntent();
         boolean confirmed = i.getBooleanExtra("confirmed", false);
-        System.out.println(confirmed);
+        System.out.println("CONFIRMED: " + confirmed);
         if (confirmed) {
             updateUI(i);
         }
@@ -173,8 +157,6 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 
     private void updateUI(Intent data) {
         showHomeFragment(new HomeFragment());
-//        standard.setVisibility(View.GONE);
-//        inQueue.setVisibility(View.VISIBLE);
 
         String pub = data.getStringExtra("pubID");
         String name = data.getStringExtra("userName");
@@ -194,7 +176,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        if (url.equals(app.POST_logout)) {
+        if (url.contains(app.POST_logout)) {
             logoutOfApp();
         }
     }
@@ -214,6 +196,9 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         editor.putString("username", null);
         editor.putString("session_cookie", null);
         editor.putBoolean("isBusiness", false);
+        editor.putBoolean("isGame", false);
+        editor.putBoolean("show_welcome", true);
+        editor.putBoolean("show_venues", true);
         editor.apply();
 
 
