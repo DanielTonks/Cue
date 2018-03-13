@@ -1,5 +1,6 @@
 package uk.co.cue.app.activity;
 
+import android.app.Activity;
 import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
@@ -12,12 +13,22 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.PlaceDetectionClient;
+import com.google.android.gms.location.places.Places;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.Calendar;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.VolleyRequestFactory;
 
-public class ReserveTableActivity extends AppCompatActivity {
+public class ReserveTableActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest {
 
     private static long timeUNIX; // holds the unix time of the time the user selected
     private static TextView currentTimeSelected;
@@ -26,6 +37,9 @@ public class ReserveTableActivity extends AppCompatActivity {
     private String playerName;
 
     private CueApp app;
+    private PlaceDetectionClient mPlaceDetectionClient;
+    private FusedLocationProviderClient locationManager;
+    private VolleyRequestFactory vrf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +48,8 @@ public class ReserveTableActivity extends AppCompatActivity {
         this.app = (CueApp) getApplication();
         setTitle("Reserve a game");
         currentTimeSelected = findViewById(R.id.currentTimeSelected);
+
+        mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
 
 
         findViewById(R.id.btn_now).setOnClickListener(new View.OnClickListener() {
@@ -53,7 +69,7 @@ public class ReserveTableActivity extends AppCompatActivity {
             }
         });
 
-        findViewById(R.id.btn_next).setOnClickListener(new View.OnClickListener() {
+        findViewById(R.id.btn_join).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 System.out.println(timeUNIX);
@@ -62,8 +78,13 @@ public class ReserveTableActivity extends AppCompatActivity {
             }
         });
 
+        locationManager = LocationServices.getFusedLocationProviderClient(this);
+        vrf = new VolleyRequestFactory(this, getApplicationContext());
+
+
 
     }
+
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -71,19 +92,38 @@ public class ReserveTableActivity extends AppCompatActivity {
         if (requestCode == 0) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                System.out.println("Got back, here is value of timeUNIX: " + timeUNIX);
+                Intent returnIntent = new Intent();
+                returnIntent.putExtra("game", data.getSerializableExtra("game"));
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            }
+        } else if (requestCode == 1) {
+            System.out.println("Got back from map");
+        }
+    }
 
+    @Override
+    public void requestFinished(JSONObject response, String url) {
+        System.out.println(response.toString());
+        JSONArray arr = null;
+        try {
+            arr = response.getJSONArray("results");
 
-                Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-                //intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-                intent.putExtra("confirmed", true);
-                intent.putExtra("pubID", "S'oak");
-                intent.putExtra("userName", playerName);
-
-                startActivity(intent);
+            for (int i = 0; i < arr.length(); i++) {
+                JSONObject place = arr.getJSONObject(i);
+                System.out.println(place.getString("name"));
 
             }
+
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
+
+    }
+
+    @Override
+    public void requestFailed(int statusCode) {
+
     }
 
 

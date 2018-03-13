@@ -7,6 +7,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 
@@ -28,6 +29,8 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
     private String venue_id = "1"; //dummy value, will need to be changed
     private VolleyRequestFactory volleyRequest;
     private CueApp app;
+    private EditText pub;
+    private EditText price;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +59,7 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         Spinner pub = (Spinner) findViewById(R.id.edit_pub_name);
         //sort stuff out here as well
 
-        EditText price = (EditText) findViewById(R.id.value);
+        price = (EditText) findViewById(R.id.value);
         final String price_per_game = price.getText().toString();
 
         Map<String, String> parameters = new HashMap<String, String>();
@@ -78,7 +81,7 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
 
         Intent NFCIntent = new Intent(getApplicationContext(), WriteTagActivity.class);
         NFCIntent.putExtra("url", firebase_link);
-        startActivity(NFCIntent);
+        startActivityForResult(NFCIntent, 0);
 
     }
 
@@ -89,8 +92,8 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
 
                 System.out.println(response.toString());
                 int machineID = response.getJSONArray("Machine").getJSONObject(0).getInt("machine_id");
-                int venueID = response.getJSONArray("Machine").getJSONObject(0).getInt("venue_id");
-                generateLink(machineID, venueID);
+                //int venueID = response.getJSONArray("Machine").getJSONObject(0).getInt("venue_id");
+                generateLink(machineID, 1); // HARDCODED AS THE S'OAK
             }
         } catch (Exception err) {
             System.out.println(err.getMessage());
@@ -104,5 +107,17 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         } else {
             //IMPLEMENT
         }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(this, "Tag written. You can now place this near to the hub box.", Toast.LENGTH_LONG).show();
+            price.setText("");
+            pub.setText("");
+
+        }
+
+
     }
 }

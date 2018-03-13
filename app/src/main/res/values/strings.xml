@@ -27,10 +27,40 @@
     <string name="machine_num">Enter the number of machines:</string>
     <string name="price_per_game">Enter the price per game:</string>
 
+
     <string-array name="machine_type_array">
         <item>Pool</item>
         <item>Snooker</item>
         <item>Foosball</item>
         <item>Arcade</item>
     </string-array>
+
+    <!-- Strings related to help screen -->
+    <string name="help_title">How Cue works in 5 simple steps:</string>
+    <string name="help_step1">Head to your local Cue-connected pub.</string>
+    <string name="help_step2">Open the app and select a pool table to join the queue.</string>
+    <string name="help_step3">Tap a tag on a pool table to confirm your presence.</string>
+    <string name="help_step4">When a table becomes available, Cue will notify you.</string>
+    <string name="help_step5">Tap the table again to confirm you\'re ready to start the game.</string>
+
+    <!-- Number-related strings (just to shut Studio up) -->
+    <string name="num_1">1</string>
+    <string name="num_2">2</string>
+    <string name="num_3">3</string>
+    <string name="num_4">4</string>
+    <string name="num_5">5</string>
+    <string name="num_6">6</string>
+    <string name="num_7">7</string>
+    <string name="num_8">8</string>
+    <string name="num_9">9</string>
+    <string name="welcome_title">Welcome to Cue</string>
+    <string name="welcome_text">With Cue, we\'ve made it easier to know whos next to play games in your local pub. </string>
+    <string name="welcome_text2">Simply head to your favourite Cue enabled Pub, find a pool table or perhaps an arcade machine, then tap the tag to join the Cue.</string>
+    <string name="local_venues_title">Local Venues</string>
+    <string name="local_venues_text">The menu has a page for you to see local venues in your area. From here you can see if they have Cue enabled machines and more information.</string>
+    <string name="join_queue">Join Queue</string>
+    <string name="join_queue_text">Ready to play a game? Join a queue now.</string>
+    <string name="join">join</string>
+    <string name="book">Confirm Time</string>
+    <string name="quit">Quit Queue</string>
 </resources>

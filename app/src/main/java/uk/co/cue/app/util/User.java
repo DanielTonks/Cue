@@ -2,6 +2,7 @@ package uk.co.cue.app.util;
 
 import java.util.ArrayList;
 
+import uk.co.cue.app.objects.Game;
 import uk.co.cue.app.objects.Venue;
 
 /**
@@ -16,6 +17,7 @@ public class User {
     private boolean business;
     private ArrayList<Venue> venues;
     private String firebaseToken;
+    private Game game;
 
     public User(int userid, String username, String session, boolean business, ArrayList<Venue> venues) {
         this.userid = userid;
@@ -75,5 +77,13 @@ public class User {
         this.business = newUser.isBusiness();
         this.venues = newUser.getVenues();
         this.session = newUser.getSession();
+    }
+
+    public Game getGame() {
+        return game;
+    }
+
+    public void setGame(Game game) {
+        this.game = game;
     }
 }
