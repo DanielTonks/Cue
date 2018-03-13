@@ -117,6 +117,10 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                                 startActivity(i);
                                 break;
 
+                            case "Edit machine":
+                                Intent intent2 = new Intent(MainActivity.this, EditMachineActivity.class);
+                                startActivity(intent2);
+
                             case "Local Venues":
                                 Intent intent = new Intent(MainActivity.this, LocalVenuesActivity.class);
                                 startActivity(intent);

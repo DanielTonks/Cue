@@ -126,7 +126,7 @@
         <activity
             android:name=".activity.VenueDetails"
             android:parentActivityName=".activity.LocalVenuesActivity"
-            android:theme="@style/AppThemeActionBar"></activity>
+            android:theme="@style/AppThemeActionBar" />
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
@@ -135,7 +135,10 @@
         <activity
             android:name=".activity.LocalVenuesActivity"
             android:parentActivityName=".activity.MainActivity"
-            android:theme="@style/AppThemeActionBar"></activity>
+            android:theme="@style/AppThemeActionBar" />
+        <activity android:name=".activity.EditMachineActivity"
+            android:parentActivityName=".activity.MainActivity"
+            android:theme="@style/AppThemeActionBar"/>
     </application>
 
 </manifest>

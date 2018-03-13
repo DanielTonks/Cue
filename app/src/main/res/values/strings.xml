@@ -23,6 +23,7 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="setup_pub">Choose your venue:</string>
     <string name="machine_type">Select your machine type:</string>
+    <string name="machine_id">Select your machine: </string>
     <string name="setup_button">Setup</string>
     <string name="machine_num">Enter the number of machines:</string>
     <string name="price_per_game">Enter the price per game:</string>
