@@ -132,7 +132,10 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
                     intent.putExtra("type", "Start");
                     startActivityForResult(intent, 1);
                 } else if (ready && inProgress) {
-
+                    card_inQueue.setVisibility(View.GONE);
+                    queue.setVisibility(View.VISIBLE);
+                    SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
+                    sharedPref.edit().putBoolean("isGame", false).commit();
                 } else {
                     card_inQueue.setVisibility(View.GONE);
                     queue.setVisibility(View.VISIBLE);
