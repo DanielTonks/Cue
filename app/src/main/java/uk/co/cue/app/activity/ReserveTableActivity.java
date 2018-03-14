@@ -74,6 +74,7 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
             public void onClick(View view) {
                 System.out.println(timeUNIX);
                 Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
+                i.putExtra("type", "Reserve");
                 startActivityForResult(i, 0);
             }
         });

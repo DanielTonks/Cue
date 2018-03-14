@@ -26,7 +26,7 @@ import uk.co.cue.app.util.VolleyRequestFactory;
 
 import static android.app.Activity.RESULT_OK;
 
-public class HomeFragment extends Fragment implements VolleyRequestFactory.VolleyRequest {
+public class HomeFragment extends Fragment implements VolleyRequestFactory.VolleyRequest, Game.GameChanged {
 
     private View welcome;
     private View venues;
@@ -39,12 +39,17 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
     private TextView pub_name;
     private View requestTable;
     private VolleyRequestFactory vrf;
+    private View quit;
+    private boolean ready = false;
+    private boolean inProgress = false; // used to denote when the game is in progress
+
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(final LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
+
 
         app = (CueApp) getActivity().getApplication();
 
@@ -61,6 +66,8 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         boolean show_welcome = sharedPref.getBoolean("show_welcome", true);
         boolean show_venues = sharedPref.getBoolean("show_venues", true);
 
+        vrf = new VolleyRequestFactory(this, getContext());
+
         if (sharedPref.getBoolean("isGame", false)) {
             System.out.println("This user had a game");
             Map<String, String> params = new HashMap<String, String>();
@@ -71,7 +78,6 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             venues.setVisibility(View.VISIBLE);
         }
 
-        vrf = new VolleyRequestFactory(this, getContext());
 
         if (show_welcome) {
             welcome.setVisibility(View.VISIBLE);
@@ -115,33 +121,44 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         est_time = fragment.findViewById(R.id.estimated_time);
         pub_name = fragment.findViewById(R.id.pub_name);
 
+        quit = fragment.findViewById(R.id.btn_quit);
 
-        fragment.findViewById(R.id.btn_quit).setOnClickListener(new View.OnClickListener() {
+        quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                card_inQueue.setVisibility(View.GONE);
-                queue.setVisibility(View.VISIBLE);
 
-                Snackbar sb = Snackbar.make(view, "You have been removed from the queue", Snackbar.LENGTH_LONG);
-                sb.addCallback(new Snackbar.Callback() {
-                    @Override
-                    public void onDismissed(Snackbar transientBottomBar, int event) {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("user_id", String.valueOf(app.getUser().getUserid()));
-                        params.put("session_cookie", app.getUser().getSession());
-                        vrf.doRequest(app.POST_leave_queue, params, Request.Method.POST);
-                    }
-                });
+                if (ready && !inProgress) {
+                    Intent intent = new Intent(getContext(), NFCDetectedActivity.class);
+                    intent.putExtra("type", "Start");
+                    startActivityForResult(intent, 1);
+                } else if (ready && inProgress) {
+
+                } else {
+                    card_inQueue.setVisibility(View.GONE);
+                    queue.setVisibility(View.VISIBLE);
+
+                    Snackbar sb = Snackbar.make(view, "You have been removed from the queue", Snackbar.LENGTH_LONG);
+                    sb.addCallback(new Snackbar.Callback() {
+                        @Override
+                        public void onDismissed(Snackbar transientBottomBar, int event) {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+                            params.put("session_cookie", app.getUser().getSession());
+                            vrf.doRequest(app.POST_leave_queue, params, Request.Method.POST);
+                        }
+                    });
 
 
-                sb.setAction("Undo", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        card_inQueue.setVisibility(View.VISIBLE);
-                        queue.setVisibility(View.GONE);
-                    }
-                });
-                sb.show();
+                    sb.setAction("Undo", new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            card_inQueue.setVisibility(View.VISIBLE);
+                            queue.setVisibility(View.GONE);
+                        }
+                    });
+                    sb.show();
+                }
+
             }
         });
 
@@ -151,11 +168,21 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
     private void updateGameCard(Game g) {
         pub_name.setText(g.getVenueName());
         queue_description.setText("You are queueing for " + g.getCategory() + " at " + g.getVenueName());
-        //queue_pos.setText(g.getPosition());
-        est_time.setText("The estimated time before your game is 0 minutes");
 
         queue.setVisibility(View.GONE);
         card_inQueue.setVisibility(View.VISIBLE);
+
+        if (g.getPosition() == 0) {
+            est_time.setText("You can now begin your game");
+            queue_pos.setText("Ready");
+            ((TextView) quit.findViewById(R.id.btn_text)).setText("Start Game");
+            ready = true;
+        } else {
+            est_time.setText("The estimated time before your game is 0 minutes");
+            queue_pos.setText(String.valueOf(g.getPosition()));
+            ((TextView) quit.findViewById(R.id.btn_text)).setText("Quit Queue");
+            ready = false;
+        }
     }
 
     private void closeCard(String card) {
@@ -184,13 +211,20 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             if (resultCode == RESULT_OK) {
                 System.out.println("HELLO");
                 Game g = (Game) data.getSerializableExtra("game");
+                g.setOnGameChangedListener(this);
                 app.getUser().setGame(g);
 
                 SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
-                sharedPref.edit().putBoolean("isGame", true).apply();
+                sharedPref.edit().putBoolean("isGame", true).commit();
 
                 updateGameCard(g);
             }
+        } else if (requestCode == 1) {
+            //Now the game is in progress
+            //est_time.setText("The estimated time before your game is 0 minutes");
+            queue_pos.setText("In Progress");
+            inProgress = true;
+            ((TextView) quit.findViewById(R.id.btn_text)).setText("End Game");
         }
     }
 
@@ -209,6 +243,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
                 int venueID = queueInfo.getInt("venue_id");
 
                 Game g = new Game(venueID, queueID, venueName, category, 42);
+                g.setOnGameChangedListener(this);
 
                 app.getUser().setGame(g);
                 updateGameCard(g);
@@ -222,6 +257,18 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
     @Override
     public void requestFailed(int statusCode) {
+
+    }
+
+    @Override
+    public void gameChanged(Game g) {
+        final Game g1 = g;
+        getActivity().runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                updateGameCard(g1);
+            }
+        });
 
     }
 }
