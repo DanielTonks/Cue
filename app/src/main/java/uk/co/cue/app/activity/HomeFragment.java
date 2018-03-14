@@ -53,11 +53,6 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
         app = (CueApp) getActivity().getApplication();
 
-        if (app.getUser().getGame() != null) {
-            //User has a game
-            updateGameCard(app.getUser().getGame());
-        }
-
         welcome = fragment.findViewById(R.id.card_intro);
         venues = fragment.findViewById(R.id.card_venues);
         queue = fragment.findViewById(R.id.card_queue);
@@ -164,6 +159,11 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
             }
         });
+
+        if (app.getUser().getGame() != null) {
+            //User has a game
+            updateGameCard(app.getUser().getGame());
+        }
 
         return fragment;
     }

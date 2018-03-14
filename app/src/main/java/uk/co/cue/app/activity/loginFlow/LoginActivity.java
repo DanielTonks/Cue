@@ -95,8 +95,6 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
     public void requestFinished(JSONObject response, String url) {
         try {
             if (url.equals(app.POST_login)) {
-
-                System.out.println(response.toString());
                 int userID = response.getJSONArray("User").getJSONObject(0).getInt("user_id");
                 String session = response.getJSONArray("User").getJSONObject(0).getString("session_cookie");
 
