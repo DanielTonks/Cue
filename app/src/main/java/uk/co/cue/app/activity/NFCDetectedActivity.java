@@ -61,12 +61,12 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        System.out.println(response);
-
         try {
             JSONArray arr = response.getJSONArray("Queue");
             JSONObject obj = arr.getJSONObject(0);
 
+            String wait = obj.getString("average_wait");
+            //int minute =
 
             Intent returnIntent = new Intent();
             Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42);
@@ -76,12 +76,14 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         } catch (JSONException e) {
             e.printStackTrace();
         }
-
     }
 
     @Override
     public void requestFailed(int statusCode) {
-
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("serverError", true);
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
     }
 
     @Override

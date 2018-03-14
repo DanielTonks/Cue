@@ -183,7 +183,6 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     public void requestFailed(int statusCode) {
-
         System.out.println(statusCode);
         logoutOfApp();
     }
@@ -200,7 +199,6 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         editor.putBoolean("show_welcome", true);
         editor.putBoolean("show_venues", true);
         editor.apply();
-
 
         Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
         startActivity(i);

@@ -56,12 +56,12 @@ public class VolleyRequestFactory {
         }
 
         final String given_url = url;
-        System.out.println(given_url);
 
         JsonObjectRequest req = new JsonObjectRequest(method, url, jsonObj,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
+                        System.out.println(given_url + ": " + response);
                         callback.requestFinished(response, given_url);
                     }
                 },
