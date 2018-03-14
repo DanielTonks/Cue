@@ -44,10 +44,6 @@ public class LoginChooserActivity extends AppCompatActivity {
             boolean isBusiness = sharedPref.getBoolean("isBusiness", false);
             String session = sharedPref.getString("session_cookie", null);
 
-            if (sharedPref.getBoolean("isGame", false)) {
-                // REQUEST GAME DETAILS
-            }
-
             User newUsr = new User(userId, username, session, isBusiness, null);
             app.setUser(newUsr);
             Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
