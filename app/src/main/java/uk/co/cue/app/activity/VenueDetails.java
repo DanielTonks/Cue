@@ -105,10 +105,6 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
             TextView snooker_num = findViewById(R.id.snooker_num);
             TextView foosball_num = findViewById(R.id.foosball_num);
             TextView arcade_num = findViewById(R.id.arcade_num);
-            ImageView pool_img = findViewById(R.id.pool_img);
-            ImageView snooker_img = findViewById(R.id.snooker_img);
-            ImageView foosball_img = findViewById(R.id.foosball_img);
-            ImageView arcade_img = findViewById(R.id.arcade_img);
             int pool =0;
             int snooker=0;
             int foosball=0;

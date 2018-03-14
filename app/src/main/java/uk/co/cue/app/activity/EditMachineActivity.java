@@ -22,7 +22,7 @@ public class EditMachineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_machine);
 
-        app = (CueApp) getApplicationContext();
+        app = (CueApp) getApplication();
         venue = findViewById(R.id.pub_name_spinner);
         machine = findViewById(R.id.chooseMachine);
         submit = findViewById(R.id.submitEdit);

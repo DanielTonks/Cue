@@ -71,6 +71,7 @@ public class User {
         return venues;
     }
 
+
     public void updateUser(User newUser) {
         this.username = newUser.getUsername();
         this.userid = newUser.getUserid();

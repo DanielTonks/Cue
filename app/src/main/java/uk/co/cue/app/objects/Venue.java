@@ -20,10 +20,10 @@ public class Venue implements Parcelable{
     private double lon;
     private String googleToken;
 
-    public Venue(int venue_id, String venue_name, ArrayList<Machine> machines, double lat, double lon, String googleToken) {
+    public Venue(int venue_id, String venue_name,  double lat, double lon, String googleToken) {
         this.venue_id = venue_id;
         this.venue_name = venue_name;
-        this.machines = machines;
+        this.machines = new ArrayList<>();
         this.lat = lat;
         this.lon = lon;
         this.googleToken = googleToken;
@@ -41,6 +41,10 @@ public class Venue implements Parcelable{
     public int getVenue_id() {
         return venue_id;
     }
+
+    public String toString() { return venue_name; }
+
+    public void setMachines(ArrayList<Machine> machine) { this.machines = machine; }
 
     public String getVenue_name() {
         return venue_name;
