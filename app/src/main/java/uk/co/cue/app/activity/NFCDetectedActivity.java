@@ -43,6 +43,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     private String venueID;
     private String machineID;
     private CueApp app;
+    private boolean reserve = true;
 
     public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
 
@@ -86,15 +87,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.vrf = new VolleyRequestFactory(this, getApplicationContext());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         setContentView(R.layout.activity_nfcdetected);
 
         this.processingText = findViewById(R.id.processingText);
+        this.vrf = new VolleyRequestFactory(this, getApplicationContext());
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         mPendingIntent = PendingIntent.getActivity(this, 0,
@@ -105,6 +101,13 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
                         Ndef.class.getName()
                 }
         };
+        Bundle b = getIntent().getExtras();
+        if (b.getString("type").equals("Reserve")) {
+            processingText.setText("Tap the tag on any table");
+        } else {
+            processingText.setText("Tap Table x to start the game");
+            reserve = false;
+        }
     }
 
     public Uri getNdefMessages(Intent intent) {
@@ -146,6 +149,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     @Override
     public void onNewIntent(Intent intent) {
         processingText.setText("Processing");
+
         Log.i("Foreground dispatch", "Discovered tag with intent:" + intent);
         Uri link = getNdefMessages(intent);
 
@@ -160,17 +164,21 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         }
 
         app = (CueApp) getApplication();
-        //Make a network request to log in.
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("user_id", String.valueOf(app.getUser().getUserid()));
-        params.put("machine_id", machineID);
-        params.put("session_cookie", app.getUser().getSession());
 
-//        System.out.println(app.getUser().getUserid());
-//        System.out.println(app.getUser().getSession());
-//        System.out.println(machineID);
 
-        vrf.doRequest(app.POST_add_queue, params, Request.Method.POST);
+        if (reserve) {
+            //Make a network request to log in.
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+            params.put("machine_id", machineID);
+            params.put("session_cookie", app.getUser().getSession());
+
+            vrf.doRequest(app.POST_add_queue, params, Request.Method.POST);
+        } else { // user wants to confirm presence
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
 
 
     }

@@ -1,9 +1,5 @@
 package uk.co.cue.app.services;
 
-/**
- * Created by danieltonks on 19/02/2018.
- */
-
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -20,10 +16,16 @@ import com.google.firebase.messaging.RemoteMessage;
 
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.MainActivity;
+import uk.co.cue.app.util.CueApp;
+
+/**
+ * Created by danieltonks on 14/03/2018.
+ */
 
 public class CueMessageHandler extends FirebaseMessagingService {
 
     private static final String TAG = "MyFirebaseMsgService";
+    private CueApp app;
 
     /**
      * Called when message is received.
@@ -56,10 +58,19 @@ public class CueMessageHandler extends FirebaseMessagingService {
 
         }
 
+        app = (CueApp) getApplication();
+
         // Check if message contains a notification payload.
         if (remoteMessage.getNotification() != null) {
             Log.d(TAG, "Message Notification Body: " + remoteMessage.getNotification().getBody());
-            sendNotification(remoteMessage.getNotification().getBody());
+            String body = remoteMessage.getNotification().getBody();
+            if (body.contains("Your position in the queue is now ")) {
+                int queuePos = Integer.parseInt(body.replace("Your position in the queue is now ", ""));
+                System.out.println(queuePos);
+                app.getUser().getGame().setPosition(queuePos);
+            }
+
+            sendNotification(body);
         }
 
         // Also if you intend on generating your own notifications as a result of a received FCM
