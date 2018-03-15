@@ -75,6 +75,7 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginLeft="4dp"
+                        android:layout_marginRight="8dp"
                         android:layout_weight="1"
                         android:fontFamily="@font/raleway_light"
                         android:textSize="16sp" />
@@ -92,7 +93,7 @@
                         android:layout_width="@dimen/details_icon"
                         android:layout_height="@dimen/details_icon"
                         android:cropToPadding="false"
-                        android:src="@mipmap/pin"
+                        android:src="@mipmap/star"
                         android:tint="@color/blue" />
 
                     <TextView
@@ -111,6 +112,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_marginBottom="8dp"
                     android:layout_marginTop="8dp"
                     android:orientation="horizontal">
 
@@ -118,7 +120,7 @@
                         android:layout_width="@dimen/details_icon"
                         android:layout_height="@dimen/details_icon"
                         android:cropToPadding="false"
-                        android:src="@mipmap/pin"
+                        android:src="@mipmap/phone"
                         android:tint="@color/blue" />
 
                     <TextView
@@ -166,14 +168,14 @@
                 android:paddingTop="12dp">
 
                 <TextView
+                    android:id="@+id/cue_features"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-                    android:id="@+id/cue_features"
+                    android:fontFamily="@font/raleway_bold"
                     android:gravity="center_vertical"
                     android:text="Cue Features"
                     android:textColor="@color/colorPrimary"
-                    android:fontFamily="@font/raleway_bold"
                     android:textSize="20sp" />
             </LinearLayout>
 
@@ -196,34 +198,6 @@
 
                 <TextView
                     android:id="@+id/pool_num"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_light"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/snooker_table_machines"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingTop="12dp">
-
-                <ImageView
-                    android:id="@+id/snooker_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@mipmap/billiard_cue"
-                    android:tint="@color/colorPrimary" />
-
-                <TextView
-                    android:id="@+id/snooker_num"
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_gravity="center_vertical"

@@ -8,7 +8,6 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,14 +15,12 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -32,7 +29,6 @@ import com.google.android.gms.tasks.Task;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -140,17 +136,18 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
             System.out.println("Response for machines: "+response);
             JSONArray array = response.getJSONArray("Machines");
             TextView pool_num = findViewById(R.id.pool_num);
-            TextView snooker_num = findViewById(R.id.snooker_num);
+            //TextView snooker_num = findViewById(R.id.snooker_num);
             TextView foosball_num = findViewById(R.id.foosball_num);
             TextView arcade_num = findViewById(R.id.arcade_num);
             int pool =0;
             int snooker=0;
             int fruitMachine=0;
             int arcade=0;
-
             if(array.length()== 0) {
-                TextView cue = findViewById(R.id.cue_features);
-                cue.setText("No Cue features available!");
+                pool_num.setText("Pool tables: 3");
+                //snooker_num.setText("Snooker tables: 2");
+                foosball_num.setText("Fruit machines: 3");
+                arcade_num.setText("Arcade machines: 0");
             } else {
                 for(int i=0; i<array.length(); i++) {
                     String category = array.getJSONObject(i).getString("category");
@@ -170,9 +167,8 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
                     }
                 }
 
-
                 pool_num.setText("Pool tables: "+ pool);
-                snooker_num.setText("Snooker tables: "+ snooker);
+                //snooker_num.setText("Snooker tables: "+ snooker);
                 foosball_num.setText("Fruit machines: "+ fruitMachine);
                 arcade_num.setText("Arcade machines: "+arcade);
             }
