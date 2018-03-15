@@ -16,6 +16,16 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdate;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
@@ -24,10 +34,12 @@ import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Machine;
 import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -38,6 +50,8 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
     private String googleToken;
     private VolleyRequestFactory volleyRequest;
     private CueApp app;
+    private GoogleMap map;
+    private Venue venue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +62,36 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
         this.volleyRequest = new VolleyRequestFactory(this, getApplicationContext());
 
         Intent i = getIntent();
-        Venue venue = (Venue) i.getExtras().getParcelable("venue");
+        venue = (Venue) i.getExtras().getParcelable("venue");
         googleToken = venue.getGoogleToken();
 
         final TextView address = findViewById(R.id.address);
         final TextView rating = findViewById(R.id.rating);
         final TextView phone = findViewById(R.id.phone);
+
+        SupportMapFragment mapFrag = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.individualMapView));
+        mapFrag.getMapAsync(new OnMapReadyCallback() {
+                                @Override
+                                public void onMapReady(GoogleMap googleMap) {
+                                    map = googleMap;
+                                    MarkerOptions markerOptions = new MarkerOptions();
+                                    ArrayList<Machine> machines = new ArrayList<>();
+                                    LatLng loc = new LatLng(venue.getLatitude(), venue.getLongitude());
+                                    markerOptions.position(loc);
+                                    markerOptions.title(venue.getVenue_name());
+                                    Marker marker = map.addMarker(markerOptions);
+
+
+                                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                                            .target(loc)
+                                            .zoom(16)
+                                            .bearing(0)
+                                            .tilt(0).build();
+
+                                    map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                }
+                            });
+
 
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,19 +137,15 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
     @Override
     public void requestFinished(JSONObject response, String url) {
         try {
-            //System.out.println("Response for machines: "+response);
+            System.out.println("Response for machines: "+response);
             JSONArray array = response.getJSONArray("Machines");
             TextView pool_num = findViewById(R.id.pool_num);
             TextView snooker_num = findViewById(R.id.snooker_num);
             TextView foosball_num = findViewById(R.id.foosball_num);
             TextView arcade_num = findViewById(R.id.arcade_num);
-            ImageView pool_img = findViewById(R.id.pool_img);
-            ImageView snooker_img = findViewById(R.id.snooker_img);
-            ImageView foosball_img = findViewById(R.id.foosball_img);
-            ImageView arcade_img = findViewById(R.id.arcade_img);
             int pool =0;
             int snooker=0;
-            int foosball=0;
+            int fruitMachine=0;
             int arcade=0;
 
             if(array.length()== 0) {
@@ -121,16 +155,16 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
                 for(int i=0; i<array.length(); i++) {
                     String category = array.getJSONObject(i).getString("category");
                     switch(category) {
-                        case "pool":
+                        case "Pool":
                             pool++;
                             break;
-                        case "snooker":
+                        case "Snooker":
                             snooker++;
                             break;
-                        case "foosball":
-                            foosball++;
+                        case "Fruity Machine":
+                            fruitMachine++;
                             break;
-                        case "arcade":
+                        case "Arcade":
                             arcade++;
                             break;
                     }
@@ -139,7 +173,7 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
 
                 pool_num.setText("Pool tables: "+ pool);
                 snooker_num.setText("Snooker tables: "+ snooker);
-                foosball_num.setText("Foosball tables: "+ foosball);
+                foosball_num.setText("Fruit machines: "+ fruitMachine);
                 arcade_num.setText("Arcade machines: "+arcade);
             }
 

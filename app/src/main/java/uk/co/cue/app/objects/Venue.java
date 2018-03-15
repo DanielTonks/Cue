@@ -50,6 +50,9 @@ public class Venue implements Parcelable{
         return machines;
     }
 
+    public double getLatitude() { return lat; }
+    public double getLongitude() { return lon; }
+
     public String getGoogleToken() { return googleToken; }
 
     @Override

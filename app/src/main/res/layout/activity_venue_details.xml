@@ -8,6 +8,12 @@
     android:orientation="vertical"
     tools:context="uk.co.cue.app.activity.VenueDetails">
 
+    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/individualMapView"
+        android:name="com.google.android.gms.maps.SupportMapFragment"
+        android:layout_width="match_parent"
+        android:layout_height="160dp" />
+
     <android.support.v7.widget.CardView
         android:id="@+id/general_card"
         android:layout_width="match_parent"
@@ -15,7 +21,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true">
 
@@ -37,14 +43,11 @@
                     android:layout_width="0dp"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
-
                     android:fontFamily="@font/raleway_bold"
                     android:gravity="center_vertical"
                     android:text="General Info"
-
                     android:textColor="@color/colorPrimary"
-                    android:textSize="20sp"
-                    android:textStyle="bold" />
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -143,7 +146,7 @@
         android:layout_marginLeft="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginTop="8dp"
-        app:cardCornerRadius="10dp"
+        app:cardCornerRadius="4dp"
         app:cardPreventCornerOverlap="false"
         app:cardUseCompatPadding="true">
 
@@ -159,15 +162,8 @@
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:paddingBottom="12dp"
+                android:paddingLeft="16dp"
                 android:paddingTop="12dp">
-
-                <ImageView
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@mipmap/cue_logo"
-                    android:tint="@color/colorPrimary" />
 
                 <TextView
                     android:layout_width="0dp"
@@ -177,8 +173,8 @@
                     android:gravity="center_vertical"
                     android:text="Cue Features"
                     android:textColor="@color/colorPrimary"
-                    android:textSize="18dp"
-                    android:textStyle="bold" />
+                    android:fontFamily="@font/raleway_bold"
+                    android:textSize="20sp" />
             </LinearLayout>
 
             <LinearLayout
@@ -279,7 +275,7 @@
                     android:layout_height="30dp"
                     android:layout_marginLeft="8dp"
                     android:layout_marginRight="8dp"
-                    android:src="@mipmap/arcade"
+                    android:src="@mipmap/slot_machine"
                     android:tint="@color/colorPrimary" />
 
                 <TextView
