@@ -1,269 +1,541 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    android:orientation="vertical"
     tools:context="uk.co.cue.app.activity.VenueDetails">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        android:id="@+id/individualMapView"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp" />
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <android.support.v7.widget.CardView
-        android:id="@+id/general_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="4dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true">
-
-
-        <LinearLayout
+        <fragment xmlns:android="http://schemas.android.com/apk/res/android"
+            android:id="@+id/individualMapView"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="160dp" />
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/general_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="4dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="8dp"
-                android:paddingLeft="16dp"
-                android:paddingTop="12dp">
-
-                <TextView
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_bold"
-                    android:gravity="center_vertical"
-                    android:text="General Info"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="20sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginLeft="8dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/details_icon"
-                        android:layout_height="@dimen/details_icon"
-                        android:cropToPadding="false"
-                        android:src="@mipmap/pin"
-                        android:tint="@color/blue" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="8dp"
+                    android:paddingLeft="16dp"
+                    android:paddingTop="12dp">
 
                     <TextView
-                        android:id="@+id/address"
                         android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_bold"
+                        android:gravity="center_vertical"
+                        android:text="General Info"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:orientation="vertical">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/details_icon"
+                            android:layout_height="@dimen/details_icon"
+                            android:cropToPadding="false"
+                            android:src="@mipmap/pin"
+                            android:tint="@color/blue" />
+
+                        <TextView
+                            android:id="@+id/address"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="4dp"
+                            android:layout_marginRight="8dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/raleway_light"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/details_icon"
+                            android:layout_height="@dimen/details_icon"
+                            android:cropToPadding="false"
+                            android:src="@mipmap/star"
+                            android:tint="@color/blue" />
+
+                        <TextView
+                            android:id="@+id/rating"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/raleway_light"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="8dp"
+                        android:layout_marginTop="8dp"
+                        android:orientation="horizontal">
+
+                        <ImageView
+                            android:layout_width="@dimen/details_icon"
+                            android:layout_height="@dimen/details_icon"
+                            android:cropToPadding="false"
+                            android:src="@mipmap/phone"
+                            android:tint="@color/blue" />
+
+                        <TextView
+                            android:id="@+id/phone"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_gravity="center_vertical"
+                            android:layout_marginLeft="4dp"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/raleway_light"
+                            android:textSize="16sp" />
+
+
+                    </LinearLayout>
+                </LinearLayout>
+
+
+            </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cue_card"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="4dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <LinearLayout
+                    android:id="@+id/topHighlight"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="4dp">
+
+                    <ImageView
+                        android:id="@+id/pool_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
                         android:layout_marginLeft="4dp"
                         android:layout_marginRight="8dp"
+                        android:src="@mipmap/billiard_cue"
+                        android:tint="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/cue_features"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
                         android:layout_weight="1"
-                        android:fontFamily="@font/raleway_light"
-                        android:textSize="16sp" />
-
-
+                        android:fontFamily="@font/raleway_bold"
+                        android:gravity="center_vertical"
+                        android:text="Queue: Pool tables"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/pool_table_machines"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/details_icon"
-                        android:layout_height="@dimen/details_icon"
-                        android:cropToPadding="false"
-                        android:src="@mipmap/star"
-                        android:tint="@color/blue" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
 
                     <TextView
-                        android:id="@+id/rating"
+                        android:id="@+id/pool_num"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="12dp"
+                        android:text="Number of machines: 2"
                         android:layout_weight="1"
                         android:fontFamily="@font/raleway_light"
                         android:textSize="16sp" />
-
-
                 </LinearLayout>
 
                 <LinearLayout
+                    android:id="@+id/foosball_table_machines"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginBottom="8dp"
-                    android:layout_marginTop="8dp"
-                    android:orientation="horizontal">
-
-                    <ImageView
-                        android:layout_width="@dimen/details_icon"
-                        android:layout_height="@dimen/details_icon"
-                        android:cropToPadding="false"
-                        android:src="@mipmap/phone"
-                        android:tint="@color/blue" />
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
 
                     <TextView
-                        android:id="@+id/phone"
+                        android:id="@+id/num_people"
                         android:layout_width="0dp"
-                        android:layout_height="wrap_content"
+                        android:layout_height="match_parent"
                         android:layout_gravity="center_vertical"
-                        android:layout_marginLeft="4dp"
+                        android:layout_marginLeft="12dp"
+                        android:text="People in the queue: 4"
                         android:layout_weight="1"
                         android:fontFamily="@font/raleway_light"
                         android:textSize="16sp" />
-
-
                 </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/arcade_machines"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/waiting_time"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Expected waiting time: 35 minutes"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/price_layout"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/price"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Price: £0.50"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
             </LinearLayout>
+        </android.support.v7.widget.CardView>
 
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-
-    <android.support.v7.widget.CardView
-        android:id="@+id/cue_card"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="8dp"
-        android:layout_marginRight="8dp"
-        android:layout_marginTop="8dp"
-        app:cardCornerRadius="4dp"
-        app:cardPreventCornerOverlap="false"
-        app:cardUseCompatPadding="true">
-
-
-        <LinearLayout
+        <android.support.v7.widget.CardView
+            android:id="@+id/cue_card2"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="4dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
 
             <LinearLayout
-                android:id="@+id/topHighlight"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingLeft="16dp"
-                android:paddingTop="12dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/cue_features"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_bold"
-                    android:gravity="center_vertical"
-                    android:text="Cue Features"
-                    android:textColor="@color/colorPrimary"
-                    android:textSize="20sp" />
+                <LinearLayout
+                    android:id="@+id/topHighlight2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="4dp">
+
+                    <ImageView
+                        android:id="@+id/foosball_table_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@mipmap/football"
+                        android:tint="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/cue_features2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_bold"
+                        android:gravity="center_vertical"
+                        android:text="Queue: Foosball tables"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/foosball_table_machine"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/foosball_num"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Number of machines: 4"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/f_table_machines"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/num_people2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="People in the queue: 2"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/random"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/waiting_time2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Expected waiting time: 12 minutes"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/price_layout2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/price2"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Price: £1"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
             </LinearLayout>
+        </android.support.v7.widget.CardView>
+
+        <android.support.v7.widget.CardView
+            android:id="@+id/cue_card3"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_marginTop="8dp"
+            app:cardCornerRadius="4dp"
+            app:cardPreventCornerOverlap="false"
+            app:cardUseCompatPadding="true">
+
 
             <LinearLayout
-                android:id="@+id/pool_table_machines"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingTop="12dp">
+                android:layout_height="match_parent"
+                android:orientation="vertical">
 
-                <ImageView
-                    android:id="@+id/pool_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@mipmap/billiard_cue"
-                    android:tint="@color/colorPrimary" />
+                <LinearLayout
+                    android:id="@+id/topHighlight3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingLeft="4dp"
+                    android:paddingTop="4dp">
 
-                <TextView
-                    android:id="@+id/pool_num"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_light"
-                    android:textSize="16sp" />
+                    <ImageView
+                        android:id="@+id/fruitMachine_pool_img"
+                        android:layout_width="30dp"
+                        android:layout_height="30dp"
+                        android:layout_marginLeft="4dp"
+                        android:layout_marginRight="8dp"
+                        android:src="@mipmap/slot_machine"
+                        android:tint="@color/colorPrimary" />
+
+                    <TextView
+                        android:id="@+id/cue_features3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_bold"
+                        android:gravity="center_vertical"
+                        android:text="Queue: Fruit machine tables"
+                        android:textColor="@color/colorPrimary"
+                        android:textSize="20sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/fruit_machine_tables"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/fmachine_num"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Number of machines: 1"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/f_machine_machines"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/num_people3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="People in the queue: 1"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/random2"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/waiting_time3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Expected waiting time: 5 minutes"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:id="@+id/price_layout3"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:paddingBottom="4dp"
+                    android:paddingTop="4dp">
+
+                    <TextView
+                        android:id="@+id/price3"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginLeft="12dp"
+                        android:text="Price: £1"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/raleway_light"
+                        android:textSize="16sp" />
+                </LinearLayout>
+
+
             </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/foosball_table_machines"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingTop="12dp">
-
-                <ImageView
-                    android:id="@+id/foosball_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@mipmap/football"
-                    android:tint="@color/colorPrimary" />
-
-                <TextView
-                    android:id="@+id/foosball_num"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_light"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-            <LinearLayout
-                android:id="@+id/arcade_machines"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:paddingBottom="12dp"
-                android:paddingTop="12dp">
-
-                <ImageView
-                    android:id="@+id/arcade_img"
-                    android:layout_width="30dp"
-                    android:layout_height="30dp"
-                    android:layout_marginLeft="8dp"
-                    android:layout_marginRight="8dp"
-                    android:src="@mipmap/slot_machine"
-                    android:tint="@color/colorPrimary" />
-
-                <TextView
-                    android:id="@+id/arcade_num"
-                    android:layout_width="0dp"
-                    android:layout_height="match_parent"
-                    android:layout_gravity="center_vertical"
-                    android:layout_marginLeft="4dp"
-                    android:layout_weight="1"
-                    android:fontFamily="@font/raleway_light"
-                    android:textSize="16sp" />
-            </LinearLayout>
-
-
-        </LinearLayout>
-    </android.support.v7.widget.CardView>
-</LinearLayout>
+        </android.support.v7.widget.CardView>
+    </LinearLayout>
+</ScrollView>

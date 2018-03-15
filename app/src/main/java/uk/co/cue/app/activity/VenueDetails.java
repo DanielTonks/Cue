@@ -71,7 +71,6 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
                                 public void onMapReady(GoogleMap googleMap) {
                                     map = googleMap;
                                     MarkerOptions markerOptions = new MarkerOptions();
-                                    ArrayList<Machine> machines = new ArrayList<>();
                                     LatLng loc = new LatLng(venue.getLatitude(), venue.getLongitude());
                                     markerOptions.position(loc);
                                     markerOptions.title(venue.getVenue_name());
@@ -132,52 +131,53 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        try {
-            System.out.println("Response for machines: "+response);
-            JSONArray array = response.getJSONArray("Machines");
-            TextView pool_num = findViewById(R.id.pool_num);
-            //TextView snooker_num = findViewById(R.id.snooker_num);
-            TextView foosball_num = findViewById(R.id.foosball_num);
-            TextView arcade_num = findViewById(R.id.arcade_num);
-            int pool =0;
-            int snooker=0;
-            int fruitMachine=0;
-            int arcade=0;
-            if(array.length()== 0) {
-                pool_num.setText("Pool tables: 3");
-                //snooker_num.setText("Snooker tables: 2");
-                foosball_num.setText("Fruit machines: 3");
-                arcade_num.setText("Arcade machines: 0");
-            } else {
-                for(int i=0; i<array.length(); i++) {
-                    String category = array.getJSONObject(i).getString("category");
-                    switch(category) {
-                        case "Pool":
-                            pool++;
-                            break;
-                        case "Snooker":
-                            snooker++;
-                            break;
-                        case "Fruity Machine":
-                            fruitMachine++;
-                            break;
-                        case "Arcade":
-                            arcade++;
-                            break;
-                    }
-                }
-
-                pool_num.setText("Pool tables: "+ pool);
-                //snooker_num.setText("Snooker tables: "+ snooker);
-                foosball_num.setText("Fruit machines: "+ fruitMachine);
-                arcade_num.setText("Arcade machines: "+arcade);
-            }
-
-
-
-        } catch(JSONException e) {
-            System.out.println("problem with JSON: "+e);
-        }
+//        try {
+//
+//            System.out.println("Response for machines: "+response);
+//            JSONArray array = response.getJSONArray("Machines");
+//            TextView pool_num = findViewById(R.id.pool_num);
+//            //TextView snooker_num = findViewById(R.id.snooker_num);
+//            TextView foosball_num = findViewById(R.id.foosball_num);
+//            TextView arcade_num = findViewById(R.id.arcade_num);
+//            int pool =0;
+//            int snooker=0;
+//            int fruitMachine=0;
+//            int arcade=0;
+//            if(array.length()== 0) {
+//                pool_num.setText("Pool tables: 3");
+//                //snooker_num.setText("Snooker tables: 2");
+//                foosball_num.setText("Fruit machines: 3");
+//                arcade_num.setText("Arcade machines: 0");
+//            } else {
+//                for(int i=0; i<array.length(); i++) {
+//                    String category = array.getJSONObject(i).getString("category");
+//                    switch(category) {
+//                        case "Pool":
+//                            pool++;
+//                            break;
+//                        case "Snooker":
+//                            snooker++;
+//                            break;
+//                        case "Fruity Machine":
+//                            fruitMachine++;
+//                            break;
+//                        case "Arcade":
+//                            arcade++;
+//                            break;
+//                    }
+//                }
+//
+//                pool_num.setText("Pool tables: "+ pool);
+//                //snooker_num.setText("Snooker tables: "+ snooker);
+//                foosball_num.setText("Fruit machines: "+ fruitMachine);
+//                arcade_num.setText("Arcade machines: "+arcade);
+//            }
+//
+//
+//
+//        } catch(JSONException e) {
+//            System.out.println("problem with JSON: "+e);
+//        }
 
     }
 
