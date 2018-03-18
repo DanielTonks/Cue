@@ -44,7 +44,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     private String machineID;
     private CueApp app;
     private boolean reserve = true;
-    private boolean edit = false;
+    private boolean delete = false;
     private String toDelete;
     private String price;
     private String category;
@@ -116,14 +116,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         Bundle b = getIntent().getExtras();
         if (b.getString("type").equals("Reserve")) {
             processingText.setText("Tap the tag on any table");
-        } else if(b.getString("type").equals("Edit")) {
-            processingText.setText("Tap the tag of the machine you want to edit");
-            edit = true;
+        } else if(b.getString("type").equals("Delete")) {
+            processingText.setText("Tap the tag of the machine you want to delete");
+            delete = true;
             reserve = false;
-            category = b.getString("category");
-            price = b.getString("price");
-            price = (price.equals("") ? "0": price);
-            toDelete = b.getBoolean("toDelete") ? "1" : "0";
         } else {
             processingText.setText("Tap Table x to start the game");
             reserve = false;
@@ -194,17 +190,14 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             params.put("session_cookie", app.getUser().getSession());
 
             vrf.doRequest(app.POST_add_queue, params, Request.Method.POST);
-        } else if(edit) {
+        } else if(delete) {
             Map<String, String> params = new HashMap<String, String>();
             params.put("user_id", String.valueOf(app.getUser().getUserid()));
             params.put("machine_id", machineID);
-            params.put("base_price", price);
-            params.put("category", category);
             params.put("venue_id", venueID);
-            params.put("to_delete", toDelete);
             params.put("session_cookie", app.getUser().getSession());
 
-            vrf.doRequest(app.POST_edit_machine, params, Request.Method.POST);
+            vrf.doRequest(app.DELETE_edit_machine, params, Request.Method.DELETE);
         } else { // user wants to confirm presence
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);

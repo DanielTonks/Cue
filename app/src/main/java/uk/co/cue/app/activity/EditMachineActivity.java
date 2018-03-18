@@ -12,17 +12,26 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
 
+import com.android.volley.Request;
+
+import org.json.JSONObject;
+
+import java.util.HashMap;
+import java.util.Map;
+
 import uk.co.cue.app.R;
 import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.VolleyRequestFactory;
 
-public class EditMachineActivity extends AppCompatActivity {
+public class EditMachineActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest{
 
     private Spinner venue, category;
     private EditText price;
     private Button submit;
     private CueApp app;
     private CheckBox toDelete;
+    private VolleyRequestFactory vrf;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +39,8 @@ public class EditMachineActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_machine);
         setTitle("Edit table");
+
+        vrf = new VolleyRequestFactory(this, getApplicationContext());
 
         app = (CueApp) getApplication();
         venue = findViewById(R.id.p_name);
@@ -46,16 +57,23 @@ public class EditMachineActivity extends AppCompatActivity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
-                i.putExtra("type", "Edit");
-
                 Venue ven = (Venue) venue.getSelectedItem();
                 int venueID = ven.getVenue_id();
-                i.putExtra("venue", venueID);
-                i.putExtra("price", price.getText());
-                i.putExtra("toDelete", toDelete.isChecked());
-                i.putExtra("category", category.getSelectedItem().toString());
-                startActivityForResult(i, 0);
+                if(toDelete.isChecked()) {
+                    Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
+                    i.putExtra("type", "Delete");
+                    startActivityForResult(i, 0);
+                } else {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", String.valueOf(app.getUser().getUserid()));
+                    params.put("session_cookie", app.getUser().getSession());
+                    params.put("venue_id", String.valueOf(venueID));
+                    params.put("category", category.getSelectedItem().toString());
+                    params.put("new_price", price.getText().toString());
+
+                    vrf.doRequest(app.PUT_edit_machine, params, Request.Method.PUT);
+                }
+
 
             }
         });
@@ -67,10 +85,21 @@ public class EditMachineActivity extends AppCompatActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            Toast.makeText(this, "Tag edited!", Toast.LENGTH_LONG).show();
+            Toast.makeText(this, "Machine deleted", Toast.LENGTH_LONG).show();
             price.setText("");
         }
 
 
+    }
+
+    @Override
+    public void requestFinished(JSONObject response, String url) {
+        Toast.makeText(this, "Machines updated", Toast.LENGTH_LONG).show();
+        price.setText("");
+    }
+
+    @Override
+    public void requestFailed(int statusCode) {
+        System.out.println("Something went wrong");
     }
 }

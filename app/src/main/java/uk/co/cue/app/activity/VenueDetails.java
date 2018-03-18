@@ -9,6 +9,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -16,18 +17,27 @@ import com.google.android.gms.location.places.GeoDataClient;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.PlaceBufferResponse;
 import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.GoogleMap;
+import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.gms.maps.model.CameraPosition;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.Marker;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-import org.w3c.dom.Text;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Machine;
 import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -38,6 +48,8 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
     private String googleToken;
     private VolleyRequestFactory volleyRequest;
     private CueApp app;
+    private GoogleMap map;
+    private Venue venue;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,12 +60,35 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
         this.volleyRequest = new VolleyRequestFactory(this, getApplicationContext());
 
         Intent i = getIntent();
-        Venue venue = (Venue) i.getExtras().getParcelable("venue");
+        venue = (Venue) i.getExtras().getParcelable("venue");
         googleToken = venue.getGoogleToken();
 
         final TextView address = findViewById(R.id.address);
         final TextView rating = findViewById(R.id.rating);
         final TextView phone = findViewById(R.id.phone);
+
+        SupportMapFragment mapFrag = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.individualMapView));
+        mapFrag.getMapAsync(new OnMapReadyCallback() {
+                                @Override
+                                public void onMapReady(GoogleMap googleMap) {
+                                    map = googleMap;
+                                    MarkerOptions markerOptions = new MarkerOptions();
+                                    LatLng loc = new LatLng(venue.getLatitude(), venue.getLongitude());
+                                    markerOptions.position(loc);
+                                    markerOptions.title(venue.getVenue_name());
+                                    Marker marker = map.addMarker(markerOptions);
+
+
+                                    CameraPosition cameraPosition = new CameraPosition.Builder()
+                                            .target(loc)
+                                            .zoom(16)
+                                            .bearing(0)
+                                            .tilt(0).build();
+
+                                    map.animateCamera(CameraUpdateFactory.newCameraPosition(cameraPosition));
+                                }
+                            });
+
 
         phone.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -98,56 +133,64 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     public void requestFinished(JSONObject response, String url) {
+        LinearLayout layout = new LinearLayout(this);
+        ImageView image = new ImageView(this);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
         try {
-            //System.out.println("Response for machines: "+response);
-            JSONArray array = response.getJSONArray("Machines");
-            TextView pool_num = findViewById(R.id.pool_num);
-            TextView snooker_num = findViewById(R.id.snooker_num);
-            TextView foosball_num = findViewById(R.id.foosball_num);
-            TextView arcade_num = findViewById(R.id.arcade_num);
-            int pool =0;
-            int snooker=0;
-            int foosball=0;
-            int arcade=0;
-            int fruitMachine = 0;
-            int shuffleBoard = 0;
+            System.out.println("Response for machines: "+response);
+            JSONArray array = response.getJSONArray("Queues");
+            for(int i =0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                String num_people = obj.getString("people");
+                String category = obj.getString("category");
+                String num_machines = obj.getString("machines");
+                String avg = obj.getString("avg");
+                String price = obj.getString("price");
 
-            if(array.length()== 0) {
-                TextView cue = findViewById(R.id.cue_features);
-                cue.setText("No Cue features available!");
-            } else {
-                for(int i=0; i<array.length(); i++) {
-                    String category = array.getJSONObject(i).getString("category");
-                    switch(category) {
-                        case "Pool":
-                            pool++;
-                            break;
-                        case "Snooker":
-                            snooker++;
-                            break;
-                        case "Foosball":
-                            foosball++;
-                            break;
-                        case "Arcade":
-                            arcade++;
-                            break;
-                        case "Fruity Machine":
-                            fruitMachine++;
-                            break;
-                        case "Shuffleboard":
-                            shuffleBoard++;
-                            break;
-                    }
+                switch(category) {
+                    case "Pool":
+                        image.setImageResource(R.mipmap.billiard_cue);
+                        break;
+                    case "Snooker":
+                        image.setImageResource(R.mipmap.billiard_cue);
+                        break;
+                    case "Fruity Machine":
+                        image.setImageResource(R.mipmap.slot_machine);
+                        break;
+                    case "Foosball":
+                        image.setImageResource(R.mipmap.football);
+                        break;
+                    case "Arcade":
+                        image.setImageResource(R.mipmap.arcade);
+                        break;
                 }
 
+                layout.addView(image);
 
-                pool_num.setText("Pool tables: "+ pool);
-                snooker_num.setText("Snooker tables: "+ snooker);
-                foosball_num.setText("Foosball tables: "+ foosball);
-                arcade_num.setText("Arcade machines: "+arcade);
+                LinearLayout inner_layout = new LinearLayout(this);
+                inner_layout.setOrientation(LinearLayout.VERTICAL);
+                TextView queueType = new TextView(this);
+                queueType.setText(category);
+                inner_layout.addView(queueType);
+
+                TextView num_peeps = new TextView(this);
+                num_peeps.setText(num_people);
+                inner_layout.addView(num_peeps);
+
+                TextView num_m = new TextView(this);
+                num_m.setText(num_machines);
+                inner_layout.addView(num_m);
+
+                TextView average = new TextView(this);
+                average.setText(avg);
+                inner_layout.addView(average);
+
+                TextView price_view = new TextView(this);
+                price_view.setText(price);
+                inner_layout.addView(price_view);
+
+                layout.addView(inner_layout);
             }
-
-
 
         } catch(JSONException e) {
             System.out.println("problem with JSON: "+e);

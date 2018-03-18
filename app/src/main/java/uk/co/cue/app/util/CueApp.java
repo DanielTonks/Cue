@@ -23,8 +23,9 @@ public class CueApp extends Application {
     public final static String GET_venue_queues = "https://idk-cue.club/venue/queues";
     public final static String POST_business_venues = "https://idk-cue.club/venues/admin";
     public final static String GET_local_venues = "https://idk-cue.club/venues/nearby";
+    public final static String DELETE_edit_machine = "https://idk-cue-club/machine/remove";
     public final static String GET_user_queue = "https://idk-cue.club/user/queue";
-    public final static String POST_edit_machine = "https://idk-cue.club/machine/edit";
+    public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit";
     public final static String POST_add_queue = "https://idk-cue.club/queue/join";
     public final static String POST_leave_queue = "https://idk-cue.club/queue/leave";
     public final static String POST_user_history = "https://idk-cue.club/user/history";
