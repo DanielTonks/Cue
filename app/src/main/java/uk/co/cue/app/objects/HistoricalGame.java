@@ -39,4 +39,13 @@ public class HistoricalGame {
     public String getVenueToken() {
         return venueToken;
     }
+
+    public String getDateMonth() {
+
+        return "Hi";
+    }
+
+    public String getDateTime() {
+        return "Hi2";
+    }
 }
