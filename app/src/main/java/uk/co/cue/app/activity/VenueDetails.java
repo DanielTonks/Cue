@@ -8,6 +8,8 @@ import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.View;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -99,7 +101,7 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
 
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("venue_id", String.valueOf(venue.getVenue_id()));
-        volleyRequest.doRequest(app.GET_venue_machines, parameters, Request.Method.GET);
+        volleyRequest.doRequest(app.GET_venue_queues, parameters, Request.Method.GET);
 
 
         // Construct a GeoDataClient.
@@ -131,53 +133,68 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-//        try {
-//
-//            System.out.println("Response for machines: "+response);
-//            JSONArray array = response.getJSONArray("Machines");
-//            TextView pool_num = findViewById(R.id.pool_num);
-//            //TextView snooker_num = findViewById(R.id.snooker_num);
-//            TextView foosball_num = findViewById(R.id.foosball_num);
-//            TextView arcade_num = findViewById(R.id.arcade_num);
-//            int pool =0;
-//            int snooker=0;
-//            int fruitMachine=0;
-//            int arcade=0;
-//            if(array.length()== 0) {
-//                pool_num.setText("Pool tables: 3");
-//                //snooker_num.setText("Snooker tables: 2");
-//                foosball_num.setText("Fruit machines: 3");
-//                arcade_num.setText("Arcade machines: 0");
-//            } else {
-//                for(int i=0; i<array.length(); i++) {
-//                    String category = array.getJSONObject(i).getString("category");
-//                    switch(category) {
-//                        case "Pool":
-//                            pool++;
-//                            break;
-//                        case "Snooker":
-//                            snooker++;
-//                            break;
-//                        case "Fruity Machine":
-//                            fruitMachine++;
-//                            break;
-//                        case "Arcade":
-//                            arcade++;
-//                            break;
-//                    }
-//                }
-//
-//                pool_num.setText("Pool tables: "+ pool);
-//                //snooker_num.setText("Snooker tables: "+ snooker);
-//                foosball_num.setText("Fruit machines: "+ fruitMachine);
-//                arcade_num.setText("Arcade machines: "+arcade);
-//            }
-//
-//
-//
-//        } catch(JSONException e) {
-//            System.out.println("problem with JSON: "+e);
-//        }
+        LinearLayout layout = new LinearLayout(this);
+        ImageView image = new ImageView(this);
+        layout.setOrientation(LinearLayout.HORIZONTAL);
+        try {
+            System.out.println("Response for machines: "+response);
+            JSONArray array = response.getJSONArray("Queues");
+            for(int i =0; i < array.length(); i++) {
+                JSONObject obj = array.getJSONObject(i);
+                String num_people = obj.getString("people");
+                String category = obj.getString("category");
+                String num_machines = obj.getString("machines");
+                String avg = obj.getString("avg");
+                String price = obj.getString("price");
+
+                switch(category) {
+                    case "Pool":
+                        image.setImageResource(R.mipmap.billiard_cue);
+                        break;
+                    case "Snooker":
+                        image.setImageResource(R.mipmap.billiard_cue);
+                        break;
+                    case "Fruity Machine":
+                        image.setImageResource(R.mipmap.slot_machine);
+                        break;
+                    case "Foosball":
+                        image.setImageResource(R.mipmap.football);
+                        break;
+                    case "Arcade":
+                        image.setImageResource(R.mipmap.arcade);
+                        break;
+                }
+
+                layout.addView(image);
+
+                LinearLayout inner_layout = new LinearLayout(this);
+                inner_layout.setOrientation(LinearLayout.VERTICAL);
+                TextView queueType = new TextView(this);
+                queueType.setText(category);
+                inner_layout.addView(queueType);
+
+                TextView num_peeps = new TextView(this);
+                num_peeps.setText(num_people);
+                inner_layout.addView(num_peeps);
+
+                TextView num_m = new TextView(this);
+                num_m.setText(num_machines);
+                inner_layout.addView(num_m);
+
+                TextView average = new TextView(this);
+                average.setText(avg);
+                inner_layout.addView(average);
+
+                TextView price_view = new TextView(this);
+                price_view.setText(price);
+                inner_layout.addView(price_view);
+
+                layout.addView(inner_layout);
+            }
+
+        } catch(JSONException e) {
+            System.out.println("problem with JSON: "+e);
+        }
 
     }
 
