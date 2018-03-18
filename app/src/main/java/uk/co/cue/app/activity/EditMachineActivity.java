@@ -69,7 +69,6 @@ public class EditMachineActivity extends AppCompatActivity {
         if (resultCode == RESULT_OK) {
             Toast.makeText(this, "Tag edited!", Toast.LENGTH_LONG).show();
             price.setText("");
-
         }
 
 

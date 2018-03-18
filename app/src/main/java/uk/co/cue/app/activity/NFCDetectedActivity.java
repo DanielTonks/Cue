@@ -86,7 +86,6 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
-
     }
 
     @Override
