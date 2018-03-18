@@ -43,6 +43,11 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     private String venueID;
     private String machineID;
     private CueApp app;
+    private boolean reserve = true;
+    private boolean edit = false;
+    private String toDelete;
+    private String price;
+    private String category;
 
     public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
 
@@ -60,41 +65,45 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        System.out.println(response);
+        if(url.equals(app.POST_add_queue)) {
+            try {
+                JSONArray arr = response.getJSONArray("Queue");
+                JSONObject obj = arr.getJSONObject(0);
 
-        try {
-            JSONArray arr = response.getJSONArray("Queue");
-            JSONObject obj = arr.getJSONObject(0);
+                String wait = obj.getString("average_wait");
+                //int minute =
 
-
+                Intent returnIntent = new Intent();
+                Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42);
+                returnIntent.putExtra("game", g);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
             Intent returnIntent = new Intent();
-            Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42);
-            returnIntent.putExtra("game", g);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
 
     }
 
     @Override
     public void requestFailed(int statusCode) {
-
+        Intent returnIntent = new Intent();
+        returnIntent.putExtra("serverError", true);
+        setResult(Activity.RESULT_CANCELED, returnIntent);
+        finish();
     }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        this.vrf = new VolleyRequestFactory(this, getApplicationContext());
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
         setContentView(R.layout.activity_nfcdetected);
 
         this.processingText = findViewById(R.id.processingText);
+        this.vrf = new VolleyRequestFactory(this, getApplicationContext());
 
         mAdapter = NfcAdapter.getDefaultAdapter(this);
         mPendingIntent = PendingIntent.getActivity(this, 0,
@@ -105,6 +114,21 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
                         Ndef.class.getName()
                 }
         };
+        Bundle b = getIntent().getExtras();
+        if (b.getString("type").equals("Reserve")) {
+            processingText.setText("Tap the tag on any table");
+        } else if(b.getString("type").equals("Edit")) {
+            processingText.setText("Tap the tag of the machine you want to edit");
+            edit = true;
+            reserve = false;
+            category = b.getString("category");
+            price = b.getString("price");
+            price = (price.equals("") ? "0": price);
+            toDelete = b.getBoolean("toDelete") ? "1" : "0";
+        } else {
+            processingText.setText("Tap Table x to start the game");
+            reserve = false;
+        }
     }
 
     public Uri getNdefMessages(Intent intent) {
@@ -146,6 +170,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     @Override
     public void onNewIntent(Intent intent) {
         processingText.setText("Processing");
+
         Log.i("Foreground dispatch", "Discovered tag with intent:" + intent);
         Uri link = getNdefMessages(intent);
 
@@ -160,17 +185,32 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         }
 
         app = (CueApp) getApplication();
-        //Make a network request to log in.
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("user_id", String.valueOf(app.getUser().getUserid()));
-        params.put("machine_id", machineID);
-        params.put("session_cookie", app.getUser().getSession());
 
-//        System.out.println(app.getUser().getUserid());
-//        System.out.println(app.getUser().getSession());
-//        System.out.println(machineID);
 
-        vrf.doRequest(app.POST_add_queue, params, Request.Method.POST);
+        if (reserve) {
+            //Make a network request to log in.
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+            params.put("machine_id", machineID);
+            params.put("session_cookie", app.getUser().getSession());
+
+            vrf.doRequest(app.POST_add_queue, params, Request.Method.POST);
+        } else if(edit) {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+            params.put("machine_id", machineID);
+            params.put("base_price", price);
+            params.put("category", category);
+            params.put("venue_id", venueID);
+            params.put("to_delete", toDelete);
+            params.put("session_cookie", app.getUser().getSession());
+
+            vrf.doRequest(app.POST_edit_machine, params, Request.Method.POST);
+        } else { // user wants to confirm presence
+            Intent returnIntent = new Intent();
+            setResult(Activity.RESULT_OK, returnIntent);
+            finish();
+        }
 
 
     }

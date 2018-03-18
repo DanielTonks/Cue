@@ -13,6 +13,7 @@ public class Game implements Serializable {
     private String venue_name;
     private String category;
     private int position;
+    private GameChanged listener;
 
     public Game(int venue_id, int queue_id, String venue_name, String category, int position) {
         this.venue_id = venue_id;
@@ -50,5 +51,20 @@ public class Game implements Serializable {
 
     public int getPosition() {
         return position;
+    }
+
+    public void setPosition(int queuePosition) {
+        this.position = queuePosition;
+        listener.gameChanged(this);
+    }
+
+    public void setOnGameChangedListener(GameChanged listener) {
+        this.listener = listener;
+    }
+
+    public interface GameChanged {
+
+        void gameChanged(Game g);
+
     }
 }

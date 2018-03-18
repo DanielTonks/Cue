@@ -293,6 +293,34 @@
                     android:textSize="16sp" />
             </LinearLayout>
 
+            <LinearLayout
+                android:id="@+id/fruit_machines"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:paddingBottom="12dp"
+                android:paddingTop="12dp">
+
+                <ImageView
+                    android:id="@+id/fruit_img"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginRight="8dp"
+                    android:src="@mipmap/slot_machine"
+                    android:tint="@color/colorPrimary" />
+
+                <TextView
+                    android:id="@+id/fruit_num"
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_gravity="center_vertical"
+                    android:layout_marginLeft="4dp"
+                    android:layout_weight="1"
+                    android:fontFamily="@font/raleway_light"
+                    android:textSize="16sp" />
+            </LinearLayout>
+
 
         </LinearLayout>
     </android.support.v7.widget.CardView>

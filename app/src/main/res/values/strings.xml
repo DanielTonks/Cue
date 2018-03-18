@@ -34,6 +34,9 @@
         <item>Snooker</item>
         <item>Foosball</item>
         <item>Arcade</item>
+        <item>Fruit Machine</item>
+        <item>Skittles</item>
+        <item>Other</item>
     </string-array>
 
     <!-- Strings related to help screen -->

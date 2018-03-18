@@ -47,12 +47,6 @@ public class WriteTagActivity extends AppCompatActivity {
         nfcManager = new NFCManager(this);
 
         message = nfcManager.createUriMessage(url);
-
-//        if(message != null) {
-//            dialog = new ProgressDialog(this);
-//            dialog.setMessage("Tap an NFC sticker!");
-//            dialog.show();
-//        }
     }
 
     @Override

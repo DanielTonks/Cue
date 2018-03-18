@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationServices;
@@ -74,6 +75,7 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
             public void onClick(View view) {
                 System.out.println(timeUNIX);
                 Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
+                i.putExtra("type", "Reserve");
                 startActivityForResult(i, 0);
             }
         });
@@ -96,6 +98,11 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
                 returnIntent.putExtra("game", data.getSerializableExtra("game"));
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
+            } else {
+                boolean failed = data.getBooleanExtra("serverError", false);
+                if (failed) {
+                    Toast.makeText(this, "Error connecting to Cue server", Toast.LENGTH_SHORT).show();
+                }
             }
         } else if (requestCode == 1) {
             System.out.println("Got back from map");
@@ -104,7 +111,6 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        System.out.println(response.toString());
         JSONArray arr = null;
         try {
             arr = response.getJSONArray("results");
@@ -114,7 +120,6 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
                 System.out.println(place.getString("name"));
 
             }
-
         } catch (JSONException e) {
             e.printStackTrace();
         }

@@ -39,60 +39,33 @@
             app:cardUseCompatPadding="true">
 
             <Spinner
-                android:id="@+id/pub_name_spinner"
+                android:id="@+id/p_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/pubNameCard"
                 android:layout_below="@+id/pub_name"
-                android:paddingBottom="12dp"
                 android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="12dp" />
+                android:paddingRight="16dp" />
         </android.support.v7.widget.CardView>
-
-        <android.support.v7.widget.CardView
-            android:id="@+id/machineIDCard"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_below="@+id/pub_name"
-            android:layout_marginLeft="8dp"
-            android:layout_marginRight="8dp"
-            app:cardCornerRadius="6dp"
-            app:cardPreventCornerOverlap="false"
-            app:cardUseCompatPadding="true">
-
-            <Spinner
-                android:id="@+id/chooseMachine"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_alignEnd="@+id/pubNameCard"
-                android:layout_below="@+id/pub_name"
-                android:paddingBottom="12dp"
-                android:paddingLeft="16dp"
-                android:paddingRight="16dp"
-                android:paddingTop="12dp" />
-        </android.support.v7.widget.CardView>
-
 
         <TextView
-            android:id="@+id/machine_type"
+            android:id="@+id/m_type"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_below="@+id/pubNameCard"
             android:fontFamily="@font/raleway_light"
             android:padding="16dp"
-            android:text="@string/machine_id"
+            android:text="@string/machine_type"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="18sp"/>
 
         <android.support.v7.widget.CardView
-            android:id="@+id/machineTypeCard"
+            android:id="@+id/machineTypeCard2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/machine_type"
+            android:layout_below="@+id/m_type"
             android:layout_marginLeft="8dp"
             android:layout_marginRight="8dp"
             android:layout_marginTop="8dp"
@@ -101,9 +74,10 @@
             app:cardUseCompatPadding="true">
 
             <Spinner
-                android:id="@+id/machine_type_spinner"
+                android:id="@+id/machine_type_spinner2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:entries="@array/machine_type_array"
                 android:fontFamily="@font/raleway_light"
                 android:paddingBottom="12dp"
                 android:paddingLeft="16dp"
@@ -111,12 +85,13 @@
                 android:paddingTop="12dp"/>
         </android.support.v7.widget.CardView>
 
+
         <TextView
             android:id="@+id/price_per_game"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
-            android:layout_below="@+id/machineTypeCard"
+            android:layout_below="@+id/machineTypeCard2"
             android:fontFamily="@font/raleway_light"
             android:padding="16dp"
             android:text="@string/price_per_game"
@@ -149,7 +124,7 @@
             app:cardUseCompatPadding="true">
 
             <EditText
-                android:id="@+id/value"
+                android:id="@+id/newValue"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignEnd="@+id/pubNameCard"
@@ -173,6 +148,19 @@
             android:layout_marginBottom="12dp"
             android:text="Submit"
             />
+
+        <CheckBox
+            android:id="@+id/toDelete"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/valueCard"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="33dp"
+            android:textColor="@color/white"
+            android:fontFamily="@font/raleway_light"
+            android:text="Delete machine"
+            android:buttonTint="@color/white"
+            android:textSize="18sp" />
 
 
     </RelativeLayout>
