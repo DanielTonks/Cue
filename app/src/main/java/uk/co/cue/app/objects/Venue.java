@@ -43,6 +43,10 @@ public class Venue implements Parcelable{
         return venue_id;
     }
 
+    public double getLatitude() { return lat; }
+
+    public double getLongitude() { return lon; }
+
     public String toString() { return venue_name; }
 
     public void setMachines(ArrayList<Machine> machine) { this.machines = machine; }

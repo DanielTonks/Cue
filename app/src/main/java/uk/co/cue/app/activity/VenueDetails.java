@@ -66,7 +66,7 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
 
         Map<String, String> parameters = new HashMap<String, String>();
         parameters.put("venue_id", String.valueOf(venue.getVenue_id()));
-        volleyRequest.doRequest(app.GET_venue_machines, parameters, Request.Method.GET);
+        volleyRequest.doRequest(app.GET_venue_queues, parameters, Request.Method.GET);
 
 
         // Construct a GeoDataClient.
