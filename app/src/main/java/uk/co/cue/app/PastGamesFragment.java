@@ -33,6 +33,8 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
     private CueApp app;
     private View errorView;
     private ListView listView;
+    private ArrayList<HistoricalGame> games;
+    private GamesAdapter gamesAdapter;
 
     public PastGamesFragment() {
         // Required empty public constructor
@@ -55,6 +57,9 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
 
         errorView = fragment.findViewById(R.id.noResults);
         listView = (ListView) fragment.findViewById(R.id.list);
+
+        games = new ArrayList<HistoricalGame>();
+        gamesAdapter = new GamesAdapter(getActivity(), games);
 
         // Inflate the layout for this fragment
         return fragment;
@@ -88,6 +93,10 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
             listView.setVisibility(View.VISIBLE);
             errorView.setVisibility(View.GONE);
         }
+
+        gamesAdapter.clear();
+        gamesAdapter.addAll(games);
+        gamesAdapter.notifyDataSetChanged();
     }
 
     @Override
