@@ -110,6 +110,7 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
             int foosball=0;
             int arcade=0;
             int fruitMachine = 0;
+            int shuffleBoard = 0;
 
             if(array.length()== 0) {
                 TextView cue = findViewById(R.id.cue_features);
@@ -118,20 +119,24 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
                 for(int i=0; i<array.length(); i++) {
                     String category = array.getJSONObject(i).getString("category");
                     switch(category) {
-                        case "Pool Table":
+                        case "Pool":
                             pool++;
                             break;
-                        case "Snooker Table":
+                        case "Snooker":
                             snooker++;
                             break;
-                        case "Foosball Table":
+                        case "Foosball":
                             foosball++;
                             break;
-                        case "Arcade Machine":
+                        case "Arcade":
                             arcade++;
                             break;
-                        case "Fruit Machine":
+                        case "Fruity Machine":
                             fruitMachine++;
+                            break;
+                        case "Shuffleboard":
+                            shuffleBoard++;
+                            break;
                     }
                 }
 
