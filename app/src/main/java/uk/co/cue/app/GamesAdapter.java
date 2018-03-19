@@ -41,7 +41,7 @@ public class GamesAdapter extends ArrayAdapter<HistoricalGame> {
         TextView date_time = listItemView.findViewById(R.id.date_time);
 
         gameType.setText(g.getCategory());
-        pubName.setText(g.getVenueName());
+        pubName.setText(g.getVenue().getVenue_name());
         price.setText("£" + String.format("%.2f", g.getPrice()));
         date_month.setText(g.getDateMonth());
         date_time.setText(g.getDateTime());

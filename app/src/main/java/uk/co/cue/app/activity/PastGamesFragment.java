@@ -73,9 +73,8 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 HistoricalGame g = gamesAdapter.getItem(i);
                 Intent intent = new Intent(getContext(), VenueDetails.class);
-                intent.putExtra("venue", g.getVenueName());
-
-
+                intent.putExtra("venue", g.getVenue());
+                startActivity(intent);
             }
         });
 
@@ -104,7 +103,7 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
 
                 double price = obj.getDouble("base_price");
 
-                Venue v = new Venue(venue_id, venue_name, null, lat, lon, google_token);
+                Venue v = new Venue(venue_id, venue_name, lat, lon, google_token);
                 HistoricalGame g = new HistoricalGame(time, category, price, v);
                 games.add(g);
             }
