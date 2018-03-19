@@ -25,7 +25,6 @@ import org.json.JSONObject;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.cue.app.PastGamesFragment;
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
 import uk.co.cue.app.util.CueApp;

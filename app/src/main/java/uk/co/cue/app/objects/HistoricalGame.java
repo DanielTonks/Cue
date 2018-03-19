@@ -6,18 +6,16 @@ package uk.co.cue.app.objects;
 
 public class HistoricalGame {
 
+    private final Venue venue;
     private String time;
     private String category;
     private double price;
-    private String venueName;
-    private String venueToken;
 
-    public HistoricalGame(String time, String category, double price, String venueName, String venueToken) {
+    public HistoricalGame(String time, String category, double price, Venue v) {
         this.time = time;
         this.category = category;
         this.price = price;
-        this.venueName = venueName;
-        this.venueToken = venueToken;
+        this.venue = v;
     }
 
     public String getTime() {
@@ -32,20 +30,21 @@ public class HistoricalGame {
         return price;
     }
 
-    public String getVenueName() {
-        return venueName;
-    }
-
-    public String getVenueToken() {
-        return venueToken;
+    public Venue getVenue() {
+        return venue;
     }
 
     public String getDateMonth() {
-
-        return "Hi";
+        String year = time.substring(0, 4);
+        String month = time.substring(5, 7);
+        String day = time.substring(8, 10);
+        return month + "/" + month + "/" + year;
     }
 
     public String getDateTime() {
-        return "Hi2";
+        String hour = time.substring(11, 13);
+        String minute = time.substring(14, 16);
+
+        return hour + ":" + minute;
     }
 }
