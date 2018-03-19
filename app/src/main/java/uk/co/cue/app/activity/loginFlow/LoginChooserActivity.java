@@ -8,8 +8,16 @@ import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+
+import java.lang.reflect.Array;
+import java.lang.reflect.Type;
+import java.util.ArrayList;
+
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.MainActivity;
+import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.User;
 
@@ -43,8 +51,11 @@ public class LoginChooserActivity extends AppCompatActivity {
             String username = sharedPref.getString("username", null);
             boolean isBusiness = sharedPref.getBoolean("isBusiness", false);
             String session = sharedPref.getString("session_cookie", null);
-
-            User newUsr = new User(userId, username, session, isBusiness, null);
+            Gson gson = new Gson();
+            String json = sharedPref.getString("venues", "");
+            Type type = new TypeToken<ArrayList<Venue>>(){}.getType();
+            ArrayList<Venue> array = gson.fromJson(json, type);
+            User newUsr = new User(userId, username, session, isBusiness, array);
             app.setUser(newUsr);
             Intent i = new Intent(LoginChooserActivity.this, MainActivity.class);
             startActivity(i);
@@ -96,6 +107,9 @@ public class LoginChooserActivity extends AppCompatActivity {
         editor.putString("username", u.getUsername());
         editor.putString("session_cookie", u.getSession());
         editor.putBoolean("isBusiness", u.isBusiness());
+        Gson gson = new Gson();
+        String json = gson.toJson(u.getVenues());
+        editor.putString("venues", json);
 
         // Commit the edits!
         editor.apply();

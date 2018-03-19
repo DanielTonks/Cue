@@ -154,14 +154,12 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
                 for(int i = 0; i < size; i++) {
                     MarkerOptions markerOptions = new MarkerOptions();
                     JSONObject obj = response.getJSONArray("Nearby").getJSONObject(i);
-                    ArrayList<Machine> machines = new ArrayList<>();
                     double lat = obj.getDouble("latitude");
                     double lon = obj.getDouble("longitude");
                     LatLng loc = new LatLng(lat, lon);
                     Venue venue = new Venue(
                         obj.getInt("venue_id"),
                         obj.getString("venue_name"),
-                        machines,
                         lat,
                         lon,
                         obj.getString("google_token")

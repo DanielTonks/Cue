@@ -19,10 +19,12 @@ import com.android.volley.Request;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.User;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -95,6 +97,9 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
     public void requestFinished(JSONObject response, String url) {
         try {
             if (url.equals(app.POST_login)) {
+                ArrayList<Venue> venues = new ArrayList<>();
+
+                System.out.println(response.toString());
                 int userID = response.getJSONArray("User").getJSONObject(0).getInt("user_id");
                 String session = response.getJSONArray("User").getJSONObject(0).getString("session_cookie");
 
@@ -104,11 +109,23 @@ public class LoginActivity extends AppCompatActivity implements VolleyRequestFac
                 boolean isBusiness = false;
                 if (arrayOfVenues.length() != 0) {
                     isBusiness = true;
+
+                    for(int i =0; i< arrayOfVenues.length(); i++) {
+                        JSONObject obj = arrayOfVenues.getJSONObject(i);
+                        Venue ven = new Venue(
+                                obj.getInt("venue_id"),
+                                obj.getString("venue_name"),
+                                obj.getDouble("latitude"),
+                                obj.getDouble("longitude"),
+                                obj.getString("google_token")
+                                );
+                                venues.add(ven);
+                    }
+
                 }
 
-                User usr = new User(userID, username, session, isBusiness, null);
+                User usr = new User(userID, username, session, isBusiness, venues);
                 app.setUser(usr);
-
                 Intent returnIntent = new Intent();
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();

@@ -44,6 +44,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     private String machineID;
     private CueApp app;
     private boolean reserve = true;
+    private boolean delete = false;
+    private String toDelete;
+    private String price;
+    private String category;
 
     public static Map<String, String> splitQuery(URL url) throws UnsupportedEncodingException {
 
@@ -61,20 +65,26 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        try {
-            JSONArray arr = response.getJSONArray("Queue");
-            JSONObject obj = arr.getJSONObject(0);
+        if(url.equals(app.POST_add_queue)) {
+            try {
+                JSONArray arr = response.getJSONArray("Queue");
+                JSONObject obj = arr.getJSONObject(0);
 
-            String wait = obj.getString("average_wait");
-            //int minute =
+                String wait = obj.getString("average_wait");
+                //int minute =
 
+                Intent returnIntent = new Intent();
+                Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42);
+                returnIntent.putExtra("game", g);
+                setResult(Activity.RESULT_OK, returnIntent);
+                finish();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+        } else {
             Intent returnIntent = new Intent();
-            Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42);
-            returnIntent.putExtra("game", g);
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
-        } catch (JSONException e) {
-            e.printStackTrace();
         }
     }
 
@@ -106,6 +116,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
         Bundle b = getIntent().getExtras();
         if (b.getString("type").equals("Reserve")) {
             processingText.setText("Tap the tag on any table");
+        } else if(b.getString("type").equals("Delete")) {
+            processingText.setText("Tap the tag of the machine you want to delete");
+            delete = true;
+            reserve = false;
         } else {
             processingText.setText("Tap Table x to start the game");
             reserve = false;
@@ -176,6 +190,14 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             params.put("session_cookie", app.getUser().getSession());
 
             vrf.doRequest(app.POST_add_queue, params, Request.Method.POST);
+        } else if(delete) {
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+            params.put("machine_id", machineID);
+            params.put("venue_id", venueID);
+            params.put("session_cookie", app.getUser().getSession());
+
+            vrf.doRequest(app.POST_edit_machine, params, Request.Method.POST);
         } else { // user wants to confirm presence
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);

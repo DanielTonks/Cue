@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -17,6 +18,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -29,7 +31,7 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
     private String venue_id = "1"; //dummy value, will need to be changed
     private VolleyRequestFactory volleyRequest;
     private CueApp app;
-    private EditText pub;
+    private Spinner pub;
     private EditText price;
 
     @Override
@@ -38,7 +40,15 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         setContentView(R.layout.activity_setup_tag);
         setTitle("Setup new table");
 
+
         app = (CueApp) getApplication();
+        System.out.println("printing: "+app.getUser().getVenues().get(0).getVenue_name());
+        pub = (Spinner) findViewById(R.id.edit_pub_name);
+        ArrayAdapter<Venue> venueAdapter = new ArrayAdapter<Venue>(this,
+                android.R.layout.simple_spinner_dropdown_item,
+                app.getUser().getVenues());
+        pub.setAdapter(venueAdapter);
+
 
         this.volleyRequest = new VolleyRequestFactory(this, getApplicationContext());
     }
@@ -56,14 +66,14 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         Spinner machine_name = (Spinner) findViewById(R.id.machine_type_spinner);
         final String spinner_value = machine_name.getSelectedItem().toString();
 
-        pub = (EditText) findViewById(R.id.edit_pub_name);
-        final String pub_name = pub.getText().toString();
+;
+        //sort stuff out here as well
 
         price = (EditText) findViewById(R.id.value);
         final String price_per_game = price.getText().toString();
 
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("venue_id", venue_id); //dummy value; will need to be changed later
+        parameters.put("venue_id", venue_id);
         parameters.put("category", spinner_value);
         parameters.put("base_price", price_per_game);
         parameters.put("user_id", String.valueOf(app.getUser().getUserid()));
@@ -92,8 +102,9 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
 
                 System.out.println(response.toString());
                 int machineID = response.getJSONArray("Machine").getJSONObject(0).getInt("machine_id");
-                //int venueID = response.getJSONArray("Machine").getJSONObject(0).getInt("venue_id");
-                generateLink(machineID, 1); // HARDCODED AS THE S'OAK
+                Venue venue = (Venue) pub.getSelectedItem();
+                int venueID = venue.getVenue_id();
+                generateLink(machineID, venueID);
             }
         } catch (Exception err) {
             System.out.println(err.getMessage());
@@ -114,7 +125,6 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
         if (resultCode == RESULT_OK) {
             Toast.makeText(this, "Tag written. You can now place this near to the hub box.", Toast.LENGTH_LONG).show();
             price.setText("");
-            pub.setText("");
 
         }
 
