@@ -42,7 +42,7 @@ public class GamesAdapter extends ArrayAdapter<HistoricalGame> {
 
         gameType.setText(g.getCategory());
         pubName.setText(g.getVenueName());
-        price.setText("£" + g.getPrice());
+        price.setText("£" + String.format("%.2f", g.getPrice()));
         date_month.setText(g.getDateMonth());
         date_time.setText(g.getDateTime());
 
