@@ -26,6 +26,7 @@ public class CueApp extends Application {
     public final static String POST_edit_machine = "https://idk-cue.club/machine/delete";
     public final static String GET_user_queue = "https://idk-cue.club/user/queue";
     public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit";
+
     public final static String POST_add_queue = "https://idk-cue.club/queue/join";
     public final static String POST_leave_queue = "https://idk-cue.club/queue/leave";
     public final static String POST_user_history = "https://idk-cue.club/user/history";
