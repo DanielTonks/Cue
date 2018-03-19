@@ -67,4 +67,7 @@
     <string name="join">join</string>
     <string name="book">Confirm Time</string>
     <string name="quit">Quit Queue</string>
+    <string name="add_text1">As a venue owner you can easily add new machines and get users playing your games with Cue.</string>
+    <string name="add_text2">Simply go to the menu, Add Machine and have a spare NFC tag to hand.</string>
+    <string name="add_title">Adding Games with Cue</string>
 </resources>

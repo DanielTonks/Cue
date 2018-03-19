@@ -28,18 +28,11 @@
             android:name=".activity.MainActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.NFCDetectedActivity"
+            android:name=".activity.nfc.NFCDetectedActivity"
             android:launchMode="singleTask" />
         <activity
-            android:name=".activity.TooSoonActivity"
+            android:name=".activity.nfc.TooSoonActivity"
             android:launchMode="singleTask">
-            <intent-filter>
-                <action android:name="android.nfc.action.NDEF_DISCOVERED" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:mimeType="application/uk.co.danieltonks.nfc" />
-            </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -113,7 +106,7 @@
                 android:value=".activity.loginFlow.LoginChooserActivity" />
         </activity>
         <activity
-            android:name=".activity.SetupTagActivity"
+            android:name=".activity.nfc.SetupTagActivity"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppThemeActionBar">
 
@@ -122,10 +115,10 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value=".activity.MainActivity" />
         </activity>
-        <activity android:name=".activity.WriteTagActivity" />
+        <activity android:name=".activity.nfc.WriteTagActivity" />
         <activity
             android:name=".activity.VenueDetails"
-            android:parentActivityName=".activity.LocalVenuesActivity"
+            android:parentActivityName=".activity.fragments.LocalVenuesActivity"
             android:theme="@style/AppThemeActionBar" />
 
         <meta-data
@@ -133,10 +126,11 @@
             android:value="AIzaSyAycxcUFA26psu02q-UVWfJYRcyKv_SHhY" />
 
         <activity
-            android:name=".activity.LocalVenuesActivity"
+            android:name=".activity.fragments.LocalVenuesActivity"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppThemeActionBar" />
-        <activity android:name=".activity.EditMachineActivity"
+        <activity
+            android:name=".activity.fragments.EditMachineActivity"
             android:parentActivityName=".activity.MainActivity"
             android:theme="@style/AppThemeActionBar"/>
     </application>

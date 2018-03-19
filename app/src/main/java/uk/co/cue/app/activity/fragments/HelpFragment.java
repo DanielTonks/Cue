@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;

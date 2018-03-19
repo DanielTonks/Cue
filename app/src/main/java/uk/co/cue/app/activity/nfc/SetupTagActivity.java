@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.nfc;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -28,7 +28,6 @@ import uk.co.cue.app.util.VolleyRequestFactory;
 
 public class SetupTagActivity extends AppCompatActivity implements VolleyRequestFactory.VolleyRequest{
 
-    private String venue_id = "1"; //dummy value, will need to be changed
     private VolleyRequestFactory volleyRequest;
     private CueApp app;
     private Spinner pub;
@@ -63,17 +62,26 @@ public class SetupTagActivity extends AppCompatActivity implements VolleyRequest
     }
 
     public void sendPostRequest() {
+
+        Spinner venue = (Spinner) findViewById(R.id.edit_pub_name);
+        Venue v = (Venue) venue.getSelectedItem();
+
         Spinner machine_name = (Spinner) findViewById(R.id.machine_type_spinner);
         final String spinner_value = machine_name.getSelectedItem().toString();
 
-;
+
         //sort stuff out here as well
 
         price = (EditText) findViewById(R.id.value);
         final String price_per_game = price.getText().toString();
 
+        if (price_per_game.trim().equals("")) {
+            Toast.makeText(this, "Price must be given", Toast.LENGTH_SHORT).show();
+            return; // don't make the request
+        }
+
         Map<String, String> parameters = new HashMap<String, String>();
-        parameters.put("venue_id", venue_id);
+        parameters.put("venue_id", String.valueOf(v.getVenue_id()));
         parameters.put("category", spinner_value);
         parameters.put("base_price", price_per_game);
         parameters.put("user_id", String.valueOf(app.getUser().getUserid()));

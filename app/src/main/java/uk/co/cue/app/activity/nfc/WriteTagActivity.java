@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.nfc;
 
 import android.app.Activity;
 import android.app.PendingIntent;

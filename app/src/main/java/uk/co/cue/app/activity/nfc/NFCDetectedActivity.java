@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.nfc;
 
 import android.app.Activity;
 import android.app.PendingIntent;
@@ -70,11 +70,10 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
                 JSONArray arr = response.getJSONArray("Queue");
                 JSONObject obj = arr.getJSONObject(0);
 
-                String wait = obj.getString("average_wait");
-                //int minute =
+                double wait = 10.0;//obj.getDouble("average_wait");
 
                 Intent returnIntent = new Intent();
-                Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42);
+                Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42, wait);
                 returnIntent.putExtra("game", g);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
@@ -162,6 +161,12 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             mAdapter.disableForegroundDispatch(this);
     }
 
+
+    /**
+     * When the tag is tapped, this function gets an intent which enables it to read the link on the tag.
+     *
+     * @param intent
+     */
     @Override
     public void onNewIntent(Intent intent) {
         processingText.setText("Processing");
@@ -197,7 +202,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             params.put("venue_id", venueID);
             params.put("session_cookie", app.getUser().getSession());
 
-            vrf.doRequest(app.POST_edit_machine, params, Request.Method.POST);
+            vrf.doRequest(app.POST_delete_machine, params, Request.Method.POST);
         } else { // user wants to confirm presence
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);

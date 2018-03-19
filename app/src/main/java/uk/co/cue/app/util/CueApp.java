@@ -16,20 +16,25 @@ import com.google.firebase.iid.FirebaseInstanceId;
 public class CueApp extends Application {
 
     //ENDPOINTS
+    //POST
     public final static String POST_login = "https://idk-cue.club/user/login";
     public final static String POST_logout = "https://idk-cue.club/user/logout";
     public final static String POST_register = "https://idk-cue.club/user/add";
     public final static String POST_add_machine = "https://idk-cue.club/machine/add";
-    public final static String GET_venue_queues = "https://idk-cue.club/venue/queues";
+    public final static String POST_delete_machine = "https://idk-cue.club/machine/delete";
     public final static String POST_business_venues = "https://idk-cue.club/venues/admin";
-    public final static String GET_local_venues = "https://idk-cue.club/venues/nearby";
-    public final static String POST_edit_machine = "https://idk-cue.club/machine/delete";
-    public final static String GET_user_queue = "https://idk-cue.club/user/queue";
-    public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit";
-
     public final static String POST_add_queue = "https://idk-cue.club/queue/join";
     public final static String POST_leave_queue = "https://idk-cue.club/queue/leave";
     public final static String POST_user_history = "https://idk-cue.club/user/history";
+
+    // GET
+    public final static String GET_venue_queues = "https://idk-cue.club/venue/queues";
+    public final static String GET_local_venues = "https://idk-cue.club/venues/nearby";
+    public final static String GET_user_queue = "https://idk-cue.club/user/queue";
+
+    //PUT
+    public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit";
+
 
     private User user;
 

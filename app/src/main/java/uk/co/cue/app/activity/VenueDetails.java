@@ -2,11 +2,9 @@ package uk.co.cue.app.activity;
 
 
 import android.content.Intent;
-import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -35,12 +33,10 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
-import uk.co.cue.app.objects.Machine;
 import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -54,6 +50,8 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
     private GoogleMap map;
     private Venue venue;
     private LinearLayout main_layout;
+    private View noMachines;
+    private View textDesc;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -71,6 +69,8 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
         final TextView address = findViewById(R.id.address);
         final TextView rating = findViewById(R.id.rating);
         final TextView phone = findViewById(R.id.phone);
+        noMachines = findViewById(R.id.noMachines);
+        textDesc = findViewById(R.id.text_desc);
 
         SupportMapFragment mapFrag = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.individualMapView));
         mapFrag.getMapAsync(new OnMapReadyCallback() {
@@ -143,13 +143,18 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
         try {
             System.out.println("Response for machines: "+response);
             JSONArray array = response.getJSONArray("Queues");
+            if (array.length() == 0) {
+                noMachines.setVisibility(View.VISIBLE);
+                textDesc.setVisibility(View.GONE);
+                return;
+            }
             for(int i =0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
                 String num_people = obj.getString("queue_size");
                 String category = obj.getString("category");
                 String num_machines = obj.getString("num_machines");
                 //String avg = obj.getString("avg");
-                String price = obj.getString("base_price");
+                double price = obj.getDouble("base_price");
 
                 View row = LayoutInflater.from(this).inflate(R.layout.queue_details, main_layout, false);
                 ImageView img = row.findViewById(R.id.image);
@@ -178,10 +183,10 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
                         img.setImageResource(R.mipmap.other);
                 }
 
-                type.setText("Queue type: "+ category);
-                queue_size.setText("Queue size: "+ num_people);
-                num_m.setText("Number of machines: "+ num_machines);
-                pr.setText("Price: "+ price);
+                type.setText(category);
+                queue_size.setText(num_people);
+                num_m.setText(num_machines);
+                pr.setText("£" + String.format("%.2f", price));
 
                 main_layout.addView(row);
             }
