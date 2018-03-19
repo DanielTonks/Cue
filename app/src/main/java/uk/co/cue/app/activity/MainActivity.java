@@ -127,6 +127,10 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                                 startActivity(intent);
                                 break;
 
+                            case "Past Games":
+                                showPastGamesFragment(new PastGamesFragment());
+                                break;
+
                             case "Log out":
                                 logout();
                                 break;
@@ -140,6 +144,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
     }
 
     private void logout() {
+        logoutOfApp(); // update UI immediately
         Map<String, String> params = new HashMap<String, String>();
         params.put("user_id", String.valueOf(app.getUser().getUserid()));
         params.put("session_cookie", app.getUser().getSession());
@@ -154,6 +159,13 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
     }
 
     private void showHomeFragment(HomeFragment f) {
+        FragmentManager fragmentManager = getSupportFragmentManager();
+        FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
+        fragmentTransaction.replace(R.id.main_layout, f);
+        fragmentTransaction.commit();
+    }
+
+    private void showPastGamesFragment(PastGamesFragment f) {
         FragmentManager fragmentManager = getSupportFragmentManager();
         FragmentTransaction fragmentTransaction = fragmentManager.beginTransaction();
         fragmentTransaction.replace(R.id.main_layout, f);
@@ -181,15 +193,11 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        if (url.contains(app.POST_logout)) {
-            logoutOfApp();
-        }
     }
 
     @Override
     public void requestFailed(int statusCode) {
         System.out.println(statusCode);
-        logoutOfApp();
     }
 
     public void logoutOfApp() {
