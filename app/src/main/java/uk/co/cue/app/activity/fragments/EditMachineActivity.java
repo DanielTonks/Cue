@@ -30,7 +30,6 @@ public class EditMachineActivity extends AppCompatActivity implements VolleyRequ
     private EditText price;
     private Button submit;
     private CueApp app;
-    private CheckBox toDelete;
     private VolleyRequestFactory vrf;
 
     @Override
@@ -47,7 +46,6 @@ public class EditMachineActivity extends AppCompatActivity implements VolleyRequ
         category = findViewById(R.id.machine_type_spinner2);
         price = findViewById(R.id.newValue);
         submit = findViewById(R.id.submitEdit);
-        toDelete = findViewById(R.id.toDelete);
 
         ArrayAdapter<Venue> venueAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item,
@@ -59,11 +57,6 @@ public class EditMachineActivity extends AppCompatActivity implements VolleyRequ
             public void onClick(View view) {
                 Venue ven = (Venue) venue.getSelectedItem();
                 int venueID = ven.getVenue_id();
-                if(toDelete.isChecked()) {
-                    Intent i = new Intent(getApplicationContext(), NFCDetectedActivity.class);
-                    i.putExtra("type", "Delete");
-                    startActivityForResult(i, 0);
-                } else {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("user_id", String.valueOf(app.getUser().getUserid()));
                     params.put("session_cookie", app.getUser().getSession());
@@ -72,22 +65,9 @@ public class EditMachineActivity extends AppCompatActivity implements VolleyRequ
                     params.put("new_price", price.getText().toString());
 
                     vrf.doRequest(app.PUT_edit_machine, params, Request.Method.PUT);
-                }
-
-
             }
         });
 
-
-
-    }
-
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            Toast.makeText(this, "Machine deleted", Toast.LENGTH_LONG).show();
-            price.setText("");
-        }
 
 
     }
