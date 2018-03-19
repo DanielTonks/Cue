@@ -197,7 +197,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             params.put("venue_id", venueID);
             params.put("session_cookie", app.getUser().getSession());
 
-            vrf.doRequest(app.DELETE_edit_machine, params, Request.Method.DELETE);
+            vrf.doRequest(app.POST_edit_machine, params, Request.Method.POST);
         } else { // user wants to confirm presence
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);

@@ -2,11 +2,14 @@ package uk.co.cue.app.activity;
 
 
 import android.content.Intent;
+import android.graphics.PorterDuff;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -50,11 +53,13 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
     private CueApp app;
     private GoogleMap map;
     private Venue venue;
+    private LinearLayout main_layout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_venue_details);
+
 
         app = (CueApp) getApplication();
         this.volleyRequest = new VolleyRequestFactory(this, getApplicationContext());
@@ -133,63 +138,52 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     public void requestFinished(JSONObject response, String url) {
-        LinearLayout layout = new LinearLayout(this);
-        ImageView image = new ImageView(this);
-        layout.setOrientation(LinearLayout.HORIZONTAL);
+
+        main_layout = findViewById(R.id.cue_features_layout);
         try {
             System.out.println("Response for machines: "+response);
             JSONArray array = response.getJSONArray("Queues");
             for(int i =0; i < array.length(); i++) {
                 JSONObject obj = array.getJSONObject(i);
-                String num_people = obj.getString("people");
+                String num_people = obj.getString("queue_size");
                 String category = obj.getString("category");
-                String num_machines = obj.getString("machines");
-                String avg = obj.getString("avg");
-                String price = obj.getString("price");
+                String num_machines = obj.getString("num_machines");
+                //String avg = obj.getString("avg");
+                String price = obj.getString("base_price");
+
+                View row = LayoutInflater.from(this).inflate(R.layout.queue_details, main_layout, false);
+                ImageView img = row.findViewById(R.id.image);
+                TextView type = row.findViewById(R.id.queue_type);
+                TextView queue_size = row.findViewById(R.id.queue_size);
+                TextView num_m = row.findViewById(R.id.queue_num_machines);
+                TextView pr = row.findViewById(R.id.queue_base_price);
 
                 switch(category) {
                     case "Pool":
-                        image.setImageResource(R.mipmap.billiard_cue);
+                        img.setImageResource(R.mipmap.billiard_cue);
                         break;
                     case "Snooker":
-                        image.setImageResource(R.mipmap.billiard_cue);
+                        img.setImageResource(R.mipmap.billiard_cue);
                         break;
-                    case "Fruity Machine":
-                        image.setImageResource(R.mipmap.slot_machine);
+                    case "Fruit Machine":
+                        img.setImageResource(R.mipmap.slot_machine);
                         break;
                     case "Foosball":
-                        image.setImageResource(R.mipmap.football);
+                        img.setImageResource(R.mipmap.football);
                         break;
                     case "Arcade":
-                        image.setImageResource(R.mipmap.arcade);
+                        img.setImageResource(R.mipmap.arcade);
                         break;
+                    case "Other":
+                        img.setImageResource(R.mipmap.other);
                 }
 
-                layout.addView(image);
+                type.setText("Queue type: "+ category);
+                queue_size.setText("Queue size: "+ num_people);
+                num_m.setText("Number of machines: "+ num_machines);
+                pr.setText("Price: "+ price);
 
-                LinearLayout inner_layout = new LinearLayout(this);
-                inner_layout.setOrientation(LinearLayout.VERTICAL);
-                TextView queueType = new TextView(this);
-                queueType.setText(category);
-                inner_layout.addView(queueType);
-
-                TextView num_peeps = new TextView(this);
-                num_peeps.setText(num_people);
-                inner_layout.addView(num_peeps);
-
-                TextView num_m = new TextView(this);
-                num_m.setText(num_machines);
-                inner_layout.addView(num_m);
-
-                TextView average = new TextView(this);
-                average.setText(avg);
-                inner_layout.addView(average);
-
-                TextView price_view = new TextView(this);
-                price_view.setText(price);
-                inner_layout.addView(price_view);
-
-                layout.addView(inner_layout);
+                main_layout.addView(row);
             }
 
         } catch(JSONException e) {
