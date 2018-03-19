@@ -14,13 +14,15 @@ public class Game implements Serializable {
     private String category;
     private int position;
     private GameChanged listener;
+    private double estimatedTime;
 
-    public Game(int venue_id, int queue_id, String venue_name, String category, int position) {
+    public Game(int venue_id, int queue_id, String venue_name, String category, int position, double estimatedTime) {
         this.venue_id = venue_id;
         this.queue_id = queue_id;
         this.venue_name = venue_name;
         this.category = category;
         this.position = 42;
+        this.estimatedTime = estimatedTime;
     }
 
     public int getVenueID() {
@@ -60,6 +62,10 @@ public class Game implements Serializable {
 
     public void setOnGameChangedListener(GameChanged listener) {
         this.listener = listener;
+    }
+
+    public double getEstimatedTime() {
+        return estimatedTime;
     }
 
     public interface GameChanged {

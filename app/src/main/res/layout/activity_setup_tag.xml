@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="uk.co.cue.app.activity.SetupTagActivity">
+    tools:context="uk.co.cue.app.activity.nfc.SetupTagActivity">
 
     <RelativeLayout
         android:id="@+id/setup_card1"

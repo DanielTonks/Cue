@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.fragments;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -20,6 +20,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.activity.ReserveTableActivity;
+import uk.co.cue.app.activity.nfc.NFCDetectedActivity;
 import uk.co.cue.app.objects.Game;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -42,7 +44,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
     private View quit;
     private boolean ready = false;
     private boolean inProgress = false; // used to denote when the game is in progress
-
+    private View add;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -50,16 +52,17 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         View fragment = inflater.inflate(R.layout.fragment_home, container, false);
         getActivity().setTitle("Home");
 
-
         app = (CueApp) getActivity().getApplication();
 
         welcome = fragment.findViewById(R.id.card_intro);
         venues = fragment.findViewById(R.id.card_venues);
+        add = fragment.findViewById(R.id.card_add);
         queue = fragment.findViewById(R.id.card_queue);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         boolean show_welcome = sharedPref.getBoolean("show_welcome", true);
         boolean show_venues = sharedPref.getBoolean("show_venues", true);
+        boolean show_add = sharedPref.getBoolean("show_add", true);
 
         vrf = new VolleyRequestFactory(this, getContext());
 
@@ -73,17 +76,28 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             venues.setVisibility(View.VISIBLE);
         }
 
+        boolean isBusiness = app.getUser().isBusiness();
 
-        if (show_welcome) {
+        if (show_welcome && !isBusiness) {
             welcome.setVisibility(View.VISIBLE);
         } else {
             welcome.setVisibility(View.GONE);
         }
 
-        if (show_venues) {
+        if (show_venues && !isBusiness) {
             venues.setVisibility(View.VISIBLE);
         } else {
             venues.setVisibility(View.GONE);
+        }
+
+        if (show_add && isBusiness) {
+            add.setVisibility(View.VISIBLE);
+        } else {
+            add.setVisibility(View.GONE);
+        }
+
+        if (isBusiness) {
+            queue.setVisibility(View.GONE);
         }
 
         fragment.findViewById(R.id.close_welcome).setOnClickListener(new View.OnClickListener() {
@@ -100,6 +114,12 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             }
         });
 
+        fragment.findViewById(R.id.close_add).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                closeCard("Add");
+            }
+        });
 
         requestTable = fragment.findViewById(R.id.btn_join);
         requestTable.setOnClickListener(new View.OnClickListener() {
@@ -181,7 +201,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             ((TextView) quit.findViewById(R.id.btn_text)).setText("Start Game");
             ready = true;
         } else {
-            est_time.setText("The estimated time before your game is 0 minutes");
+            est_time.setText("The estimated time before your game is " + g.getEstimatedTime() + " minutes");
             queue_pos.setText(String.valueOf(g.getPosition()));
             ((TextView) quit.findViewById(R.id.btn_text)).setText("Quit Queue");
             ready = false;
@@ -200,6 +220,10 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             case "Venue":
                 editor.putBoolean("show_venues", false);
                 venues.setVisibility(View.GONE);
+                break;
+            case "Add":
+                editor.putBoolean("show_add", false);
+                add.setVisibility(View.GONE);
                 break;
         }
 
@@ -244,8 +268,9 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
                 String category = queueInfo.getString("category");
                 int queueID = queueInfo.getInt("queue_id");
                 int venueID = queueInfo.getInt("venue_id");
+                double avgTime = 10.0;
 
-                Game g = new Game(venueID, queueID, venueName, category, 42);
+                Game g = new Game(venueID, queueID, venueName, category, 42, avgTime);
                 g.setOnGameChangedListener(this);
 
                 app.getUser().setGame(g);

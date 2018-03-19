@@ -26,6 +26,7 @@ import org.json.JSONObject;
 import java.util.Calendar;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.activity.nfc.NFCDetectedActivity;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -51,7 +52,6 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
         currentTimeSelected = findViewById(R.id.currentTimeSelected);
 
         mPlaceDetectionClient = Places.getPlaceDetectionClient(this, null);
-
 
         findViewById(R.id.btn_now).setOnClickListener(new View.OnClickListener() {
             @Override
@@ -82,9 +82,6 @@ public class ReserveTableActivity extends AppCompatActivity implements VolleyReq
 
         locationManager = LocationServices.getFusedLocationProviderClient(this);
         vrf = new VolleyRequestFactory(this, getApplicationContext());
-
-
-
     }
 
 

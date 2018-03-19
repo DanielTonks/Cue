@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/colorPrimary"
-    tools:context="uk.co.cue.app.activity.EditMachineActivity">
+    tools:context="uk.co.cue.app.activity.fragments.EditMachineActivity">
 
     <RelativeLayout
         android:id="@+id/setup_card1"
@@ -156,10 +156,10 @@
             android:layout_below="@+id/valueCard"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="33dp"
-            android:textColor="@color/white"
+            android:buttonTint="@color/white"
             android:fontFamily="@font/raleway_light"
             android:text="Delete machine"
-            android:buttonTint="@color/white"
+            android:textColor="@color/white"
             android:textSize="18sp" />
 
 

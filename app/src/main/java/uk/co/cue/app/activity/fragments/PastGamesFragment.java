@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.fragments;
 
 
 import android.content.Intent;
@@ -20,11 +20,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-import uk.co.cue.app.GamesAdapter;
 import uk.co.cue.app.R;
+import uk.co.cue.app.activity.VenueDetails;
 import uk.co.cue.app.objects.HistoricalGame;
 import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
+import uk.co.cue.app.util.GamesAdapter;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
 
@@ -51,7 +52,7 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View fragment = inflater.inflate(R.layout.fragment_past_games, container, false);
-        getActivity().setTitle("Home");
+        getActivity().setTitle("Past Games");
 
         app = (CueApp) getActivity().getApplication();
         vrf = new VolleyRequestFactory(this, getContext());

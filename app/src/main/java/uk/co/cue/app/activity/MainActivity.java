@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 
@@ -26,7 +27,13 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
+import uk.co.cue.app.activity.fragments.EditMachineActivity;
+import uk.co.cue.app.activity.fragments.HelpFragment;
+import uk.co.cue.app.activity.fragments.HomeFragment;
+import uk.co.cue.app.activity.fragments.LocalVenuesActivity;
+import uk.co.cue.app.activity.fragments.PastGamesFragment;
 import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
+import uk.co.cue.app.activity.nfc.SetupTagActivity;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
 
@@ -54,6 +61,11 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 
         if (app.getUser().getSession() != null) {
             setUp();
+        } else {
+            Toast.makeText(this, "Randomly got to MainActivity without session", Toast.LENGTH_SHORT).show();
+            Intent i = new Intent(this, LoginChooserActivity.class);
+            startActivity(i);
+            finish();
         }
 
         this.vrf = new VolleyRequestFactory(this, getApplicationContext());

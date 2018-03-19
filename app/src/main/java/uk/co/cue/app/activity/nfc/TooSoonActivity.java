@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.nfc;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -13,6 +13,11 @@ import com.google.firebase.dynamiclinks.PendingDynamicLinkData;
 
 import uk.co.cue.app.R;
 
+
+/**
+ * Class that shows a 'too soon' message if NFC is tapped too early.
+ * This class listens for deep links containing the idk-cue.club URL
+ */
 public class TooSoonActivity extends AppCompatActivity {
 
     @Override

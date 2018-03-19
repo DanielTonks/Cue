@@ -1,4 +1,4 @@
-package uk.co.cue.app;
+package uk.co.cue.app.util;
 
 import android.app.Activity;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
+import uk.co.cue.app.R;
 import uk.co.cue.app.objects.HistoricalGame;
 
 

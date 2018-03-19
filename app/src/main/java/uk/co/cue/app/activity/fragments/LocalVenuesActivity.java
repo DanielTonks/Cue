@@ -1,4 +1,4 @@
-package uk.co.cue.app.activity;
+package uk.co.cue.app.activity.fragments;
 
 import android.Manifest;
 import android.content.DialogInterface;
@@ -29,12 +29,11 @@ import com.google.android.gms.tasks.OnSuccessListener;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
-import uk.co.cue.app.objects.Machine;
+import uk.co.cue.app.activity.VenueDetails;
 import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -184,7 +183,8 @@ public class LocalVenuesActivity extends AppCompatActivity implements VolleyRequ
 //                        .tilt(0).build();
 
                 CameraUpdate cu = CameraUpdateFactory.newLatLngBounds(bounds, 100);
-                map.animateCamera(cu);
+                //map.animateCamera(cu);
+                map.moveCamera(cu);
 
                 map.setOnInfoWindowClickListener(new GoogleMap.OnInfoWindowClickListener() {
                     @Override
