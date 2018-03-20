@@ -33,6 +33,7 @@ import uk.co.cue.app.activity.fragments.HomeFragment;
 import uk.co.cue.app.activity.fragments.LocalVenuesActivity;
 import uk.co.cue.app.activity.fragments.PastGamesFragment;
 import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
+import uk.co.cue.app.activity.nfc.NFCDetectedActivity;
 import uk.co.cue.app.activity.nfc.SetupTagActivity;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -106,6 +107,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         m.findItem(R.id.past_games).setVisible(!visible);
         m.findItem(R.id.add_machine).setVisible(visible);
         m.findItem(R.id.edit_machine).setVisible(visible);
+        m.findItem(R.id.delete_machine).setVisible(visible);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -133,6 +135,11 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                                 Intent intent2 = new Intent(MainActivity.this, EditMachineActivity.class);
                                 startActivity(intent2);
                                 break;
+
+                            case "Delete machine":
+                                Intent intent3 = new Intent(getApplicationContext(), NFCDetectedActivity.class);
+                                intent3.putExtra("type", "Delete");
+                                startActivityForResult(intent3, 0);
 
                             case "Local Venues":
                                 Intent intent = new Intent(MainActivity.this, LocalVenuesActivity.class);
@@ -200,6 +207,13 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                 return true;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            Toast.makeText(this, "Machine deleted", Toast.LENGTH_LONG).show();
+        }
     }
 
 

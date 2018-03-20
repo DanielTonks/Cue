@@ -149,19 +149,6 @@
             android:text="Submit"
             />
 
-        <CheckBox
-            android:id="@+id/toDelete"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/valueCard"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="33dp"
-            android:buttonTint="@color/white"
-            android:fontFamily="@font/raleway_light"
-            android:text="Delete machine"
-            android:textColor="@color/white"
-            android:textSize="18sp" />
-
 
     </RelativeLayout>
 
