@@ -78,6 +78,7 @@ public class User {
         this.business = newUser.isBusiness();
         this.venues = newUser.getVenues();
         this.session = newUser.getSession();
+        this.game = null;
     }
 
     public Game getGame() {

@@ -153,8 +153,8 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
                 String num_people = obj.getString("queue_size");
                 String category = obj.getString("category");
                 String num_machines = obj.getString("num_machines");
-                //String avg = obj.getString("avg");
-                double price = obj.getDouble("base_price");
+                double waitTime = obj.getDouble("wait_time");
+                double price = obj.getDouble("current_price");
 
                 View row = LayoutInflater.from(this).inflate(R.layout.queue_details, main_layout, false);
                 ImageView img = row.findViewById(R.id.image);

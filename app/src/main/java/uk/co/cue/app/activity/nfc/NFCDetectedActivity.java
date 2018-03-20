@@ -16,7 +16,6 @@ import android.widget.TextView;
 
 import com.android.volley.Request;
 
-import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -67,13 +66,11 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     public void requestFinished(JSONObject response, String url) {
         if(url.equals(app.POST_add_queue)) {
             try {
-                JSONArray arr = response.getJSONArray("Queue");
-                JSONObject obj = arr.getJSONObject(0);
-
-                double wait = 10.0;//obj.getDouble("average_wait");
-
+                JSONObject obj = response.getJSONObject("Queue");
+                int wait = obj.getInt("wait_time");
+                int pos = obj.getInt("queue_pos");
                 Intent returnIntent = new Intent();
-                Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), 42, wait);
+                Game g = new Game(obj.getInt("venue_id"), obj.getInt("queue_id"), obj.getString("venue_name"), obj.getString("category"), pos, wait);
                 returnIntent.putExtra("game", g);
                 setResult(Activity.RESULT_OK, returnIntent);
                 finish();
