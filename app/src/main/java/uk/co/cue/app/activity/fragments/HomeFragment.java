@@ -45,6 +45,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
     private boolean ready = false;
     private boolean inProgress = false; // used to denote when the game is in progress
     private View add;
+    private View machineFunctions;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -58,6 +59,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         venues = fragment.findViewById(R.id.card_venues);
         add = fragment.findViewById(R.id.card_add);
         queue = fragment.findViewById(R.id.card_queue);
+        machineFunctions = fragment.findViewById(R.id.card_buttons);
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         boolean show_welcome = sharedPref.getBoolean("show_welcome", true);
@@ -98,6 +100,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
         if (isBusiness) {
             queue.setVisibility(View.GONE);
+            machineFunctions.setVisibility(View.VISIBLE);
         }
 
         fragment.findViewById(R.id.close_welcome).setOnClickListener(new View.OnClickListener() {

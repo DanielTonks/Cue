@@ -13,6 +13,7 @@
         android:layout_marginBottom="16dp"
         android:fontFamily="@font/raleway_light"
         android:text="Tap the tag on any table"
+        android:textAlignment="center"
         android:textColor="@color/white"
         android:textSize="24sp" />
 

@@ -140,6 +140,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                                 Intent intent3 = new Intent(getApplicationContext(), NFCDetectedActivity.class);
                                 intent3.putExtra("type", "Delete");
                                 startActivityForResult(intent3, 0);
+                                break;
 
                             case "Local Venues":
                                 Intent intent = new Intent(MainActivity.this, LocalVenuesActivity.class);
