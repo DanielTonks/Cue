@@ -159,10 +159,12 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
                     sb.addCallback(new Snackbar.Callback() {
                         @Override
                         public void onDismissed(Snackbar transientBottomBar, int event) {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("user_id", String.valueOf(app.getUser().getUserid()));
-                            params.put("session_cookie", app.getUser().getSession());
-                            vrf.doRequest(app.POST_leave_queue, params, Request.Method.POST);
+                            if (event == DISMISS_EVENT_TIMEOUT) {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("user_id", String.valueOf(app.getUser().getUserid()));
+                                params.put("session_cookie", app.getUser().getSession());
+                                vrf.doRequest(app.POST_leave_queue, params, Request.Method.POST);
+                            }
                         }
                     });
 
@@ -193,6 +195,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         queue_description.setText("You are queueing for " + g.getCategory() + " at " + g.getVenueName());
 
         queue.setVisibility(View.GONE);
+        queue_pos.setText(String.valueOf(g.getPosition()));
         card_inQueue.setVisibility(View.VISIBLE);
 
         if (g.getPosition() == 0) {
@@ -268,9 +271,11 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
                 String category = queueInfo.getString("category");
                 int queueID = queueInfo.getInt("queue_id");
                 int venueID = queueInfo.getInt("venue_id");
-                double avgTime = 10.0;
 
-                Game g = new Game(venueID, queueID, venueName, category, 42, avgTime);
+                int avgTime = queueStats.getInt("wait");
+                int position = queueStats.getInt("position");
+
+                Game g = new Game(venueID, queueID, venueName, category, position, avgTime);
                 g.setOnGameChangedListener(this);
 
                 app.getUser().setGame(g);
