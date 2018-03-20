@@ -163,6 +163,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:orientation="vertical">
 
                     <ImageView
@@ -176,7 +177,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Add a machine" />
+                        android:text="Add machine" />
 
 
                 </LinearLayout>
@@ -186,6 +187,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:orientation="vertical">
 
                     <ImageView
@@ -199,7 +201,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Edit a machine" />
+                        android:text="Edit machine" />
 
 
                 </LinearLayout>
@@ -209,6 +211,7 @@
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
+                    android:clickable="true"
                     android:orientation="vertical">
 
                     <ImageView
@@ -222,7 +225,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_horizontal"
-                        android:text="Delete a machine" />
+                        android:text="Delete machine" />
 
 
                 </LinearLayout>
