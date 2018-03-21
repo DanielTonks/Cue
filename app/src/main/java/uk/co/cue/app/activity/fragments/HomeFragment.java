@@ -22,7 +22,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
-import uk.co.cue.app.activity.MainActivity;
 import uk.co.cue.app.activity.ReserveTableActivity;
 import uk.co.cue.app.activity.nfc.NFCDetectedActivity;
 import uk.co.cue.app.activity.nfc.SetupTagActivity;
@@ -289,6 +288,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             ((TextView) quit.findViewById(R.id.btn_text)).setText("End Game");
         } else if(requestCode == 2) {
             if (resultCode == RESULT_OK) {
+                System.out.println("BACK HERE AFTER DELETE");
                 Toast.makeText(getContext(), "Machine deleted", Toast.LENGTH_LONG).show();
             }
         }

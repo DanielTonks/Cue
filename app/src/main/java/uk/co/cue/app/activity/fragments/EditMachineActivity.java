@@ -1,12 +1,10 @@
 package uk.co.cue.app.activity.fragments;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.Toast;
@@ -19,7 +17,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 import uk.co.cue.app.R;
-import uk.co.cue.app.activity.nfc.NFCDetectedActivity;
 import uk.co.cue.app.objects.Venue;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -63,13 +60,9 @@ public class EditMachineActivity extends AppCompatActivity implements VolleyRequ
                     params.put("venue_id", String.valueOf(venueID));
                     params.put("category", category.getSelectedItem().toString());
                     params.put("new_price", price.getText().toString());
-
                     vrf.doRequest(app.PUT_edit_machine, params, Request.Method.PUT);
             }
         });
-
-
-
     }
 
     @Override

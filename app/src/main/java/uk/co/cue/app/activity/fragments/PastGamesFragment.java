@@ -57,11 +57,6 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
         app = (CueApp) getActivity().getApplication();
         vrf = new VolleyRequestFactory(this, getContext());
 
-        Map<String, String> params = new HashMap<String, String>();
-        params.put("user_id", String.valueOf(app.getUser().getUserid()));
-        params.put("session_cookie", app.getUser().getSession());
-        vrf.doRequest(app.POST_user_history, params, Request.Method.POST);
-
         spinner = fragment.findViewById(R.id.progress);
         errorView = fragment.findViewById(R.id.noResults);
         listView = (ListView) fragment.findViewById(R.id.list);
@@ -69,15 +64,30 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
         games = new ArrayList<HistoricalGame>();
         gamesAdapter = new GamesAdapter(getActivity(), games);
         listView.setAdapter(gamesAdapter);
-        listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                HistoricalGame g = gamesAdapter.getItem(i);
-                Intent intent = new Intent(getContext(), VenueDetails.class);
-                intent.putExtra("venue", g.getVenue());
-                startActivity(intent);
-            }
-        });
+
+        if (app.getUser().isBusiness()) {
+            //Inflate the header
+            View header = getLayoutInflater().inflate(R.layout.spinner_header, null);
+            app.getUser().getVenues();
+
+        } else { // If the user is a player then we can let them click items in their history.
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+            params.put("session_cookie", app.getUser().getSession());
+            vrf.doRequest(app.POST_user_history, params, Request.Method.POST);
+
+            listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    HistoricalGame g = gamesAdapter.getItem(i);
+                    Intent intent = new Intent(getContext(), VenueDetails.class);
+                    intent.putExtra("venue", g.getVenue());
+                    startActivity(intent);
+                }
+            });
+        }
+
+
 
 
         // Inflate the layout for this fragment

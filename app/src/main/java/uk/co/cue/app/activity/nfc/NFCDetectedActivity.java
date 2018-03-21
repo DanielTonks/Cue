@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -209,4 +210,14 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
     }
 
+    // The user clicked 'cancel'
+    public void cancel(View view) {
+        Intent returnIntent = new Intent();
+        if (processingText.getText().toString().equals("Processing")) {
+            setResult(Activity.RESULT_OK, returnIntent); // We can say it's OK because it will have still made the web request
+        } else {
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+        }
+        finish();
+    }
 }

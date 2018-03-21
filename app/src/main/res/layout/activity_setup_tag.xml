@@ -14,11 +14,22 @@
         android:visibility="visible">
 
         <TextView
-            android:id="@+id/pub_name"
+            android:id="@+id/instruction2"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentStart="true"
             android:layout_alignParentTop="true"
+            android:padding="16dp"
+            android:text="@string/add_instruction"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <TextView
+            android:id="@+id/pub_name"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/instruction2"
             android:fontFamily="@font/raleway_light"
             android:padding="16dp"
             android:text="@string/setup_pub"
@@ -144,9 +155,11 @@
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_centerHorizontal="true"
-            android:layout_marginBottom="12dp"
+            android:layout_marginBottom="32dp"
+            android:background="@color/white"
             android:onClick="onClickSubmitSetup"
             android:text="Submit"
+            android:textColor="@color/colorPrimary"
             />
 
 

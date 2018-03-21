@@ -70,7 +70,6 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
         final TextView rating = findViewById(R.id.rating);
         final TextView phone = findViewById(R.id.phone);
         noMachines = findViewById(R.id.noMachines);
-        textDesc = findViewById(R.id.text_desc);
 
         SupportMapFragment mapFrag = ((SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.individualMapView));
         mapFrag.getMapAsync(new OnMapReadyCallback() {
@@ -145,7 +144,6 @@ public class VenueDetails extends AppCompatActivity implements VolleyRequestFact
             JSONArray array = response.getJSONArray("Queues");
             if (array.length() == 0) {
                 noMachines.setVisibility(View.VISIBLE);
-                textDesc.setVisibility(View.GONE);
                 return;
             }
             for(int i =0; i < array.length(); i++) {

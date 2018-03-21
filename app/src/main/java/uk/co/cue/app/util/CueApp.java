@@ -33,7 +33,7 @@ public class CueApp extends Application {
     public final static String GET_user_queue = "https://idk-cue.club/user/queue";
 
     //PUT
-    public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit";
+    public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit/price";
 
 
     private User user;

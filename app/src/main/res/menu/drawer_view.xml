@@ -7,6 +7,13 @@
             android:icon="@mipmap/home"
             android:iconTint="@color/colorPrimary"
             android:title="Home" />
+
+        <item
+            android:id="@+id/bookings"
+            android:icon="@mipmap/history"
+            android:iconTint="@color/colorPrimary"
+            android:title="Bookings" />
+
         <item
             android:id="@+id/local_venues"
             android:icon="@mipmap/location"

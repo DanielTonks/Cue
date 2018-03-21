@@ -108,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         m.findItem(R.id.add_machine).setVisible(visible);
         m.findItem(R.id.edit_machine).setVisible(visible);
         m.findItem(R.id.delete_machine).setVisible(visible);
+        m.findItem(R.id.bookings).setVisible(visible);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -148,6 +149,10 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                                 break;
 
                             case "Past Games":
+                                showPastGamesFragment(new PastGamesFragment());
+                                break;
+
+                            case "Bookings":
                                 showPastGamesFragment(new PastGamesFragment());
                                 break;
 
