@@ -140,7 +140,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                             case "Delete machine":
                                 Intent intent3 = new Intent(getApplicationContext(), NFCDetectedActivity.class);
                                 intent3.putExtra("type", "Delete");
-                                startActivityForResult(intent3, 0);
+                                startActivityForResult(intent3, 50);
                                 break;
 
                             case "Local Venues":
@@ -217,9 +217,10 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
+        if (resultCode == RESULT_OK && requestCode == 50) {
             Toast.makeText(this, "Machine deleted", Toast.LENGTH_LONG).show();
         }
+        super.onActivityResult(requestCode, resultCode, data);
     }
 
 
@@ -243,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         editor.putBoolean("isGame", false);
         editor.putBoolean("show_welcome", true);
         editor.putBoolean("show_venues", true);
+        editor.putBoolean("show_add", true);
         editor.apply();
 
         Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);
