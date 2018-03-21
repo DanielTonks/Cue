@@ -27,6 +27,9 @@ public class CueApp extends Application {
     public final static String POST_leave_queue = "https://idk-cue.club/queue/leave";
     public final static String POST_user_history = "https://idk-cue.club/user/history";
 
+    public final static String POST_venue_history = "https://idk-cue.club/venue/history";
+
+
     // GET
     public final static String GET_venue_queues = "https://idk-cue.club/venue/queues";
     public final static String GET_local_venues = "https://idk-cue.club/venues/nearby";

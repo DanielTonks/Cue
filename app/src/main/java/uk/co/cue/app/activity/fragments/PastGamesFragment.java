@@ -8,7 +8,9 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Spinner;
 
 import com.android.volley.Request;
 
@@ -65,10 +67,36 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
         gamesAdapter = new GamesAdapter(getActivity(), games);
         listView.setAdapter(gamesAdapter);
 
+
         if (app.getUser().isBusiness()) {
             //Inflate the header
             View header = getLayoutInflater().inflate(R.layout.spinner_header, null);
-            app.getUser().getVenues();
+            Spinner s = (Spinner) header.findViewById(R.id.pub_name);
+            listView.addHeaderView(header);
+
+            ArrayAdapter<Venue> venueAdapter = new ArrayAdapter<>(getActivity(),
+                    android.R.layout.simple_spinner_dropdown_item,
+                    app.getUser().getVenues());
+            s.setAdapter(venueAdapter);
+
+            s.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                    Venue v = (Venue) adapterView.getAdapter().getItem(i);
+
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", String.valueOf(app.getUser().getUserid()));
+                    params.put("venue_id", String.valueOf(v.getVenue_id()));
+                    params.put("session_cookie", app.getUser().getSession());
+                    vrf.doRequest(app.POST_venue_history, params, Request.Method.POST);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> adapterView) {
+
+                }
+            });
+
 
         } else { // If the user is a player then we can let them click items in their history.
             Map<String, String> params = new HashMap<String, String>();
@@ -101,22 +129,41 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
         try {
             JSONArray historyArr = response.getJSONArray("History");
 
-            //Parse each object
-            for (int i = 0; i < historyArr.length(); i++) {
-                JSONObject obj = historyArr.getJSONObject(i);
-                String time = obj.getString("time_start");
-                String category = obj.getString("category");
-                String venue_name = obj.getString("venue_name");
-                int venue_id = obj.getInt("venue_id");
-                String google_token = obj.getString("google_token");
-                double lat = obj.getDouble("latitude");
-                double lon = obj.getDouble("longitude");
+            if (url.contains(app.POST_user_history)) {
 
-                double price = obj.getDouble("base_price");
+                //Parse each object
+                for (int i = 0; i < historyArr.length(); i++) {
+                    JSONObject obj = historyArr.getJSONObject(i);
+                    String time = obj.getString("time_start");
+                    String category = obj.getString("category");
+                    String venue_name = obj.getString("venue_name");
+                    int venue_id = obj.getInt("venue_id");
+                    String google_token = obj.getString("google_token");
+                    double lat = obj.getDouble("latitude");
+                    double lon = obj.getDouble("longitude");
 
-                Venue v = new Venue(venue_id, venue_name, lat, lon, google_token);
-                HistoricalGame g = new HistoricalGame(time, category, price, v);
-                games.add(g);
+                    double price = obj.getDouble("base_price");
+
+                    Venue v = new Venue(venue_id, venue_name, lat, lon, google_token);
+                    HistoricalGame g = new HistoricalGame(time, category, price, v);
+                    games.add(g);
+                }
+            } else {
+                for (int i = 0; i < historyArr.length(); i++) {
+                    JSONObject obj = historyArr.getJSONObject(i);
+                    String time = obj.getString("time_start");
+                    String category = obj.getString("category");
+
+                    String username = obj.getString("username");
+                    String name = obj.getString("name");
+
+                    double price = obj.getDouble("price");
+
+                    HistoricalGame g = new HistoricalGame(time, category, username, name, price);
+                    games.add(g);
+                }
+
+
             }
         } catch (JSONException e) {
             e.printStackTrace();
@@ -124,8 +171,14 @@ public class PastGamesFragment extends Fragment implements VolleyRequestFactory.
 
 
         if (games.size() == 0) {
-            listView.setVisibility(View.GONE);
-            errorView.setVisibility(View.VISIBLE);
+            if (app.getUser().isBusiness()) {
+                spinner.setVisibility(View.GONE);
+                errorView.setVisibility(View.VISIBLE);
+            } else {
+                listView.setVisibility(View.GONE);
+                errorView.setVisibility(View.VISIBLE);
+            }
+
         } else {
             listView.setVisibility(View.VISIBLE);
             errorView.setVisibility(View.GONE);

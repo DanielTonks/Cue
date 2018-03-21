@@ -19,11 +19,13 @@ import uk.co.cue.app.objects.HistoricalGame;
 
 public class GamesAdapter extends ArrayAdapter<HistoricalGame> {
 
+    private final CueApp app;
     private Activity t;
 
     public GamesAdapter(Activity t, ArrayList<HistoricalGame> lst) {
         super(t, 0, lst);
         this.t = t;
+        this.app = (CueApp) t.getApplication();
     }
 
     @Override
@@ -42,7 +44,14 @@ public class GamesAdapter extends ArrayAdapter<HistoricalGame> {
         TextView date_time = listItemView.findViewById(R.id.date_time);
 
         gameType.setText(g.getCategory());
-        pubName.setText(g.getVenue().getVenue_name());
+
+        if (app.getUser().isBusiness()) {
+            pubName.setText(g.getName() + " (" + g.getUsername() + ")");
+        } else {
+            pubName.setText(g.getVenue().getVenue_name());
+        }
+
+
         price.setText("£" + String.format("%.2f", g.getPrice()));
         date_month.setText(g.getDateMonth());
         date_time.setText(g.getDateTime());

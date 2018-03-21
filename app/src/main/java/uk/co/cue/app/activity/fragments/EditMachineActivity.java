@@ -7,6 +7,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Spinner;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -33,16 +34,19 @@ public class EditMachineActivity extends AppCompatActivity implements VolleyRequ
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_edit_machine);
+        setContentView(R.layout.activity_setup_tag);
         setTitle("Edit table");
 
         vrf = new VolleyRequestFactory(this, getApplicationContext());
 
         app = (CueApp) getApplication();
-        venue = findViewById(R.id.p_name);
-        category = findViewById(R.id.machine_type_spinner2);
-        price = findViewById(R.id.newValue);
-        submit = findViewById(R.id.submitEdit);
+        venue = findViewById(R.id.edit_pub_name);
+        category = findViewById(R.id.machine_type_spinner);
+        price = findViewById(R.id.value);
+        submit = findViewById(R.id.submit);
+
+        TextView instruction = findViewById(R.id.instruction);
+        instruction.setText(R.string.edit_instruction);
 
         ArrayAdapter<Venue> venueAdapter = new ArrayAdapter<>(this,
                 android.R.layout.simple_spinner_dropdown_item,
