@@ -275,7 +275,6 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         if (requestCode == 0) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                System.out.println("HELLO");
                 Game g = (Game) data.getSerializableExtra("game");
                 g.setOnGameChangedListener(this);
                 app.getUser().setGame(g);
@@ -287,10 +286,18 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             }
         } else if (requestCode == 1) {
             //Now the game is in progress
-            //est_time.setText("The estimated time before your game is 0 minutes");
-            queue_pos.setText("In Progress");
-            inProgress = true;
-            ((TextView) quit.findViewById(R.id.btn_text)).setText("End Game");
+            String resp = data.getStringExtra("Response");
+            if (resp.equals("ok")) {
+                queue_pos.setText("In Progress");
+                inProgress = true;
+                ((TextView) quit.findViewById(R.id.btn_text)).setText("End Game");
+            } else if (resp.equals("error, wrong machine")) {
+                Snackbar.make(card_inQueue, "Incorrect machine tapped. Try again", Snackbar.LENGTH_LONG).show();
+            } else {
+                Snackbar.make(card_inQueue, "An error occurred. Try again", Snackbar.LENGTH_LONG).show();
+            }
+
+
         } else if(requestCode == 2) {
             if (resultCode == RESULT_OK) {
                 System.out.println("BACK HERE AFTER DELETE");

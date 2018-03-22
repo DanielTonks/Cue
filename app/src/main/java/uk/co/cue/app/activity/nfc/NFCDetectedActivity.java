@@ -78,6 +78,18 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else if (url.contains(app.POST_game_start)) {
+            Intent returnIntent = new Intent();
+            try {
+                String resp = response.getString("Start");
+                setResult(Activity.RESULT_OK, returnIntent);
+                returnIntent.putExtra("Response", resp);
+                finish();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         } else {
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);
@@ -208,9 +220,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             params.put("session_cookie", app.getUser().getSession());
             vrf.doRequest(app.POST_game_start, params, Request.Method.POST); // start the game with this machine_id
 
-            Intent returnIntent = new Intent();
-            setResult(Activity.RESULT_OK, returnIntent);
-            finish();
+
         }
     }
 
