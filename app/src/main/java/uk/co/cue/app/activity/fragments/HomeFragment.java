@@ -178,6 +178,10 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
                     intent.putExtra("type", "Start");
                     startActivityForResult(intent, 1);
                 } else if (ready && inProgress) {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", String.valueOf(app.getUser().getUserid()));
+                    params.put("session_cookie", app.getUser().getSession());
+                    vrf.doRequest(app.POST_game_end, params, Request.Method.POST);
                     card_inQueue.setVisibility(View.GONE);
                     queue.setVisibility(View.VISIBLE);
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -212,6 +216,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
             }
         });
+
 
         if (app.getUser().getGame() != null) {
             //User has a game

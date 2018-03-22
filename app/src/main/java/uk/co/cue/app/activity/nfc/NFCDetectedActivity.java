@@ -202,12 +202,16 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
             vrf.doRequest(app.POST_delete_machine, params, Request.Method.POST);
         } else { // user wants to confirm presence
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+            params.put("machine_id", machineID);
+            params.put("session_cookie", app.getUser().getSession());
+            vrf.doRequest(app.POST_game_start, params, Request.Method.POST); // start the game with this machine_id
+
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);
             finish();
         }
-
-
     }
 
     // The user clicked 'cancel'
