@@ -26,6 +26,11 @@ public class CueApp extends Application {
     public final static String POST_add_queue = "https://idk-cue.club/queue/join";
     public final static String POST_leave_queue = "https://idk-cue.club/queue/leave";
     public final static String POST_user_history = "https://idk-cue.club/user/history";
+    public final static String POST_venue_history = "https://idk-cue.club/venue/history";
+
+    public final static String POST_game_start = "https://idk-cue.club/game/start";
+    public final static String POST_game_end = "https://idk-cue.club/game/end";
+
 
     // GET
     public final static String GET_venue_queues = "https://idk-cue.club/venue/queues";
@@ -33,7 +38,7 @@ public class CueApp extends Application {
     public final static String GET_user_queue = "https://idk-cue.club/user/queue";
 
     //PUT
-    public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit";
+    public final static String PUT_edit_machine = "https://idk-cue.club/machine/edit/price";
 
 
     private User user;

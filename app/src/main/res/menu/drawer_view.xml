@@ -7,6 +7,13 @@
             android:icon="@mipmap/home"
             android:iconTint="@color/colorPrimary"
             android:title="Home" />
+
+        <item
+            android:id="@+id/bookings"
+            android:icon="@mipmap/history"
+            android:iconTint="@color/colorPrimary"
+            android:title="Bookings" />
+
         <item
             android:id="@+id/local_venues"
             android:icon="@mipmap/location"
@@ -24,11 +31,20 @@
             android:title="Add new machine"
             android:visible="false"/>
         <item
-            android:id="@+id/edit_machine"
-            android:icon="@mipmap/edit"
+        android:id="@+id/edit_machine"
+        android:icon="@mipmap/edit"
+        android:iconTint="@color/colorPrimary"
+        android:title="Edit machine"
+        android:visible="false"/>
+
+        <item
+            android:id="@+id/delete_machine"
+            android:icon="@mipmap/delete"
             android:iconTint="@color/colorPrimary"
-            android:title="Edit machine"
+            android:title="Delete machine"
             android:visible="false"/>
+
+
         <item
             android:id="@+id/help"
             android:icon="@mipmap/help"

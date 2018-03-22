@@ -12,6 +12,7 @@ import android.os.Bundle;
 import android.os.Parcelable;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.View;
 import android.widget.TextView;
 
 import com.android.volley.Request;
@@ -77,6 +78,18 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             } catch (JSONException e) {
                 e.printStackTrace();
             }
+        } else if (url.contains(app.POST_game_start)) {
+            Intent returnIntent = new Intent();
+            try {
+                String resp = response.getString("Start");
+                setResult(Activity.RESULT_OK, returnIntent);
+                returnIntent.putExtra("Response", resp);
+                finish();
+
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
         } else {
             Intent returnIntent = new Intent();
             setResult(Activity.RESULT_OK, returnIntent);
@@ -201,12 +214,24 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
 
             vrf.doRequest(app.POST_delete_machine, params, Request.Method.POST);
         } else { // user wants to confirm presence
-            Intent returnIntent = new Intent();
-            setResult(Activity.RESULT_OK, returnIntent);
-            finish();
+            Map<String, String> params = new HashMap<String, String>();
+            params.put("user_id", String.valueOf(app.getUser().getUserid()));
+            params.put("machine_id", machineID);
+            params.put("session_cookie", app.getUser().getSession());
+            vrf.doRequest(app.POST_game_start, params, Request.Method.POST); // start the game with this machine_id
+
+
         }
-
-
     }
 
+    // The user clicked 'cancel'
+    public void cancel(View view) {
+        Intent returnIntent = new Intent();
+        if (processingText.getText().toString().equals("Processing")) {
+            setResult(Activity.RESULT_OK, returnIntent); // We can say it's OK because it will have still made the web request
+        } else {
+            setResult(Activity.RESULT_CANCELED, returnIntent);
+        }
+        finish();
+    }
 }

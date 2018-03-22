@@ -33,6 +33,7 @@ import uk.co.cue.app.activity.fragments.HomeFragment;
 import uk.co.cue.app.activity.fragments.LocalVenuesActivity;
 import uk.co.cue.app.activity.fragments.PastGamesFragment;
 import uk.co.cue.app.activity.loginFlow.LoginChooserActivity;
+import uk.co.cue.app.activity.nfc.NFCDetectedActivity;
 import uk.co.cue.app.activity.nfc.SetupTagActivity;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -106,6 +107,8 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         m.findItem(R.id.past_games).setVisible(!visible);
         m.findItem(R.id.add_machine).setVisible(visible);
         m.findItem(R.id.edit_machine).setVisible(visible);
+        m.findItem(R.id.delete_machine).setVisible(visible);
+        m.findItem(R.id.bookings).setVisible(visible);
 
         navigationView.setNavigationItemSelectedListener(
                 new NavigationView.OnNavigationItemSelectedListener() {
@@ -134,12 +137,22 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
                                 startActivity(intent2);
                                 break;
 
+                            case "Delete machine":
+                                Intent intent3 = new Intent(getApplicationContext(), NFCDetectedActivity.class);
+                                intent3.putExtra("type", "Delete");
+                                startActivityForResult(intent3, 50);
+                                break;
+
                             case "Local Venues":
                                 Intent intent = new Intent(MainActivity.this, LocalVenuesActivity.class);
                                 startActivity(intent);
                                 break;
 
                             case "Past Games":
+                                showPastGamesFragment(new PastGamesFragment());
+                                break;
+
+                            case "Bookings":
                                 showPastGamesFragment(new PastGamesFragment());
                                 break;
 
@@ -202,6 +215,14 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         return super.onOptionsItemSelected(item);
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (resultCode == RESULT_OK && requestCode == 50) {
+            Toast.makeText(this, "Machine deleted", Toast.LENGTH_LONG).show();
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }
+
 
     @Override
     public void requestFinished(JSONObject response, String url) {
@@ -223,6 +244,7 @@ public class MainActivity extends AppCompatActivity implements VolleyRequestFact
         editor.putBoolean("isGame", false);
         editor.putBoolean("show_welcome", true);
         editor.putBoolean("show_venues", true);
+        editor.putBoolean("show_add", true);
         editor.apply();
 
         Intent i = new Intent(getApplicationContext(), LoginChooserActivity.class);

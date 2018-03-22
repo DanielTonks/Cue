@@ -9,7 +9,9 @@ import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 
@@ -22,6 +24,7 @@ import java.util.Map;
 import uk.co.cue.app.R;
 import uk.co.cue.app.activity.ReserveTableActivity;
 import uk.co.cue.app.activity.nfc.NFCDetectedActivity;
+import uk.co.cue.app.activity.nfc.SetupTagActivity;
 import uk.co.cue.app.objects.Game;
 import uk.co.cue.app.util.CueApp;
 import uk.co.cue.app.util.VolleyRequestFactory;
@@ -45,6 +48,8 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
     private boolean ready = false;
     private boolean inProgress = false; // used to denote when the game is in progress
     private View add;
+    private View machineFunctions;
+    private LinearLayout add_button, edit_button, delete_button;
 
     @Override
     public View onCreateView(final LayoutInflater inflater, ViewGroup container,
@@ -54,10 +59,35 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
         app = (CueApp) getActivity().getApplication();
 
+        add_button = fragment.findViewById(R.id.btn_add);
+        edit_button = fragment.findViewById(R.id.btn_edit);
+        delete_button = fragment.findViewById(R.id.btn_delete);
         welcome = fragment.findViewById(R.id.card_intro);
         venues = fragment.findViewById(R.id.card_venues);
         add = fragment.findViewById(R.id.card_add);
         queue = fragment.findViewById(R.id.card_queue);
+        machineFunctions = fragment.findViewById(R.id.card_buttons);
+
+        add_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                addMachine();
+            }
+        });
+
+        edit_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                editMachine();
+            }
+        });
+
+        delete_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                deleteMachine();
+            }
+        });
 
         SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
         boolean show_welcome = sharedPref.getBoolean("show_welcome", true);
@@ -98,6 +128,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
         if (isBusiness) {
             queue.setVisibility(View.GONE);
+            machineFunctions.setVisibility(View.VISIBLE);
         }
 
         fragment.findViewById(R.id.close_welcome).setOnClickListener(new View.OnClickListener() {
@@ -147,6 +178,10 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
                     intent.putExtra("type", "Start");
                     startActivityForResult(intent, 1);
                 } else if (ready && inProgress) {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("user_id", String.valueOf(app.getUser().getUserid()));
+                    params.put("session_cookie", app.getUser().getSession());
+                    vrf.doRequest(app.POST_game_end, params, Request.Method.POST);
                     card_inQueue.setVisibility(View.GONE);
                     queue.setVisibility(View.VISIBLE);
                     SharedPreferences sharedPref = PreferenceManager.getDefaultSharedPreferences(getContext());
@@ -181,6 +216,7 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
             }
         });
+
 
         if (app.getUser().getGame() != null) {
             //User has a game
@@ -239,7 +275,6 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         if (requestCode == 0) {
             // Make sure the request was successful
             if (resultCode == RESULT_OK) {
-                System.out.println("HELLO");
                 Game g = (Game) data.getSerializableExtra("game");
                 g.setOnGameChangedListener(this);
                 app.getUser().setGame(g);
@@ -251,10 +286,23 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             }
         } else if (requestCode == 1) {
             //Now the game is in progress
-            //est_time.setText("The estimated time before your game is 0 minutes");
-            queue_pos.setText("In Progress");
-            inProgress = true;
-            ((TextView) quit.findViewById(R.id.btn_text)).setText("End Game");
+            String resp = data.getStringExtra("Response");
+            if (resp.equals("ok")) {
+                queue_pos.setText("In Progress");
+                inProgress = true;
+                ((TextView) quit.findViewById(R.id.btn_text)).setText("End Game");
+            } else if (resp.equals("error, wrong machine")) {
+                Snackbar.make(card_inQueue, "Incorrect machine tapped. Try again", Snackbar.LENGTH_LONG).show();
+            } else {
+                Snackbar.make(card_inQueue, "An error occurred. Try again", Snackbar.LENGTH_LONG).show();
+            }
+
+
+        } else if(requestCode == 2) {
+            if (resultCode == RESULT_OK) {
+                System.out.println("BACK HERE AFTER DELETE");
+                Toast.makeText(getContext(), "Machine deleted", Toast.LENGTH_LONG).show();
+            }
         }
     }
 
@@ -303,5 +351,21 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
             }
         });
 
+    }
+
+    public void addMachine() {
+        Intent i = new Intent(getContext(), SetupTagActivity.class);
+        startActivity(i);
+    }
+
+    public void editMachine() {
+        Intent intent = new Intent(getContext(), EditMachineActivity.class);
+        startActivity(intent);
+    }
+
+    public void deleteMachine() {
+        Intent intent3 = new Intent(getContext(), NFCDetectedActivity.class);
+        intent3.putExtra("type", "Delete");
+        startActivityForResult(intent3, 2);
     }
 }

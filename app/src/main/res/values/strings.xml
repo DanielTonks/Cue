@@ -21,12 +21,12 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="setup_pub">Choose your venue:</string>
-    <string name="machine_type">Select your machine type:</string>
-    <string name="machine_id">Select your machine: </string>
+    <string name="setup_pub">Venue</string>
+    <string name="machine_type">Game Type</string>
+    <string name="machine_id">Select machine: </string>
     <string name="setup_button">Setup</string>
     <string name="machine_num">Enter the number of machines:</string>
-    <string name="price_per_game">Enter the price per game:</string>
+    <string name="price_per_game">Price per game</string>
 
 
     <string-array name="machine_type_array">
@@ -70,4 +70,6 @@
     <string name="add_text1">As a venue owner you can easily add new machines and get users playing your games with Cue.</string>
     <string name="add_text2">Simply go to the menu, Add Machine and have a spare NFC tag to hand.</string>
     <string name="add_title">Adding Games with Cue</string>
+    <string name="edit_instruction">To change the price of all machines of a certain type at your venue, just select the category and set a new price.</string>
+    <string name="add_instruction">To add a new table, ensure you have a NFC tag to hand and then fill in the fields below.</string>
 </resources>
