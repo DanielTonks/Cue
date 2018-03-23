@@ -54,6 +54,7 @@ public class CueMessageHandler extends FirebaseMessagingService {
                 case "ready":
                     int machines = Integer.parseInt(data.get("machines"));
                     app.getUser().getGame().setPosition(0);
+                    app.getUser().getGame().setAmountOfMachines(machines);
                     break;
                 case "update":
                     app.getUser().getGame().setPosition(Integer.parseInt(data.get("position")));

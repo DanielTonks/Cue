@@ -15,6 +15,7 @@ public class Game implements Serializable {
     private int position;
     private GameChanged listener;
     private int estimatedTime;
+    private int amountOfMachines;
 
     public Game(int venue_id, int queue_id, String venue_name, String category, int position, int estimatedTime) {
         this.venue_id = venue_id;
@@ -66,6 +67,14 @@ public class Game implements Serializable {
 
     public int getEstimatedTime() {
         return estimatedTime;
+    }
+
+    public int getAmountOfMachines() {
+        return amountOfMachines;
+    }
+
+    public void setAmountOfMachines(int amountOfMachines) {
+        this.amountOfMachines = amountOfMachines;
     }
 
     public interface GameChanged {
