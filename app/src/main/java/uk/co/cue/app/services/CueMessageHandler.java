@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Build;
+import android.os.Handler;
+import android.os.Looper;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
@@ -52,9 +54,22 @@ public class CueMessageHandler extends FirebaseMessagingService {
 
             switch (type) {
                 case "ready":
-                    int machines = Integer.parseInt(data.get("machines"));
-                    app.getUser().getGame().setPosition(0);
-                    app.getUser().getGame().setAmountOfMachines(machines);
+                    final int machines = Integer.parseInt(data.get("machines"));
+
+                    if (Looper.myLooper() == null) {
+                        Looper.prepare();
+                    }
+                    final Handler handler = new Handler();
+                    handler.postDelayed(new Runnable() {
+                        @Override
+                        public void run() {
+                            System.out.println("Running");
+                            app.getUser().getGame().setPosition(0);
+                            app.getUser().getGame().setAmountOfMachines(machines);
+                        }
+                    }, 1500);
+
+
                     break;
                 case "update":
                     app.getUser().getGame().setPosition(Integer.parseInt(data.get("position")));

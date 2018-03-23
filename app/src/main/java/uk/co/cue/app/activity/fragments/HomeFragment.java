@@ -172,12 +172,11 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
         quit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-                if (ready && !inProgress) {
+                if (ready) {
                     Intent intent = new Intent(getContext(), NFCDetectedActivity.class);
                     intent.putExtra("type", "Start");
                     startActivityForResult(intent, 1);
-                } else if (ready && inProgress) {
+                } else if (inProgress) {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("user_id", String.valueOf(app.getUser().getUserid()));
                     params.put("session_cookie", app.getUser().getSession());
@@ -270,6 +269,17 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
     }
 
     @Override
+    public void onResume() {
+        if (app.getUser() != null || app.getUser().getGame() != null) {
+            Game g = app.getUser().getGame();
+            if (g != null) {
+                g.setOnGameChangedListener(this);
+            }
+        }
+        super.onResume();
+    }
+
+    @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         // Check which request we're responding to
         if (requestCode == 0) {
@@ -284,11 +294,12 @@ public class HomeFragment extends Fragment implements VolleyRequestFactory.Volle
 
                 updateGameCard(g);
             }
-        } else if (requestCode == 1) {
+        } else if (requestCode == 1 && resultCode == RESULT_OK) {
             //Now the game is in progress
             String resp = data.getStringExtra("Response");
             if (resp.equals("ok")) {
                 queue_pos.setText("In Progress");
+                ready = false;
                 inProgress = true;
                 ((TextView) quit.findViewById(R.id.btn_text)).setText("End Game");
             } else if (resp.equals("error, wrong machine")) {
