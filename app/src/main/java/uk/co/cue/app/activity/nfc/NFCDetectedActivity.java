@@ -130,7 +130,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
             delete = true;
             reserve = false;
         } else {
-            processingText.setText("Tap Table x to start the game");
+            processingText.setText("Tap the beeping/flashing table to start the game");
             reserve = false;
         }
     }
