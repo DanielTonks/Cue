@@ -109,7 +109,7 @@ public class NFCDetectedActivity extends AppCompatActivity implements VolleyRequ
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_nfcdetected);
-
+        this.app = (CueApp) getApplication();
         this.processingText = findViewById(R.id.processingText);
         this.vrf = new VolleyRequestFactory(this, getApplicationContext());
 
